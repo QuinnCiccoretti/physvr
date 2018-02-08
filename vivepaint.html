@@ -73,7 +73,13 @@
 				container.appendChild( info );
 
 				scene = new Physijs.Scene();
-				scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
+				// scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
+				scene.addEventListener(
+					'update',
+					function() {
+						scene.simulate( undefined, 2 );
+					}
+				);
 				scene.background = new THREE.Color( 0x222222 );
 
 				var user = new THREE.Group();
@@ -89,6 +95,7 @@
 					roughness: 1.0,
 					metalness: 0.0
 				} );
+				//little side table in the scene
 				var table = new THREE.Mesh( geometry, material );
 				table.position.y = 0.35;
 				table.position.z = 0.85;
@@ -96,43 +103,49 @@
 				table.receiveShadow = true;
 				scene.add( table );
 
-				/*
-				var table = new THREE.Mesh( geometry, material );
-				table.position.y = 0.35;
-				table.position.z = -0.85;
-				table.castShadow = true;
-				table.receiveShadow = true;
-				scene.add( table );
-				*/
-
-				var geometry = new THREE.PlaneGeometry( 4, 4 );
-				var material = new THREE.MeshStandardMaterial( {
-					color: 0x222222,
-					roughness: 1.0,
-					metalness: 0.0
-				} );
-				var floor = new THREE.Mesh( geometry, material );
-				floor.rotation.x = - Math.PI / 2;
-				floor.receiveShadow = true;
-				scene.add( floor );
-				// Box
-				// Loader
+				
+				// Floor made of grass
 				loader = new THREE.TextureLoader();
-				var table_material = Physijs.createMaterial(
+				var floor_material = Physijs.createMaterial(
 						new THREE.MeshLambertMaterial({ map: loader.load( 'img/grass.jpg' )}),
 						.9, // high friction
 						.2 // low restitution
 				);
-				var box = new Physijs.BoxMesh(
+				var floor = new Physijs.BoxMesh(
 					new THREE.CubeGeometry( 5, .1, 5 ),
-					table_material
+					floor_material
 				);
-				scene.add( box );
+				scene.add( floor );
 
+				//box
+				var box_material = Physijs.createMaterial(
+					new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
+					.4, // low friction
+					.6 // high restitution
+				);
+				box_material.map.wrapS = THREE.RepeatWrapping;
+				box_material.map.repeat.set( .25, .25 );
+				for ( var i = 0; i < 10; i++ ) {
+					var box = new Physijs.BoxMesh(
+						new THREE.BoxGeometry( 4, 4, 4 ),
+						box_material
+					);
+					box.position.set(
+						Math.random() * 50 - 25,
+						10 + Math.random() * 5,
+						Math.random() * 50 - 25
+					);
+					box.rotation.set(
+						Math.random() * Math.PI * 2,
+						Math.random() * Math.PI * 2,
+						Math.random() * Math.PI * 2
+					);
+					box.castShadow = true;
+					scene.add( box );
+					
+				}
 				scene.add( new THREE.GridHelper( 20, 40, 0x111111, 0x111111 ) );
-
 				scene.add( new THREE.HemisphereLight( 0x888877, 0x777788 ) );
-
 				var light = new THREE.DirectionalLight( 0xffffff );
 				light.position.set( 0, 6, 0 );
 				light.castShadow = true;
@@ -154,10 +167,10 @@
 				renderer.gammaInput = true;
 				renderer.gammaOutput = true;
 				renderer.shadowMap.enabled = true;
-				renderer.vr.enabled = true;
+				renderer.vr.enabled = true;	//VR REQUIRED
 				container.appendChild( renderer.domElement );
 
-				document.body.appendChild( WEBVR.createButton( renderer ) );
+				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
 				// controllers
 
@@ -241,6 +254,7 @@
 
 				window.addEventListener( 'resize', onWindowResize, false );
 				requestAnimationFrame( render );
+				scene.simulate();
 			}	
 
 			function initGeometry() {
@@ -473,15 +487,16 @@
 
 			function render() {
 
-				var count = line.geometry.drawRange.count;
+				// var count = line.geometry.drawRange.count;
 
 				handleController( controller1 );
 				handleController( controller2 );
 
-				updateGeometry( count, line.geometry.drawRange.count );
+				// updateGeometry( count, line.geometry.drawRange.count );
 				scene.simulate(); // run physics
-				renderer.render( scene, camera );
 				requestAnimationFrame( render );
+				renderer.render( scene, camera );
+				
 			}
 
 		</script><div><div style="position: absolute; top: 10px; width: 100%; text-align: center;"><a href="http://threejs.org/" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint</div><canvas width="3024" height="1680" style="width: 1280px; height: 918px;"></canvas></div>
