@@ -22,6 +22,7 @@
 	<body>
 
 		<script src="./js/three.js"></script>
+		<script type="text/javascript" src="./js/phys/physi.js"></script>
 
 		<script src="./js/ViveController.js"></script>
 		<script src="./js/PaintViveController.js"></script>
@@ -31,7 +32,11 @@
 		<script src="./js/MTLLoader.js"></script>
 
 		<script>
-
+			'use strict';
+	
+			Physijs.scripts.worker = '/js/physijs_worker.js';
+			Physijs.scripts.ammo = '/js/ammo.js';
+	
 			var container;
 			var camera, scene, renderer;
 			var controller1, controller2;
@@ -67,7 +72,7 @@
 				info.innerHTML = '<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint';
 				container.appendChild( info );
 
-				scene = new THREE.Scene();
+				scene = new Physijs.Scene();
 				scene.background = new THREE.Color( 0x222222 );
 
 				var user = new THREE.Group();
@@ -155,74 +160,74 @@
 				var loader = new THREE.OBJLoader();
 				console.log("Aight we did it.");
 				
-				var onProgress = function ( xhr ) {
-					if ( xhr.lengthComputable ) {
-						var percentComplete = xhr.loaded / xhr.total * 100;
-						console.log( Math.round(percentComplete, 2) + '% downloaded' );
-					}
-				};
+				// var onProgress = function ( xhr ) {
+				// 	if ( xhr.lengthComputable ) {
+				// 		var percentComplete = xhr.loaded / xhr.total * 100;
+				// 		console.log( Math.round(percentComplete, 2) + '% downloaded' );
+				// 	}
+				// };
 
-				var onError = function ( xhr ) { console.log("oh shit");};
-				var mtlLoader = new THREE.MTLLoader();
-				mtlLoader.setPath( 'models/' );
-				mtlLoader.load( 'yodas_lightsaber.mtl', function( materials ) {
-					materials.preload();
-					var objLoader = new THREE.OBJLoader();
-					objLoader.setMaterials( materials );
-					objLoader.setPath( 'models/' );
-					objLoader.load( 'yodas_lightsaber.obj', function ( object ) {
-						var controller = object.children[ 0 ];
-						controller.castShadow = true;
-						controller.receiveShadow = true;
+				// var onError = function ( xhr ) { console.log("oh no, mtl loading failed");};
+				// var mtlLoader = new THREE.MTLLoader();
+				// mtlLoader.setPath( 'models/' );
+				// mtlLoader.load( 'yodas_lightsaber.mtl', function( materials ) {
+				// 	materials.preload();
+				// 	var objLoader = new THREE.OBJLoader();
+				// 	objLoader.setMaterials( materials );
+				// 	objLoader.setPath( 'models/' );
+				// 	objLoader.load( 'yodas_lightsaber.obj', function ( object ) {
+				// 		var controller = object.children[ 0 ];
+				// 		controller.castShadow = true;
+				// 		controller.receiveShadow = true;
 						
-						var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
-						pivot.name = 'pivot';
-						pivot.position.y = -0.016;
-						pivot.position.z = -0.043;
-						pivot.rotation.x = Math.PI / 5.5;
-						controller.add( pivot );
+				// 		var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
+				// 		pivot.name = 'pivot';
+				// 		pivot.position.y = -0.016;
+				// 		pivot.position.z = -0.043;
+				// 		pivot.rotation.x = Math.PI / 5.5;
+				// 		controller.add( pivot );
 
-						controller1.add( controller.clone() );
+				// 		controller1.add( controller.clone() );
 
-						pivot.material = pivot.material.clone();
-						controller2.add( controller.clone() );
-						}, onProgress, onError );
-				});
+				// 		pivot.material = pivot.material.clone();
+				// 		controller2.add( controller.clone() );
+				// 		}, onProgress, onError );
+				// });
 				///////////////////////////////////////////
 				///////////////////////////////////////////
-				// loader.setPath( 'models/' );
-				// loader.load( 'vr_controller_vive_1_5.obj', function ( object ) {
+				loader.setPath( 'models/' );
+				loader.load( 'vr_controller_vive_1_5.obj', function ( object ) {
 
-				// 	var loader = new THREE.TextureLoader();
-				// 	loader.setPath( 'models/' );
+					var loader = new THREE.TextureLoader();
+					loader.setPath( 'models/' );
 
-				// 	var controller = object.children[ 0 ];
-				// 	controller.material.map = loader.load( 'onepointfive_texture.png' );
-				// 	controller.material.specularMap = loader.load( 'onepointfive_spec.png' );
-				// 	controller.castShadow = true;
-				// 	controller.receiveShadow = true;
+					var controller = object.children[ 0 ];
+					controller.material.map = loader.load( 'onepointfive_texture.png' );
+					controller.material.specularMap = loader.load( 'onepointfive_spec.png' );
+					controller.castShadow = true;
+					controller.receiveShadow = true;
 
-				// 	// var pivot = new THREE.Group();
-				// 	// var pivot = new THREE.Mesh( new THREE.BoxGeometry( 0.01, 0.01, 0.01 ) );
-				// 	var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
-				// 	pivot.name = 'pivot';
-				// 	pivot.position.y = -0.016;
-				// 	pivot.position.z = -0.043;
-				// 	pivot.rotation.x = Math.PI / 5.5;
-				// 	controller.add( pivot );
+					// var pivot = new THREE.Group();
+					// var pivot = new THREE.Mesh( new THREE.BoxGeometry( 0.01, 0.01, 0.01 ) );
+					var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
+					pivot.name = 'pivot';
+					pivot.position.y = -0.016;
+					pivot.position.z = -0.043;
+					pivot.rotation.x = Math.PI / 5.5;
+					controller.add( pivot );
 
-				// 	controller1.add( controller.clone() );
+					controller1.add( controller.clone() );
 
-				// 	pivot.material = pivot.material.clone();
-				// 	controller2.add( controller.clone() );
+					pivot.material = pivot.material.clone();
+					controller2.add( controller.clone() );
 
-				// } );
+				} );
 
-				//
+				
 
 				window.addEventListener( 'resize', onWindowResize, false );
-
-			}
+				requestAnimationFrame( render );
+			}	
 
 			function initGeometry() {
 
@@ -458,15 +463,15 @@
 
 			function render() {
 
-				var count = line.geometry.drawRange.count;
+				//var count = line.geometry.drawRange.count;
 
 				handleController( controller1 );
 				handleController( controller2 );
 
-				updateGeometry( count, line.geometry.drawRange.count );
-
+				//updateGeometry( count, line.geometry.drawRange.count );
+				scene.simulate(); // run physics
 				renderer.render( scene, camera );
-
+				requestAnimationFrame( render );
 			}
 
 		</script><div><div style="position: absolute; top: 10px; width: 100%; text-align: center;"><a href="http://threejs.org/" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint</div><canvas width="3024" height="1680" style="width: 1280px; height: 918px;"></canvas></div><button style="position: absolute; bottom: 20px; padding: 12px 6px; border: 1px solid rgb(255, 255, 255); border-radius: 4px; background: transparent; color: rgb(255, 255, 255); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 13px; line-height: normal; font-family: sans-serif; text-align: center; opacity: 0.5; outline: none; z-index: 999; cursor: pointer; left: calc(50% - 50px); width: 100px;">EXIT VR</button>
