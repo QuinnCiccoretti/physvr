@@ -1,5 +1,5 @@
 # physvr
-## Quinn Ciccoretti
+## Quinn Ciccoretti, TJHSST
 > This project attempts to combine WebVR with Physijs.
 ### To Run:
 - Note - Physijs requires separate worker threads to be hosted. Viewing the static page might not work.
