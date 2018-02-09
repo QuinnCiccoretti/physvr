@@ -8,4 +8,5 @@
  - `python -m SimpleHTTPServer` for python2
 - Go to vivepaint.html
 ### To Do:
-[ ] Make physics actually work
+- [ ] Make physics actually work
+- [ ] run npm init so that the autodeploy works
