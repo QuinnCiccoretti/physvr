@@ -23,6 +23,7 @@
 
 		<script src="./js/three.js"></script>
 		<script type="text/javascript" src="js/stats.js"></script>
+		<script type="text/javascript" src="js/scene.js"></script>
 		<script type="text/javascript" src="./js/phys/physi.js"></script>
 
 		<script src="./js/ViveController.js"></script>
@@ -59,13 +60,7 @@
 			window.onload = init();
 			var render_stats, physics_stats;
 			
-
-			function init() {
-
-
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
-
+			function init_stats(){
 				render_stats = new Stats();
 				render_stats.domElement.style.position = 'absolute';
 				render_stats.domElement.style.top = '1px';
@@ -76,7 +71,8 @@
 				physics_stats.domElement.style.top = '50px';
 				physics_stats.domElement.style.zIndex = 100;
 				container.appendChild( physics_stats.domElement );
-
+			}
+			function init_info(){
 				var info = document.createElement( 'div' );
 				info.style.position = 'absolute';
 				info.style.top = '10px';
@@ -84,8 +80,17 @@
 				info.style.textAlign = 'center';
 				info.innerHTML = '<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint';
 				container.appendChild( info );
+			}
+			function init() {
+
+				
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				init_stats();
+				init_info();
 
 				scene = new Physijs.Scene;
+				// scene = new Physijs.Scene({ fixedTimeStep: 1 / 0 });
 				scene.setGravity(new THREE.Vector3( 0, -1, 0 ));
 				scene.background = new THREE.Color( 0x222222 );
 
@@ -96,34 +101,10 @@
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
 				user.add( camera );
 
-				var geometry = new THREE.BoxGeometry( 0.5, 0.8, 0.5 );
-				var material = new THREE.MeshStandardMaterial( {
-					color: 0x444444,
-					roughness: 1.0,
-					metalness: 0.0
-				} );
-				//little side table in the scene
-				var table = new THREE.Mesh( geometry, material );
-				table.position.y = 0.35;
-				table.position.z = 0.85;
-				table.castShadow = true;
-				table.receiveShadow = true;
-				scene.add( table );
-
 				
-				// Floor made of grass
-				loader = new THREE.TextureLoader();
-				var floor_material = Physijs.createMaterial(
-						new THREE.MeshLambertMaterial({ map: loader.load( 'img/grass.jpg' )}),
-						.9, // high friction
-						.2 // low restitution
-				);
-				var floor = new Physijs.BoxMesh(
-					new THREE.CubeGeometry( 5, .1, 5 ),
-					floor_material
-				);
-				scene.add( floor );
 
+				create_table();
+				create_floor('img/grass.jpg');
 				//box
 				var box_material = Physijs.createMaterial(
 					new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
@@ -132,7 +113,7 @@
 				);
 				box_material.map.wrapS = THREE.RepeatWrapping;
 				box_material.map.repeat.set( .25, .25 );
-				for ( var i = 0; i < 1; i++ ) {
+				for ( var i = 0; i < 100; i++ ) {
 					var box = new Physijs.BoxMesh(
 						new THREE.BoxGeometry( 4, 4, 4 ),
 						box_material,
