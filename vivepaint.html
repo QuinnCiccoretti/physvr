@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)https://threejs.org/examples/webvr_vive_paint.html -->
+<!-- @author mrdoob -->
+<!-- @author quinnciccoretti -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>three.js webvr - htc vive - paint</title>
 		
@@ -101,13 +102,9 @@
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
 				user.add( camera );
 
-				
-
-				create_table();
-				create_floor('img/grass.jpg');
-				// THE FOLLOWING MAY BRICK
-				create_boxes(100);
-				create_lights();
+				/////////////////////
+				//THE FOLLOWING MAY BRICK
+				create_scene_objects();
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -160,8 +157,9 @@
 					controller2.add( controller.clone() );
 
 				} );
+
 				initGeometry();
-				console.log("AIGHT we done did it jomey");
+				console.log("All initialized");
 				window.addEventListener( 'resize', onWindowResize, false );
 				requestAnimationFrame( render );
 				scene.simulate();
@@ -184,20 +182,6 @@
 				geometry.addAttribute( 'color', colors );
 
 				geometry.drawRange.count = 0;
-
-				//
-
-				/*
-				var path = "textures/cube/SwedishRoyalCastle/";
-				var format = '.jpg';
-				var urls = [
-					path + 'px' + format, path + 'nx' + format,
-					path + 'py' + format, path + 'ny' + format,
-					path + 'pz' + format, path + 'nz' + format
-				];
-
-				var reflectionCube = new THREE.CubeTextureLoader().load( urls );
-				*/
 
 				var material = new THREE.MeshStandardMaterial( {
 					roughness: 0.9,

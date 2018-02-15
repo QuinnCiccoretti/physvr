@@ -1,3 +1,10 @@
+function create_scene_objects(){
+	create_table();
+	create_floor('img/grass.jpg');
+	
+	create_boxes(100);
+	create_lights();
+}
 // A small table for really no reason
 function create_table(){
 	console.log("made a table");
@@ -73,7 +80,5 @@ function create_lights(){
 	light.shadow.mapSize.set( 4096, 4096 );
 	scene.add( light );
 }
-
-
 
 
