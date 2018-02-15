@@ -41,8 +41,9 @@ THREE.MoveViveController = function ( id ) {
 
 		var x = event.axes[ 0 ] / 2.0;
 		var y = - event.axes[ 1 ] / 2.0;
-
-		console.log(x,y);
+		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
+		user.position.x += x/10;
+		user.position.z += y/10;
 
 	}
 
