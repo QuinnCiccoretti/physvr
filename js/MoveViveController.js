@@ -19,17 +19,17 @@ THREE.MoveViveController = function ( id ) {
 
 	var geometry = new THREE.CircleGeometry( 1, 32 );
 	var material = new THREE.MeshBasicMaterial( { color:"#009933" } );
-	var colorUI = new THREE.Mesh( geometry, material );
-	colorUI.position.set( 0, 0.005, 0.0495 );
-	colorUI.rotation.x = - 1.45;
-	colorUI.scale.setScalar( 0.02 );
-	this.add( colorUI );
+	var moveUI = new THREE.Mesh( geometry, material );
+	moveUI.position.set( 0, 0.005, 0.0495 );
+	moveUI.rotation.x = - 1.45;
+	moveUI.scale.setScalar( 0.02 );
+	this.add( moveUI );
 
 	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
 	var material = new THREE.MeshBasicMaterial();
 	material.color = color;
-	var ball = new THREE.Mesh( geometry, material );
-	colorUI.add( ball );
+	var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
+	moveUI.add( ball );
 
 	handleController = function( controller ) {
 		controller.update();
@@ -44,6 +44,7 @@ THREE.MoveViveController = function ( id ) {
 		
 		var camera_rotation = camera.rotation.y;	//might have to change to user rotation
 		var thumbpad_rotation = (Math.PI / 2) - Math.atan2(y,x);
+		//update user position based on look direction
 		user.position.x += Math.cos(camera_rotation + thumbpad_rotation);
 		user.position.z += Math.sin(camera_rotation + thumbpad_rotation);
 
