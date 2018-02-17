@@ -36,14 +36,20 @@ THREE.MoveViveController = function ( id ) {
 	}
 
 	function onAxisChanged( event ) {
-
+		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
 
 		var x = event.axes[ 0 ] / 2.0;
 		var y = - event.axes[ 1 ] / 2.0;
-		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
-		user.position.x += x/10;
-		user.position.z += y/10;
+		
+		var camera_rotation = camera.rotation.y;	//might have to change to user rotation
+		var thumbpad_rotation = (Math.PI / 2) - Math.atan2(y,x);
+		user.position.x += Math.cos(camera_rotation + thumbpad_rotation);
+		user.position.z += Math.sin(camera_rotation + thumbpad_rotation);
+
+
+		// user.position.x += x/10;
+		// user.position.z += y/10;
 
 	}
 

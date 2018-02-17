@@ -339,7 +339,10 @@ THREE.PaintViveController = function ( id ) {
 
 
 	function onAxisChanged( event ) {
-
+		//////////////////////////////////////////////////////
+		//						MAY BRICK					//
+		//////////////////////////////////////////////////////
+		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
 
 		var x = event.axes[ 0 ] / 2.0;
@@ -348,7 +351,7 @@ THREE.PaintViveController = function ( id ) {
 		if ( mode === MODES.COLOR ) {
 			color.setHSL( Math.atan2( y, x ) / PI2, 1, ( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
 
-			ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
+			
 		}
 
 		if ( mode === MODES.SIZE ) {
