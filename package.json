@@ -1,0 +1,23 @@
+{
+  "name": "physvr",
+  "version": "1.0.0",
+  "description": "framework for physics with webvr ",
+  "main": "serve.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuinnCiccoretti/physvr.git"
+  },
+  "author": "quinnciccoretti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/QuinnCiccoretti/physvr/issues"
+  },
+  "homepage": "https://github.com/QuinnCiccoretti/physvr#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "npm": "^5.6.0"
+  }
+}
