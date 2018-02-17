@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)https://threejs.org/examples/webvr_vive_paint.html -->
+<!-- @author mrdoob -->
+<!-- @author quinnciccoretti -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>three.js webvr - htc vive - paint</title>
 		
@@ -18,31 +19,36 @@
 				color: #f00;
 			}
 		</style>
-		<!-- Graphics -->
+	</head>
+	<body>
+
 		<script src="./js/three.js"></script>
-		<script src="./js/phys/physi.js"></script>
-		<!-- VR -->
+		<script type="text/javascript" src="js/stats.js"></script>
+		<script type="text/javascript" src="js/scene.js"></script>
+		<script type="text/javascript" src="./js/phys/physi.js"></script>
+
 		<script src="./js/ViveController.js"></script>
-		<script src="./js/WebVR.js"></script>
-		<!-- Loaders -->
-		<script src="./js/loaders/OBJLoader.js"></script>
-		<script src="./js/loaders/MTLLoader.js"></script>
-		<!-- Custom code -->
 		<script src="./js/PaintViveController.js"></script>
-		<script src="./js/painter.js"></script>
-		<script src="./js/basic_scene.js"></script>
-		<script src="./js/ctrlrsetup.js"></script>
+		<script src="./js/MoveViveController.js"></script>
+		<script src="./js/WebVR.js"></script>
+		
+		<script src="./js/OBJLoader.js"></script>
+		<script src="./js/MTLLoader.js"></script>
 
 		<script>
 			'use strict';
-			Physijs.scripts.worker = 'js/phys/physijs_worker.js';
+	
+			Physijs.scripts.worker = '/js/phys/physijs_worker.js';
 			Physijs.scripts.ammo = '/js/phys/ammo.js';
 	
 			var container;
+
 			var camera, scene, renderer;
 			var user;
+			var basic_model;
 			var controller1, controller2;
-
+			var handleController;
+			var load_model;
 			var line;
 			var shapes = {};
 
@@ -57,14 +63,22 @@
 			var point4 = new THREE.Vector3();
 			var point5 = new THREE.Vector3();
 
-			window.onload = function(){
-				init();
-				initGeometry();
-			}
+			window.onload = init();
+			var render_stats, physics_stats;
 			
+			function init_stats(){
+				render_stats = new Stats();
+				render_stats.domElement.style.position = 'absolute';
+				render_stats.domElement.style.top = '1px';
+				render_stats.domElement.style.zIndex = 100;
+				container.appendChild( render_stats.domElement );
+				physics_stats = new Stats();
+				physics_stats.domElement.style.position = 'absolute';
+				physics_stats.domElement.style.top = '50px';
+				physics_stats.domElement.style.zIndex = 100;
+				container.appendChild( physics_stats.domElement );
+			}
 			function init_info(){
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
 				var info = document.createElement( 'div' );
 				info.style.position = 'absolute';
 				info.style.top = '10px';
@@ -73,66 +87,118 @@
 				info.innerHTML = '<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint';
 				container.appendChild( info );
 			}
-			
-			
 			function init() {
 
+				load_basic_model(basic_model);
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				init_stats();
 				init_info();
-				init_scene();
-				init_user();
-				init_camera();
-				init_objects();
-				init_renderer();
-				/////////////////////////////////////////////////////////////////
-				///	THE BELOW CODE MAY BRICK !WARNING! 
-				/////////////////////////////////////////////////////////////////
+
+				scene = new Physijs.Scene;
+				// scene = new Physijs.Scene({ fixedTimeStep: 1 / 0 });
+				scene.setGravity(new THREE.Vector3( 0, -10, 0 ));
+				scene.background = new THREE.Color( 0x222222 );
+
+				user = new THREE.Group();
+				user.position.set( 0, 1.6, 0 );
+				scene.add( user );
+
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
+				user.add( camera );
+
+				
+				create_scene_objects();
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.gammaInput = true;
+				renderer.gammaOutput = true;
+				renderer.shadowMap.enabled = true;
+				renderer.vr.enabled = true;	//VR REQUIRED
+				container.appendChild( renderer.domElement );
+
+				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
+
+				// controllers
+
 				controller1 = new THREE.PaintViveController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller1 );
+
 				controller2 = new THREE.PaintViveController( 1 );
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );
-				load_controller_models();
+				
+				
+				controller1.addEventListener( 'menudown', on_menu_up );
+				controller2.addEventListener( 'menudown', on_menu_up );
+				initGeometry();
 
+				// Start simulation
 				window.addEventListener( 'resize', onWindowResize, false );
-
 				requestAnimationFrame( render );
 				scene.simulate();
-				console.log('%c GREENLIGHT! ', 'color: #017a17');
 			}	
+			var current_controller = 0;
+			var ncontrollers = 2;
+			var last_menu_state = false;
+			function on_menu_up(){
 
-
-			function onWindowResize() {
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-				renderer.setSize( window.innerWidth, window.innerHeight );
+					user.remove(controller1);
+					user.remove(controller2);
+					console.log("menu pressed");
+					current_controller++;
+					if(current_controller == ncontrollers){
+						current_controller = 0;
+					}
+					if(current_controller == 0){
+						controller1 = new THREE.PaintViveController( 0 );
+						controller2 = new THREE.PaintViveController( 1 );
+						//console.log("switched to paint mode");
+					}
+					
+					if(current_controller == 1){
+						controller1 = new THREE.MoveViveController( 0 );
+						controller2 = new THREE.MoveViveController( 1 );
+						//console.log("switched to move mode");
+					}
+					
+					controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
+					controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
+					user.add( controller1 );
+					controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
+					controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
+					user.add( controller2 );
+					load_model(controller1);
+					load_model(controller2);
+					
+					controller1.addEventListener( 'menuup', on_menu_up );
+					controller2.addEventListener( 'menuup', on_menu_up );
+				
+				
 			}
 
-			
+
 			function render() {
 
-				// var count = line.geometry.drawRange.count;
+				var count = line.geometry.drawRange.count;
 
 				handleController( controller1 );
 				handleController( controller2 );
 
-				// updateGeometry( count, line.geometry.drawRange.count );
+				updateGeometry( count, line.geometry.drawRange.count );
 				scene.simulate(); // run physics
 				requestAnimationFrame( render );
 				renderer.render( scene, camera );
-				
+				render_stats.update();
+				physics_stats.update();
 			}
 
-		</script>
-	</head>
-	<body>
-		<div>
-			<div style="position: absolute; top: 10px; width: 100%; text-align: center;">
-				<a href="http://threejs.org/" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint
-			</div>
-			<canvas width="3024" height="1680" style="width: 1280px; height: 918px;"></canvas>
-		</div>
-	</body>
-</html>
+		</script><div><div style="position: absolute; top: 10px; width: 100%; text-align: center;"><a href="http://threejs.org/" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint</div><canvas width="3024" height="1680" style="width: 1280px; height: 918px;"></canvas></div>
+	
+
+</body></html>
