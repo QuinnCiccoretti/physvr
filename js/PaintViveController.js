@@ -185,12 +185,40 @@ function load_basic_model(){
 	var loader = new THREE.OBJLoader();
 		loader.setPath( 'models/' );
 		loader.load( 'vr_controller_vive_1_5.obj', function ( object ) {
-			basic_model = object;
-			console.log("but now it is ");
-			console.log(basic_model);
-			return object;
+		var loader = new THREE.TextureLoader();
+		loader.setPath( 'models/' );
+		basic_model = object;
+		var controller = basic_model.children[ 0 ];
+		controller.material.map = loader.load( 'onepointfive_texture.png' );
+		controller.material.specularMap = loader.load( 'onepointfive_spec.png' );
+		controller.castShadow = true;
+		controller.receiveShadow = true;
+
+		var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
+		pivot.name = 'pivot';
+		pivot.position.y = -0.016;
+		pivot.position.z = -0.043;
+		pivot.rotation.x = Math.PI / 5.5;
+		controller.add( pivot );
+		/////////////////////////////////////////THESE JOINTS NEED TO BE UPDATED
+		var physGeom = new THREE.CylinderGeometry(0.5, 0.5, 2.0);
+		/////////////////////////////////////////^^^THESE DIMS^^ LOOK AT THE MODEL
+		var physMaterial = new Physijs.createMaterial(new THREE.MeshBasicMaterial({}), 0.5, 0.5);
+		physMaterial.visible = false;	//THis is the part that does the work
+		var physObject = new Physijs.CapsuleMesh(physGeom, physMaterial, 10);
+		////////////////////////////////////////////////////////////////^^^^^^This arg is mass and will need to be updated
+		//parents the complex graphics model to the simple collision geometry
+		physObject.add(controller);
+		console.log("basic controller was");
+		console.log(basic_controller);
+		basic_controller = physObject;
+		console.log("now it is");
+		console.log(basic_controller);
 		} );
 
+}
+load_model = function(controller1){
+		controller1.add( basic_controller.clone() );
 }
 THREE.PaintViveController = function ( id ) {
 
@@ -203,27 +231,7 @@ THREE.PaintViveController = function ( id ) {
 
 	var color = new THREE.Color( 1, 1, 1 );
 	var size = 1.0;
-	load_model = function(controller1){
-		
-		var loader = new THREE.TextureLoader();
-		loader.setPath( 'models/' );
-
-		var controller = basic_model.children[ 0 ];
-		controller.material.map = loader.load( 'onepointfive_texture.png' );
-		controller.material.specularMap = loader.load( 'onepointfive_spec.png' );
-		controller.castShadow = true;
-		controller.receiveShadow = true;
-
-		// var pivot = new THREE.Group();
-		// var pivot = new THREE.Mesh( new THREE.BoxGeometry( 0.01, 0.01, 0.01 ) );
-		var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
-		pivot.name = 'pivot';
-		pivot.position.y = -0.016;
-		pivot.position.z = -0.043;
-		pivot.rotation.x = Math.PI / 5.5;
-		controller.add( pivot );
-		controller1.add( controller.clone() );
-	}
+	
 	//
 	handleController = function( controller ) {
 
