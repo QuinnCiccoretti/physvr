@@ -201,13 +201,15 @@ function load_basic_model(){
 		pivot.rotation.x = Math.PI / 5.5;
 		controller.add( pivot );
 		/////////////////////////////////////////THESE JOINTS NEED TO BE UPDATED
-		var physGeom = new THREE.CylinderGeometry(0.5, 0.5, 2.0);
+		var physGeom = new THREE.BoxGeometry(0.12, 0.1, 0.22);
 		/////////////////////////////////////////^^^THESE DIMS^^ LOOK AT THE MODEL
 		var physMaterial = new Physijs.createMaterial(new THREE.MeshBasicMaterial({}), 0.5, 0.5);
-		physMaterial.visible = false;	//THis is the part that does the work
+		// physMaterial.visible = false;	//THis is the part that does the work
 		var physObject = new Physijs.CapsuleMesh(physGeom, physMaterial, 10);
 		////////////////////////////////////////////////////////////////^^^^^^This arg is mass and will need to be updated
 		//parents the complex graphics model to the simple collision geometry
+		controller.position.z = -0.07;
+		controller.position.y = 0.03;
 		physObject.add(controller);
 		console.log("basic controller was");
 		console.log(basic_controller);
