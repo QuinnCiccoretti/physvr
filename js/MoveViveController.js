@@ -43,12 +43,14 @@ THREE.MoveViveController = function ( id ) {
 		var y = - event.axes[ 1 ] / 2.0;
 		
 		var camera_rotation = camera.rotation.y;	//might have to change to user rotation
-		// var thumbpad_rotation = (Math.PI / 2) - Math.atan2(y,x);
-		var thumbpad_rotation = -1 * Math.atan2(y,x);
+		var thumbpad_rotation = Math.atan2(y,x);
+		console.log(thumbpad_rotation);
+		
+		// var thumbpad_rotation =  Math.atan2(y,x);
 		//update user position based on look direction
-		var move_scale = 10;
-		user.position.x += Math.cos(camera_rotation + thumbpad_rotation) / move_scale;
-		user.position.z += Math.sin(camera_rotation + thumbpad_rotation) / move_scale;
+		var move_scale = 15;
+		user.position.x += -1 * (Math.cos(camera_rotation + thumbpad_rotation) / move_scale);
+		user.position.z += -1 * (Math.sin(camera_rotation + thumbpad_rotation) / move_scale);
 
 
 		// user.position.x += x/10;

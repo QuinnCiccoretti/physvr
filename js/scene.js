@@ -46,14 +46,14 @@ function create_boxes(n){
 	box_material.map.repeat.set( .25, .25 );
 	for ( var i = 0; i < n; i++ ) {
 		var box = new Physijs.BoxMesh(
-			new THREE.BoxGeometry( 4, 4, 4 ),
+			new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
 			box_material,
-			10
+			1
 		);
 		box.position.set(
-			Math.random() * 50 - 25,
-			10 + Math.random() * 5,
-			Math.random() * 50 - 25
+			Math.random() * 5,
+			Math.random() * 5,
+			Math.random() * 5
 		);
 		box.rotation.set(
 			Math.random() * Math.PI * 2,
@@ -80,5 +80,42 @@ function create_lights(){
 	light.shadow.mapSize.set( 4096, 4096 );
 	scene.add( light );
 }
-
-
+function load_materials(){
+	// Loader
+	var loader = new THREE.TextureLoader();
+	// Materials
+	
+	block_material = Physijs.createMaterial(
+		new THREE.MeshLambertMaterial({ map: loader.load( 'images/hunna.jpg' )}),
+		0.4, // medium friction
+		.4 // medium restitution
+	);
+}
+createTower = (function() {
+		var block_length = 6*worldscale, block_height = 2*worldscale, block_width = 0.5*worldscale, block_offset = 2*worldscale,
+		block_geometry = new THREE.BoxGeometry( block_length, block_height, block_width );
+		
+		return function() {
+			var i, j, rows =  4,
+			block;
+			
+			for ( i = 0; i < rows; i++ ) {
+				for ( j = 0; j < 3; j++ ) {
+					block = new Physijs.BoxMesh( block_geometry, block_material );
+					block.position.y = (block_height / 2) + block_height * i;
+					if ( i % 2 === 0 ) {
+						block.rotation.y = Math.PI / 2.01; // #TODO: There's a bug somewhere when this is to close to 2
+						block.position.x = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
+					} 
+					else {
+						block.position.z = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
+					}
+					//block.receiveShadow = true;
+					//block.castShadow = true;
+					scene.add( block );
+					blocks.push( block );
+				}
+			}
+			
+		}
+})();
