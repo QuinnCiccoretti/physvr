@@ -86,12 +86,13 @@ function load_materials(){
 	// Materials
 	
 	block_material = Physijs.createMaterial(
-		new THREE.MeshLambertMaterial({ map: loader.load( 'images/hunna.jpg' )}),
+		new THREE.MeshLambertMaterial({ map: loader.load( 'img/hunna.jpg' )}),
 		0.4, // medium friction
 		.4 // medium restitution
 	);
 }
 createTower = (function() {
+		var worldscale = 1/5;
 		var block_length = 6*worldscale, block_height = 2*worldscale, block_width = 0.5*worldscale, block_offset = 2*worldscale,
 		block_geometry = new THREE.BoxGeometry( block_length, block_height, block_width );
 		
@@ -110,10 +111,10 @@ createTower = (function() {
 					else {
 						block.position.z = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
 					}
-					//block.receiveShadow = true;
-					//block.castShadow = true;
+					block.receiveShadow = true;
+					block.castShadow = true;
 					scene.add( block );
-					blocks.push( block );
+					// blocks.push( block );
 				}
 			}
 			

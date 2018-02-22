@@ -53,7 +53,8 @@
 			var load_model;
 			var line;
 			var shapes = {};
-
+			var createTower;
+			var worldscale = 1;
 			var up = new THREE.Vector3( 0, 1, 0 );
 			var vector = new THREE.Vector3();
 
@@ -191,6 +192,8 @@
 					user.add( controller2 );
 					load_model(controller1);
 					load_model(controller2);
+
+					createTower();
 					
 					controller1.addEventListener( 'menuup', on_menu_up );
 					controller2.addEventListener( 'menuup', on_menu_up );	
