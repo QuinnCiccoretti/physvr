@@ -40,7 +40,7 @@ function create_boxes(n){
 	var box_material = Physijs.createMaterial(
 		new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
 		.4, // low friction
-		.6 // high restitution
+		.4 // high restitution
 	);
 	box_material.map.wrapS = THREE.RepeatWrapping;
 	box_material.map.repeat.set( .25, .25 );
@@ -87,7 +87,7 @@ function load_materials(){
 	
 	block_material = Physijs.createMaterial(
 		new THREE.MeshLambertMaterial({ map: loader.load( 'img/hunna.jpg' )}),
-		0.4, // medium friction
+		0.1, // low friction
 		.4 // medium restitution
 	);
 }

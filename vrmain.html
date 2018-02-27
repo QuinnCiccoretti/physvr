@@ -47,6 +47,10 @@
 			var user;
 			var basic_model,basic_controller;
 			var controller1, controller2;
+
+			var controller_offset_z = -0.07;
+			var controller_offset_y = 0.03;
+
 			var block_material, block_geometry;
 			var phys_obj1, phys_obj2;
 			var handleController;
@@ -54,7 +58,7 @@
 			var line;
 			var shapes = {};
 			var createTower;
-			var worldscale = 1;
+			
 			var up = new THREE.Vector3( 0, 1, 0 );
 			var vector = new THREE.Vector3();
 
@@ -148,13 +152,12 @@
 				
 				var physMaterial = new Physijs.createMaterial(new THREE.MeshBasicMaterial({}), 0.5, 0.5);
 				physMaterial.visible = false;	//THis is the part that does the work
-				phys_obj1 = new Physijs.BoxMesh(physGeom, physMaterial, 99999);
-				phys_obj2 = new Physijs.BoxMesh(physGeom, physMaterial, 99999);
+				phys_obj1 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
+				phys_obj2 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
 				//offsets to center of controller
 				scene.add(phys_obj1);
 				scene.add(phys_obj2);
-				var coffset_z = -0.07;
-				var coffset_y = 0.03;
+				
 				// Start simulation
 				window.addEventListener( 'resize', onWindowResize, false );
 				requestAnimationFrame( render );
@@ -200,27 +203,32 @@
 			}
 
 			function update_phys_objects(){
-				//First controller
 				var user_pos = user.position;
-				var c1pos = controller1.position;
-				phys_obj1.position.set( c1pos.x +user_pos.x, c1pos.y +user_pos.y, c1pos.z +user_pos.z );
-			    phys_obj1.__dirtyPosition = true;
-
-			    var c1rot = controller1.rotation;
+				//First controller
+				var c1rot = controller1.rotation;
 			    phys_obj1.rotation.set(c1rot.x, c1rot.y, c1rot.z);
     			phys_obj1.__dirtyRotation = true;
+
+				
+				var c1pos = controller1.position;
+				phys_obj1.position.set( c1pos.x +user_pos.x, c1pos.y +user_pos.y + controller_offset_y, c1pos.z +user_pos.z );
+			    phys_obj1.__dirtyPosition = true;
+
+			    
 			    // You may also want to cancel the object's velocity
 			    phys_obj1.setLinearVelocity(new THREE.Vector3(0, 0, 0));
 			    phys_obj1.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 
 			   	//second contrdoller
-			    var c2pos = controller2.position;
-				phys_obj2.position.set( c2pos.x +user_pos.x, c2pos.y +user_pos.y, c2pos.z +user_pos.z );
-			    phys_obj2.__dirtyPosition = true;
-
-			    var c2rot = controller2.rotation;
+			   	 var c2rot = controller2.rotation;
 			    phys_obj2.rotation.set(c2rot.x, c2rot.y, c2rot.z);
     			phys_obj2.__dirtyRotation = true;
+
+			    var c2pos = controller2.position;
+				phys_obj2.position.set( c2pos.x +user_pos.x, c2pos.y +user_pos.y + controller_offset_y, c2pos.z +user_pos.z );
+			    phys_obj2.__dirtyPosition = true;
+
+			   
 
 			    // You may also want to cancel the object's velocity
 			    phys_obj2.setLinearVelocity(new THREE.Vector3(0, 0, 0));

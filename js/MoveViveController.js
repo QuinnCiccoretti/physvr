@@ -41,21 +41,21 @@ THREE.MoveViveController = function ( id ) {
 
 		var x = event.axes[ 0 ] / 2.0;
 		var y = - event.axes[ 1 ] / 2.0;
+		var r = 2*Math.sqrt(x*x+y*y);
 		
-		var camera_rotation = camera.rotation.y;	//might have to change to user rotation
-		var thumbpad_rotation = Math.atan2(y,x);
-		console.log(thumbpad_rotation);
+
+		var dir = new THREE.Vector3(0,0,1);
+		dir.applyEuler(this.rotation);
 		
-		// var thumbpad_rotation =  Math.atan2(y,x);
-		//update user position based on look direction
-		var move_scale = 15;
-		user.position.x += -1 * (Math.cos(camera_rotation + thumbpad_rotation) / move_scale);
-		user.position.z += -1 * (Math.sin(camera_rotation + thumbpad_rotation) / move_scale);
-
-
-		// user.position.x += x/10;
-		// user.position.z += y/10;
-
+		var flat_dir = new THREE.Vector3(dir.x, 0 ,dir.z);
+		flat_dir.divideScalar(flat_dir.length());	//convert to unit vec as we are only interested in direction
+		flat_dir.multiplyScalar(r);	//scale to touchpad radius
+		flat_dir.divideScalar(10);	//scale down to reasonable speed
+		if(y<0){
+			flat_dir.multiplyScalar(-1);	//flip around if thumpad forward
+		}
+		
+		user.position.add(flat_dir);
 	}
 
 	
