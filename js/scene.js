@@ -1,13 +1,13 @@
 function create_scene_objects(){
 	create_table();
-	create_floor('img/grass.jpg');
+	create_floor('img/ground.jpg');
 	
-	create_boxes(100);
+	// create_boxes(100);
 	create_lights();
 }
 // A small table for really no reason
 function create_table(){
-	console.log("made a table");
+	
 	var table_geometry = new THREE.BoxGeometry( 0.5, 0.8, 0.5 );
 	var table_material = new THREE.MeshBasicMaterial({ color: 0x888888 })
 	//little side table in the scene
@@ -86,7 +86,7 @@ function load_materials(){
 	// Materials
 	
 	block_material = Physijs.createMaterial(
-		new THREE.MeshLambertMaterial({ map: loader.load( 'img/hunna.jpg' )}),
+		new THREE.MeshLambertMaterial({ map: loader.load( 'img/wood.jpg' )}),
 		0.1, // low friction
 		.4 // medium restitution
 	);
