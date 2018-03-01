@@ -37,153 +37,152 @@ function initGeometry() {
 				shapes[ 'tube' ] = getTubeShapes(1.0);
 			}
 
-			function getTubeShapes(size) {
+function getTubeShapes(size) {
 
-				var PI2 = Math.PI * 2;
+	var PI2 = Math.PI * 2;
 
-				var sides = 10;
-				var array = [];
-				var radius = 0.01 * size;
-				for( var i = 0; i < sides; i ++ ){
+	var sides = 10;
+	var array = [];
+	var radius = 0.01 * size;
+	for( var i = 0; i < sides; i ++ ){
 
-					var angle = ( i / sides ) * PI2;
-					array.push( new THREE.Vector3( Math.sin( angle ) * radius, Math.cos( angle ) * radius, 0 ) );
-				}
+		var angle = ( i / sides ) * PI2;
+		array.push( new THREE.Vector3( Math.sin( angle ) * radius, Math.cos( angle ) * radius, 0 ) );
+	}
 
-				return array;
-			}
+	return array;
+}
 
 
-			function stroke( controller, point1, point2, matrix1, matrix2 ) {
+function stroke( controller, point1, point2, matrix1, matrix2 ) {
 
-				var color = controller.getColor();
+	var color = controller.getColor();
 
-				var shapes = getTubeShapes( controller.getSize() );
+	var shapes = getTubeShapes( controller.getSize() );
 
-				var geometry = line.geometry;
-				var attributes = geometry.attributes;
-				var count = geometry.drawRange.count;
+	var geometry = line.geometry;
+	var attributes = geometry.attributes;
+	var count = geometry.drawRange.count;
 
-				var positions = attributes.position.array;
-				var normals = attributes.normal.array;
-				var colors = attributes.color.array;
+	var positions = attributes.position.array;
+	var normals = attributes.normal.array;
+	var colors = attributes.color.array;
 
-				for ( var j = 0, jl = shapes.length; j < jl; j ++ ) {
+	for ( var j = 0, jl = shapes.length; j < jl; j ++ ) {
 
-					var vertex1 = shapes[ j ];
-					var vertex2 = shapes[ ( j + 1 ) % jl ];
+		var vertex1 = shapes[ j ];
+		var vertex2 = shapes[ ( j + 1 ) % jl ];
 
-					// positions
+		// positions
 
-					vector1.copy( vertex1 );
-					vector1.applyMatrix4( matrix2 );
-					vector1.add( point2 );
+		vector1.copy( vertex1 );
+		vector1.applyMatrix4( matrix2 );
+		vector1.add( point2 );
 
-					vector2.copy( vertex2 );
-					vector2.applyMatrix4( matrix2 );
-					vector2.add( point2 );
+		vector2.copy( vertex2 );
+		vector2.applyMatrix4( matrix2 );
+		vector2.add( point2 );
 
-					vector3.copy( vertex2 );
-					vector3.applyMatrix4( matrix1 );
-					vector3.add( point1 );
+		vector3.copy( vertex2 );
+		vector3.applyMatrix4( matrix1 );
+		vector3.add( point1 );
 
-					vector4.copy( vertex1 );
-					vector4.applyMatrix4( matrix1 );
-					vector4.add( point1 );
+		vector4.copy( vertex1 );
+		vector4.applyMatrix4( matrix1 );
+		vector4.add( point1 );
 
-					vector1.toArray( positions, ( count + 0 ) * 3 );
-					vector2.toArray( positions, ( count + 1 ) * 3 );
-					vector4.toArray( positions, ( count + 2 ) * 3 );
+		vector1.toArray( positions, ( count + 0 ) * 3 );
+		vector2.toArray( positions, ( count + 1 ) * 3 );
+		vector4.toArray( positions, ( count + 2 ) * 3 );
 
-					vector2.toArray( positions, ( count + 3 ) * 3 );
-					vector3.toArray( positions, ( count + 4 ) * 3 );
-					vector4.toArray( positions, ( count + 5 ) * 3 );
+		vector2.toArray( positions, ( count + 3 ) * 3 );
+		vector3.toArray( positions, ( count + 4 ) * 3 );
+		vector4.toArray( positions, ( count + 5 ) * 3 );
 
-					// normals
+		// normals
 
-					vector1.copy( vertex1 );
-					vector1.applyMatrix4( matrix2 );
-					vector1.normalize();
+		vector1.copy( vertex1 );
+		vector1.applyMatrix4( matrix2 );
+		vector1.normalize();
 
-					vector2.copy( vertex2 );
-					vector2.applyMatrix4( matrix2 );
-					vector2.normalize();
+		vector2.copy( vertex2 );
+		vector2.applyMatrix4( matrix2 );
+		vector2.normalize();
 
-					vector3.copy( vertex2 );
-					vector3.applyMatrix4( matrix1 );
-					vector3.normalize();
+		vector3.copy( vertex2 );
+		vector3.applyMatrix4( matrix1 );
+		vector3.normalize();
 
-					vector4.copy( vertex1 );
-					vector4.applyMatrix4( matrix1 );
-					vector4.normalize();
+		vector4.copy( vertex1 );
+		vector4.applyMatrix4( matrix1 );
+		vector4.normalize();
 
-					vector1.toArray( normals, ( count + 0 ) * 3 );
-					vector2.toArray( normals, ( count + 1 ) * 3 );
-					vector4.toArray( normals, ( count + 2 ) * 3 );
+		vector1.toArray( normals, ( count + 0 ) * 3 );
+		vector2.toArray( normals, ( count + 1 ) * 3 );
+		vector4.toArray( normals, ( count + 2 ) * 3 );
 
-					vector2.toArray( normals, ( count + 3 ) * 3 );
-					vector3.toArray( normals, ( count + 4 ) * 3 );
-					vector4.toArray( normals, ( count + 5 ) * 3 );
+		vector2.toArray( normals, ( count + 3 ) * 3 );
+		vector3.toArray( normals, ( count + 4 ) * 3 );
+		vector4.toArray( normals, ( count + 5 ) * 3 );
 
-					// colors
+		// colors
 
-					color.toArray( colors, ( count + 0 ) * 3 );
-					color.toArray( colors, ( count + 1 ) * 3 );
-					color.toArray( colors, ( count + 2 ) * 3 );
+		color.toArray( colors, ( count + 0 ) * 3 );
+		color.toArray( colors, ( count + 1 ) * 3 );
+		color.toArray( colors, ( count + 2 ) * 3 );
 
-					color.toArray( colors, ( count + 3 ) * 3 );
-					color.toArray( colors, ( count + 4 ) * 3 );
-					color.toArray( colors, ( count + 5 ) * 3 );
+		color.toArray( colors, ( count + 3 ) * 3 );
+		color.toArray( colors, ( count + 4 ) * 3 );
+		color.toArray( colors, ( count + 5 ) * 3 );
 
-					count += 6;
+		count += 6;
 
-				}
+	}
 
-				geometry.drawRange.count = count;
+	geometry.drawRange.count = count;
 
-			}
+}
 
-			function updateGeometry( start, end ) {
+function updateGeometry( start, end ) {
 
-				if ( start === end ) return;
+	if ( start === end ) return;
 
-				var offset = start * 3;
-				var count = ( end - start ) * 3;
+	var offset = start * 3;
+	var count = ( end - start ) * 3;
 
-				var geometry = line.geometry;
-				var attributes = geometry.attributes;
+	var geometry = line.geometry;
+	var attributes = geometry.attributes;
 
-				attributes.position.updateRange.offset = offset;
-				attributes.position.updateRange.count = count;
-				attributes.position.needsUpdate = true;
+	attributes.position.updateRange.offset = offset;
+	attributes.position.updateRange.count = count;
+	attributes.position.needsUpdate = true;
 
-				attributes.normal.updateRange.offset = offset;
-				attributes.normal.updateRange.count = count;
-				attributes.normal.needsUpdate = true;
+	attributes.normal.updateRange.offset = offset;
+	attributes.normal.updateRange.count = count;
+	attributes.normal.needsUpdate = true;
 
-				attributes.color.updateRange.offset = offset;
-				attributes.color.updateRange.count = count;
-				attributes.color.needsUpdate = true;
+	attributes.color.updateRange.offset = offset;
+	attributes.color.updateRange.count = count;
+	attributes.color.needsUpdate = true;
 
-			}
+}
 
-			function onWindowResize() {
+function onWindowResize() {
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setSize( window.innerWidth, window.innerHeight );
 
-			}
+}
 
-			//
+//
 
 
 function load_basic_model(){
-	console.log("basic model was ");
-	console.log(basic_model);
 	var loader = new THREE.OBJLoader();
 		loader.setPath( 'models/' );
+		//this part is weird and asyncy. Functions inside will execute when loaded.
 		loader.load( 'vr_controller_vive_1_5.obj', function ( object ) {
 		var loader = new THREE.TextureLoader();
 		loader.setPath( 'models/' );
@@ -202,13 +201,12 @@ function load_basic_model(){
 		controller.add( pivot );
 		
 		basic_controller = controller;
-		basic_controller.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-		    // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
-		console.log("collission!!!!!!!!!!!!!!!!")
-		});
-		console.log("now it is");
-		console.log(basic_controller);
+		controller1.add(basic_controller.clone());
+		controller2.add(basic_controller.clone());
+		controller1.addEventListener( 'menudown', on_menu_up );
+		controller2.addEventListener( 'menudown', on_menu_up );
 		} );
+
 
 }
 load_model = function(controller1){

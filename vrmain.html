@@ -47,13 +47,14 @@
 			var user;
 			var basic_model,basic_controller;
 			var controller1, controller2;
-
+			var handleController;
 			var controller_offset_z = -0.07;
 			var controller_offset_y = 0.03;
+			handleController = function( controller ) {}	//start off with nothing
 
 			var block_material, block_geometry;
 			var phys_obj1, phys_obj2;
-			var handleController;
+			
 			var load_model;
 			var line;
 			var shapes = {};
@@ -96,7 +97,7 @@
 			}
 			function init() {
 
-				load_basic_model(basic_model);
+				
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 				init_stats();
@@ -141,10 +142,11 @@
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );
 				
-				
+				load_basic_model(basic_model);
 				controller1.addEventListener( 'menudown', on_menu_up );
 				controller2.addEventListener( 'menudown', on_menu_up );
 				initGeometry();
+				createTower(10);
 				//Add physics object so controllers actually interact with scene. 
 				// Can't simply parent controllers because phys sim needs specific pos updating
 				
@@ -167,7 +169,7 @@
 			var ncontrollers = 2;
 			var last_menu_state = false;
 			function on_menu_up(){
-
+					// createTower(100);
 					user.remove(controller1);
 					user.remove(controller2);
 					console.log("menu pressed");
@@ -196,7 +198,7 @@
 					load_model(controller1);
 					load_model(controller2);
 
-					createTower();
+					
 					
 					controller1.addEventListener( 'menuup', on_menu_up );
 					controller2.addEventListener( 'menuup', on_menu_up );	

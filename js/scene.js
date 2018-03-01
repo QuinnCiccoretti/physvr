@@ -91,32 +91,29 @@ function load_materials(){
 		.4 // medium restitution
 	);
 }
-createTower = (function() {
+createTower = (function(nrows) {
 		var worldscale = 1/5;
-		var block_length = 6*worldscale, block_height = 2*worldscale, block_width = 0.5*worldscale, block_offset = 2*worldscale,
+		var block_length = 6*worldscale, block_height = 1*worldscale, block_width = 1.5*worldscale, block_offset = 2*worldscale,
 		block_geometry = new THREE.BoxGeometry( block_length, block_height, block_width );
+		var i, j,block;
 		
-		return function() {
-			var i, j, rows =  4,
-			block;
-			
-			for ( i = 0; i < rows; i++ ) {
-				for ( j = 0; j < 3; j++ ) {
-					block = new Physijs.BoxMesh( block_geometry, block_material );
-					block.position.y = (block_height / 2) + block_height * i;
-					if ( i % 2 === 0 ) {
-						block.rotation.y = Math.PI / 2.01; // #TODO: There's a bug somewhere when this is to close to 2
-						block.position.x = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
-					} 
-					else {
-						block.position.z = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
-					}
-					block.receiveShadow = true;
-					block.castShadow = true;
-					scene.add( block );
-					// blocks.push( block );
+		for ( i = 0; i < nrows; i++ ) {
+			for ( j = 0; j < 3; j++ ) {
+				block = new Physijs.BoxMesh( block_geometry, block_material );
+				block.position.y = (block_height / 2) + block_height * i;
+				if ( i % 2 === 0 ) {
+					block.rotation.y = Math.PI / 2.01; // #TODO: There's a bug somewhere when this is to close to 2
+					block.position.x = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
+				} 
+				else {
+					block.position.z = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
 				}
+				//block.receiveShadow = true;
+				block.castShadow = true;
+				scene.add( block );
+				// blocks.push( block );
 			}
-			
-		}
-})();
+		
+		
+	}
+});
