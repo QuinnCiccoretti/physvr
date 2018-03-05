@@ -30,6 +30,7 @@
 		<script src="./js/ViveController.js"></script>
 		<script src="./js/PaintViveController.js"></script>
 		<script src="./js/MoveViveController.js"></script>
+		<script src="./js/BasicViveController.js"></script>
 		<script src="./js/WebVR.js"></script>
 		
 		<script src="./js/OBJLoader.js"></script>
@@ -132,12 +133,12 @@
 
 				// controllers
 
-				controller1 = new THREE.PaintViveController( 0 );
+				controller1 = new THREE.BasicViveController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller1 );
 
-				controller2 = new THREE.PaintViveController( 1 );
+				controller2 = new THREE.BasicViveController( 1 );
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );

@@ -1,4 +1,5 @@
 /**
+ * @author quinnciccoretti
  * @author mrdoob / http://mrdoob.com
  */
 

@@ -193,12 +193,12 @@ function load_basic_model(){
 		controller.castShadow = true;
 		controller.receiveShadow = true;
 
-		var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
-		pivot.name = 'pivot';
-		pivot.position.y = -0.016;
-		pivot.position.z = -0.043;
-		pivot.rotation.x = Math.PI / 5.5;
-		controller.add( pivot );
+		// var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
+		// pivot.name = 'pivot';
+		// pivot.position.y = -0.016;
+		// pivot.position.z = -0.043;
+		// pivot.rotation.x = Math.PI / 5.5;
+		// controller.add( pivot );
 		
 		basic_controller = controller;
 		controller1.add(basic_controller.clone());
