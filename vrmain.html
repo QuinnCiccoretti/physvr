@@ -31,6 +31,7 @@
 		<script src="./js/PaintViveController.js"></script>
 		<script src="./js/MoveViveController.js"></script>
 		<script src="./js/BasicViveController.js"></script>
+		<script src="./js/DragViveController.js"></script>
 		<script src="./js/WebVR.js"></script>
 		
 		<script src="./js/OBJLoader.js"></script>
@@ -55,6 +56,7 @@
 
 			var block_material, block_geometry;
 			var phys_obj1, phys_obj2;
+			var obj_list = [];
 			
 			var load_model;
 			var line;
@@ -160,14 +162,14 @@
 				//offsets to center of controller
 				scene.add(phys_obj1);
 				scene.add(phys_obj2);
-				
+				obj_list = [phys_obj1,phys_obj2];
 				// Start simulation
 				window.addEventListener( 'resize', onWindowResize, false );
 				requestAnimationFrame( render );
 				scene.simulate();
 			}	
 			var current_controller = 0;
-			var ncontrollers = 2;
+			var ncontrollers = 3;
 			var last_menu_state = false;
 			function on_menu_up(){
 					// createTower(100);
@@ -188,6 +190,11 @@
 						controller1 = new THREE.MoveViveController( 0 );
 						controller2 = new THREE.MoveViveController( 1 );
 						//console.log("switched to move mode");
+					}
+
+					if(current_controller == 2){
+						controller1 = new THREE.DragViveController( 0 );
+						controller2 = new THREE.DragViveController( 1 );
 					}
 					
 					controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
