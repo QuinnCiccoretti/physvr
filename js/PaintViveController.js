@@ -76,11 +76,8 @@ function stroke( controller, point1, point2, matrix1, matrix2 ) {
 		// positions
 
 		vector1.copy( vertex1 ); vector1.applyMatrix4( matrix2 ); vector1.add( point2 );
-
 		vector2.copy( vertex2 ); vector2.applyMatrix4( matrix2 ); vector2.add( point2 );
-
 		vector3.copy( vertex2 ); vector3.applyMatrix4( matrix1 ); vector3.add( point1 );
-
 		vector4.copy( vertex1 ); vector4.applyMatrix4( matrix1 ); vector4.add( point1 );
 
 		vector1.toArray( positions, ( count + 0 ) * 3 );
@@ -94,11 +91,8 @@ function stroke( controller, point1, point2, matrix1, matrix2 ) {
 		// normals
 
 		vector1.copy( vertex1 ); vector1.applyMatrix4( matrix2 ); vector1.normalize();
-
 		vector2.copy( vertex2 ); vector2.applyMatrix4( matrix2 ); vector2.normalize();
-
 		vector3.copy( vertex2 ); vector3.applyMatrix4( matrix1 ); vector3.normalize();
-
 		vector4.copy( vertex1 ); vector4.applyMatrix4( matrix1 ); vector4.normalize();
 
 		vector1.toArray( normals, ( count + 0 ) * 3 );
