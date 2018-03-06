@@ -75,21 +75,13 @@ function stroke( controller, point1, point2, matrix1, matrix2 ) {
 
 		// positions
 
-		vector1.copy( vertex1 );
-		vector1.applyMatrix4( matrix2 );
-		vector1.add( point2 );
+		vector1.copy( vertex1 ); vector1.applyMatrix4( matrix2 ); vector1.add( point2 );
 
-		vector2.copy( vertex2 );
-		vector2.applyMatrix4( matrix2 );
-		vector2.add( point2 );
+		vector2.copy( vertex2 ); vector2.applyMatrix4( matrix2 ); vector2.add( point2 );
 
-		vector3.copy( vertex2 );
-		vector3.applyMatrix4( matrix1 );
-		vector3.add( point1 );
+		vector3.copy( vertex2 ); vector3.applyMatrix4( matrix1 ); vector3.add( point1 );
 
-		vector4.copy( vertex1 );
-		vector4.applyMatrix4( matrix1 );
-		vector4.add( point1 );
+		vector4.copy( vertex1 ); vector4.applyMatrix4( matrix1 ); vector4.add( point1 );
 
 		vector1.toArray( positions, ( count + 0 ) * 3 );
 		vector2.toArray( positions, ( count + 1 ) * 3 );
@@ -101,21 +93,13 @@ function stroke( controller, point1, point2, matrix1, matrix2 ) {
 
 		// normals
 
-		vector1.copy( vertex1 );
-		vector1.applyMatrix4( matrix2 );
-		vector1.normalize();
+		vector1.copy( vertex1 ); vector1.applyMatrix4( matrix2 ); vector1.normalize();
 
-		vector2.copy( vertex2 );
-		vector2.applyMatrix4( matrix2 );
-		vector2.normalize();
+		vector2.copy( vertex2 ); vector2.applyMatrix4( matrix2 ); vector2.normalize();
 
-		vector3.copy( vertex2 );
-		vector3.applyMatrix4( matrix1 );
-		vector3.normalize();
+		vector3.copy( vertex2 ); vector3.applyMatrix4( matrix1 ); vector3.normalize();
 
-		vector4.copy( vertex1 );
-		vector4.applyMatrix4( matrix1 );
-		vector4.normalize();
+		vector4.copy( vertex1 ); vector4.applyMatrix4( matrix1 ); vector4.normalize();
 
 		vector1.toArray( normals, ( count + 0 ) * 3 );
 		vector2.toArray( normals, ( count + 1 ) * 3 );
@@ -185,26 +169,19 @@ function load_basic_model(){
 		//this part is weird and asyncy. Functions inside will execute when loaded.
 		loader.load( 'vr_controller_vive_1_5.obj', function ( object ) {
 		var loader = new THREE.TextureLoader();
-		loader.setPath( 'models/' );
-		basic_model = object;
-		var controller = basic_model.children[ 0 ];
-		controller.material.map = loader.load( 'onepointfive_texture.png' );
-		controller.material.specularMap = loader.load( 'onepointfive_spec.png' );
-		controller.castShadow = true;
-		controller.receiveShadow = true;
-
-		// var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
-		// pivot.name = 'pivot';
-		// pivot.position.y = -0.016;
-		// pivot.position.z = -0.043;
-		// pivot.rotation.x = Math.PI / 5.5;
-		// controller.add( pivot );
-		
-		basic_controller = controller;
-		controller1.add(basic_controller.clone());
-		controller2.add(basic_controller.clone());
-		controller1.addEventListener( 'menudown', on_menu_up );
-		controller2.addEventListener( 'menudown', on_menu_up );
+			loader.setPath( 'models/' );
+			basic_model = object;
+			var controller = basic_model.children[ 0 ];
+			controller.material.map = loader.load( 'onepointfive_texture.png' );
+			controller.material.specularMap = loader.load( 'onepointfive_spec.png' );
+			controller.castShadow = true;
+			controller.receiveShadow = true;
+			
+			basic_controller = controller;
+			controller1.add(basic_controller.clone());
+			controller2.add(basic_controller.clone());
+			controller1.addEventListener( 'menudown', on_menu_up );
+			controller2.addEventListener( 'menudown', on_menu_up );
 		} );
 
 
@@ -222,9 +199,10 @@ THREE.PaintViveController = function ( id ) {
 	var mode = MODES.COLOR;
 
 	var color = new THREE.Color( 1, 1, 1 );
-	var size = 1.0;
+	var size = 1 
 	
-	//
+
+
 	handleController = function( controller ) {
 
 	controller.update();
@@ -289,6 +267,14 @@ THREE.PaintViveController = function ( id ) {
 		return new THREE.CanvasTexture( canvas );
 
 	}
+	//Little ball on the top of "paintbrush"
+
+	var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
+	pivot.name = 'pivot';
+	pivot.position.y = -0.016;
+	pivot.position.z = -0.043;
+	pivot.rotation.x = Math.PI / 5.5;
+	this.add( pivot );
 
 	// COLOR UI
 
