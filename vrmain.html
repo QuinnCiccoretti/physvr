@@ -53,6 +53,11 @@
 			var controller_offset_z = -0.07;
 			var controller_offset_y = 0.03;
 			handleController = function( controller ) {}	//start off with nothing
+			//for dragcontroller
+			var intersected = [];
+			var raycaster = new THREE.Raycaster();
+			var tempMatrix = new THREE.Matrix4();
+			var group = THREE.Group();
 
 			var block_material, block_geometry;
 			var phys_obj1, phys_obj2;
@@ -65,12 +70,10 @@
 			
 			var up = new THREE.Vector3( 0, 1, 0 );
 			var vector = new THREE.Vector3();
-
 			var vector1 = new THREE.Vector3();
 			var vector2 = new THREE.Vector3();
 			var vector3 = new THREE.Vector3();
 			var vector4 = new THREE.Vector3();
-
 			var point4 = new THREE.Vector3();
 			var point5 = new THREE.Vector3();
 
@@ -149,7 +152,7 @@
 				controller1.addEventListener( 'menudown', on_menu_up );
 				controller2.addEventListener( 'menudown', on_menu_up );
 				initGeometry();
-				createTower(10);
+				createTower(30);
 				//Add physics object so controllers actually interact with scene. 
 				// Can't simply parent controllers because phys sim needs specific pos updating
 				
