@@ -2,7 +2,7 @@
 <!-- @author mrdoob -->
 <!-- @author quinnciccoretti -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>three.js webvr - htc vive - paint</title>
+		<title>physvr</title>
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 		<!-- Origin Trial Token, feature = WebVR (For Chrome M62+), origin = https://threejs.org, expires = 2018-01-21 -->
@@ -92,26 +92,17 @@
 				physics_stats.domElement.style.zIndex = 100;
 				container.appendChild( physics_stats.domElement );
 			}
-			function init_info(){
-				var info = document.createElement( 'div' );
-				info.style.position = 'absolute';
-				info.style.top = '10px';
-				info.style.width = '100%';
-				info.style.textAlign = 'center';
-				info.innerHTML = '<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint';
-				container.appendChild( info );
-			}
+		
 			function init() {
 
 				
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
-				init_stats();
-				init_info();
+				init_stats();				
 				load_materials();
 
 				scene = new Physijs.Scene;
-				// scene = new Physijs.Scene({ fixedTimeStep: 1 / 0 });
+				// scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
 				scene.setGravity(new THREE.Vector3( 0, -10, 0 ));
 				scene.background = new THREE.Color( 0x222222 );
 
@@ -264,7 +255,7 @@
 				physics_stats.update();
 			}
 
-		</script><div><div style="position: absolute; top: 10px; width: 100%; text-align: center;"><a href="http://threejs.org/" target="_blank" rel="noopener">three.js</a> webgl - htc vive - paint</div><canvas width="3024" height="1680" style="width: 1280px; height: 918px;"></canvas></div>
+		</script><div><div style="position: absolute; top: 10px; width: 100%; text-align: center;"><a href="./../" target="_blank" rel="noopener">physvr</a></div><canvas width="3024" height="1680" style="width: 1280px; height: 918px;"></canvas></div>
 	
 
 </body></html>
