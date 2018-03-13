@@ -4,7 +4,7 @@
  */
 
 THREE.DragViveController = function ( id ) {
-	console.log(group+"group");
+	
 	THREE.ViveController.call( this, id );
 	//ui - appears on touchpad
 	var geometry = new THREE.CircleGeometry( 1, 32 );
@@ -21,13 +21,9 @@ THREE.DragViveController = function ( id ) {
 	line.scale.z = 5;
 	this.add( line.clone() );
 
-	
-	
-	handleController = function( controller ) {
 
+	handleController = function( controller ) {
 		controller.update();
-		
-		
 	}
 	
 	function onTriggerDown(){
@@ -37,9 +33,10 @@ THREE.DragViveController = function ( id ) {
 			var intersection = intersections[ 0 ];
 			tempMatrix.getInverse( controller.matrixWorld );
 			var object = intersection.object;
+		
 			object.matrix.premultiply( tempMatrix );
 			object.matrix.decompose( object.position, object.quaternion, object.scale );
-			object.material.emissive.b = 1;
+			
 			controller.add( object );
 			controller.userData.selected = object;
 		}
@@ -50,8 +47,9 @@ THREE.DragViveController = function ( id ) {
 			var object = controller.userData.selected;
 			object.matrix.premultiply( controller.matrixWorld );
 			object.matrix.decompose( object.position, object.quaternion, object.scale );
-			object.material.emissive.b = 0;
-			group.add( object ); //not sure what this does
+			
+			controller.remove(object);	//remove from controller
+			scene.add(object);	//reenable physics
 			controller.userData.selected = undefined;
 		}
 	}
@@ -59,7 +57,7 @@ THREE.DragViveController = function ( id ) {
 				tempMatrix.identity().extractRotation( controller.matrixWorld );
 				raycaster.ray.origin.setFromMatrixPosition( controller.matrixWorld );
 				raycaster.ray.direction.set( 0, 0, -1 ).applyMatrix4( tempMatrix );
-				return raycaster.intersectObjects( group.children );
+				return raycaster.intersectObjects( scene.children );
 			}
 	function intersectObjects( controller ) {
 		// Do not highlight when already selected
@@ -69,7 +67,6 @@ THREE.DragViveController = function ( id ) {
 		if ( intersections.length > 0 ) {
 			var intersection = intersections[ 0 ];
 			var object = intersection.object;
-			object.material.emissive.r = 1;
 			intersected.push( object );
 			line.scale.z = intersection.distance;
 		} else {
@@ -79,7 +76,6 @@ THREE.DragViveController = function ( id ) {
 	function cleanIntersected() {
 		while ( intersected.length ) {
 			var object = intersected.pop();
-			object.material.emissive.r = 0;
 		}
 	}
 	this.addEventListener( 'triggerup', onTriggerUp );
