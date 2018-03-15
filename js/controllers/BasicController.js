@@ -1,7 +1,7 @@
 /**
  * @author quinnciccoretti
  */
-THREE.BasicViveController = function ( id ) {
+THREE.BasicController = function ( id ) {
 
 	THREE.ViveController.call( this, id );
 	//UI appears on the touchpad
@@ -19,5 +19,5 @@ THREE.BasicViveController = function ( id ) {
 	}
 };
 
-THREE.BasicViveController.prototype = Object.create( THREE.ViveController.prototype );
-THREE.BasicViveController.prototype.constructor = THREE.BasicViveController;
+THREE.BasicController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.BasicController.prototype.constructor = THREE.BasicController;

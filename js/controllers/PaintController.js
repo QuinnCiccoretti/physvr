@@ -183,7 +183,7 @@ function load_basic_model(){
 load_model = function(controller1){
 		controller1.add( basic_controller.clone() );
 }
-THREE.PaintViveController = function ( id ) {
+THREE.PaintController = function ( id ) {
 
 	THREE.ViveController.call( this, id );
 
@@ -388,5 +388,5 @@ THREE.PaintViveController = function ( id ) {
 
 };
 
-THREE.PaintViveController.prototype = Object.create( THREE.ViveController.prototype );
-THREE.PaintViveController.prototype.constructor = THREE.PaintViveController;
+THREE.PaintController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.PaintController.prototype.constructor = THREE.PaintController;

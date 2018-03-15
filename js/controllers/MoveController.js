@@ -4,7 +4,7 @@
  */
 
 
-THREE.MoveViveController = function ( id ) {
+THREE.MoveController = function ( id ) {
 
 	THREE.ViveController.call( this, id );
 
@@ -68,5 +68,5 @@ THREE.MoveViveController = function ( id ) {
 
 };
 
-THREE.MoveViveController.prototype = Object.create( THREE.ViveController.prototype );
-THREE.MoveViveController.prototype.constructor = THREE.MoveViveController;
+THREE.MoveController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.MoveController.prototype.constructor = THREE.MoveController;

@@ -3,7 +3,7 @@
  * @author mrdoob / http://mrdoob.com
  */
 
-THREE.DragViveController = function ( id ) {
+THREE.DragController = function ( id ) {
 	
 	THREE.ViveController.call( this, id );
 	//ui - appears on touchpad
@@ -82,5 +82,5 @@ THREE.DragViveController = function ( id ) {
 	this.addEventListener( 'triggerdown', onTriggerDown );
 };
 
-THREE.DragViveController.prototype = Object.create( THREE.ViveController.prototype );
-THREE.DragViveController.prototype.constructor = THREE.DragViveController;
+THREE.DragController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.DragController.prototype.constructor = THREE.DragController;

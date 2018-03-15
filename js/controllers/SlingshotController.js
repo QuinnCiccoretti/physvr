@@ -3,7 +3,7 @@
  * @author mrdoob / http://mrdoob.com
  */
 
-THREE.SlingshotViveController = function ( id ) {
+THREE.SlingshotController = function ( id ) {
 	
 	THREE.ViveController.call( this, id );
 	//ui - appears on touchpad
@@ -29,22 +29,24 @@ THREE.SlingshotViveController = function ( id ) {
 	function onTriggerDown(){
 		//a sphere to launch
 		var sphere = new Physijs.SphereMesh(
-			new THREE.SphereGeometry( 5, 5, 5 ),
-			new THREE.MeshBasicMaterial({ color: 0x000000 })
+			new THREE.SphereGeometry( 0.25, 12, 12 ),
+			new THREE.MeshBasicMaterial({ color: 0xff0000 })
 		);
-		sphere.position = this.position;
+		var pos = this.position;
 		//make vector that points in direction controller points
-		var dir = new THREE.Vector3(0,0,1);
+		var dir = new THREE.Vector3(0,0,-1);
 		dir.applyEuler(this.rotation);
 
 		scene.add(sphere);
+		sphere.position.set( pos.x, pos.y, pos.z );
+    	sphere.__dirtyPosition = true;
 		sphere.applyCentralImpulse(dir);
 	}
 
 	
-	this.addEventListener( 'triggerup', onTriggerUp );
+	
 	this.addEventListener( 'triggerdown', onTriggerDown );
 };
 
-THREE.SlingshotViveController.prototype = Object.create( THREE.ViveController.prototype );
-THREE.SlingshotViveController.prototype.constructor = THREE.SlingshotViveController;
+THREE.SlingshotController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.SlingshotController.prototype.constructor = THREE.SlingshotController;
