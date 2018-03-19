@@ -7,7 +7,7 @@ THREE.SlingshotController = function ( id ) {
 	
 	THREE.ViveController.call( this, id );
 	//ui - appears on touchpad
-	var geometry = new THREE.CircleGeometry( 1, 32 );
+	var geometry = new THREE.SphereGeometry( 1, 32,32 );
 	var red_material = new THREE.MeshBasicMaterial( { color:"#ff0000" } );
 	var ui = new THREE.Mesh( geometry, red_material );
 	ui.position.set( 0, 0.005, 0.0495 );
@@ -29,10 +29,11 @@ THREE.SlingshotController = function ( id ) {
 	function onTriggerDown(){
 		//a sphere to launch
 		var sphere = new Physijs.SphereMesh(
-			new THREE.SphereGeometry( 0.25, 12, 12 ),
-			new THREE.MeshBasicMaterial({ color: 0xff0000 })
+			new THREE.SphereGeometry( 0.1, 12, 12 ),
+			new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+			.5 //mass
 		);
-		var pos = this.position;
+		var pos = this.position.add(user.position);
 		//make vector that points in direction controller points
 		var dir = new THREE.Vector3(0,0,-1);
 		dir.applyEuler(this.rotation);
@@ -40,7 +41,7 @@ THREE.SlingshotController = function ( id ) {
 		scene.add(sphere);
 		sphere.position.set( pos.x, pos.y, pos.z );
     	sphere.__dirtyPosition = true;
-		sphere.applyCentralImpulse(dir);
+		sphere.applyCentralImpulse(dir.multiplyScalar(10));
 	}
 
 	

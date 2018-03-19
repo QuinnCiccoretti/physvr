@@ -148,7 +148,7 @@
 				controller1.addEventListener( 'menudown', on_menu_up );
 				controller2.addEventListener( 'menudown', on_menu_up );
 				initGeometry();
-				createTower(30);
+				createTower(10);
 				//Add physics object so controllers actually interact with scene. 
 				// Can't simply parent controllers because phys sim needs specific pos updating
 				var physGeom = new THREE.CubeGeometry(0.12, 0.1, 0.22); //makes box around controller
