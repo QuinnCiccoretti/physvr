@@ -39,7 +39,7 @@ THREE.SlingshotController = function ( id ) {
 
 		scene.add(sphere);
 		sphere.position.set( pos.x, pos.y, pos.z );
-    	sphere.__dirtyPosition = true;
+    	sphere.__dirtyPosition = true;	//may be unneeded
 		sphere.applyCentralImpulse(dir.multiplyScalar(10));
 	}
 
