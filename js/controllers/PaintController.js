@@ -200,7 +200,7 @@ THREE.PaintController = function ( id ) {
 	handleController = function( controller ) {
 
 	controller.update();
-
+	updateGeometry( count, line.geometry.drawRange.count );	//should really be put in paintcontroller
 	var pivot = controller.getObjectByName( 'pivot' );
 
 	if ( pivot ) {

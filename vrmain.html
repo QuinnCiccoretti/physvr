@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!-- @author mrdoob -->
 <!-- @author quinnciccoretti -->
+<!-- @author mrdoob -->
 <html lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -65,7 +65,6 @@
 
 			var block_material, block_geometry;
 			var phys_obj1, phys_obj2;
-			var obj_list = [];
 			
 			var load_model;
 			var line;
@@ -145,8 +144,8 @@
 				user.add( controller2 );
 				
 				load_basic_model(basic_model);
-				controller1.addEventListener( 'menudown', on_menu_up );
-				controller2.addEventListener( 'menudown', on_menu_up );
+				controller1.addEventListener( 'menudown', on_menu_up1 );
+				controller2.addEventListener( 'menudown', on_menu_up2 );
 				initGeometry();
 				createTower(10);
 				//Add physics object so controllers actually interact with scene. 
@@ -159,56 +158,78 @@
 				//offsets to center of controller
 				scene.add(phys_obj1);
 				scene.add(phys_obj2);
-				obj_list = [phys_obj1,phys_obj2];
 				// Start simulation
 				window.addEventListener( 'resize', onWindowResize, false );
 				requestAnimationFrame( render );
 				scene.simulate();
 			}	
-			var current_controller = 0;
+			
 			var ncontrollers = 4;
-			var last_menu_state = false;
+			var current_controller1 = 0;
 			/**
-			* Toggles through various controller objects
+			* Toggles 1st ctrlr through various controller objects
 			*/
-			function on_menu_up(){
-				// createTower(100);
+			function on_menu_up1(){
 				user.remove(controller1);
-				user.remove(controller2);
 				console.log("menu pressed");
-				current_controller++;
-				if(current_controller == ncontrollers){
-					current_controller = 0;
+				current_controller1++;
+				if(current_controller1 == ncontrollers){
+					current_controller1 = 0;
 				}
-				if(current_controller == 0){
+				if(current_controller1 == 0){
 					controller1 = new THREE.PaintController( 0 );
-					controller2 = new THREE.PaintController( 1 );
 				}
-				if(current_controller == 1){
+				if(current_controller1 == 1){
 					controller1 = new THREE.MoveController( 0 );
-					controller2 = new THREE.MoveController( 1 );
 				}
-				if(current_controller == 2){
+				if(current_controller1 == 2){
 					controller1 = new THREE.DragController( 0 );
-					controller2 = new THREE.DragController( 1 );
 				}
-				if(current_controller == 3){
+				if(current_controller1 == 3){
 					controller1 = new THREE.SlingshotController( 0 );
-					controller2 = new THREE.SlingshotController( 1 );
 				}
 				
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller1 );
+
+				load_model(controller1);
+				
+				controller1.addEventListener( 'menuup', on_menu_up );
+			}
+
+			var current_controller2 = 0;
+			/**
+			* Toggles 2nd ctrlr through various controller objects
+			*/
+			function on_menu_up2(){
+				user.remove(controller2);
+				console.log("menu pressed");
+				current_controller2++;
+				if(current_controller2 == ncontrollers){
+					current_controller2 = 0;
+				}
+				if(current_controller2 == 0){
+					controller2 = new THREE.PaintController( 1 );
+				}
+				if(current_controller2 == 1){
+					controller2 = new THREE.MoveController( 1 );
+				}
+				if(current_controller2 == 2){
+					controller2 = new THREE.DragController( 1 );
+				}
+				if(current_controller2 == 3){
+					controller2 = new THREE.SlingshotController( 1 );
+				}
+				
+				
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );
 
-				load_model(controller1);
 				load_model(controller2);
 
-				controller1.addEventListener( 'menuup', on_menu_up );
-				controller2.addEventListener( 'menuup', on_menu_up );	
+				controller2.addEventListener( 'menuup', on_menu_up );
 			}
 			/**
 			* Updates invisible boxes to follow controllers so they can physically interact
@@ -226,9 +247,9 @@
 				phys_obj1.__dirtyPosition = true;
 
 
-			    // You may also want to cancel the object's velocity
-			    phys_obj1.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-			    phys_obj1.setAngularVelocity(new THREE.Vector3(0, 0, 0));
+			    //cancel the object's velocity
+			    // phys_obj1.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+			    // phys_obj1.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 
 			   	//second contrdoller
 			   	var c2rot = controller2.rotation;
@@ -239,16 +260,14 @@
 			   	phys_obj2.position.set( c2pos.x +user_pos.x, c2pos.y +user_pos.y + controller_offset_y, c2pos.z +user_pos.z );
 			   	phys_obj2.__dirtyPosition = true;
 
-
-
-			    // You may also want to cancel the object's velocity
-			    phys_obj2.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-			    phys_obj2.setAngularVelocity(new THREE.Vector3(0, 0, 0));
+			    //cancel the object's velocity
+			    // phys_obj2.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+			    // phys_obj2.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 
 
 			}
 			/**
-			* Main loop. Called everytime the physics sim has run. All update code runs from here.
+			* Main loop. Called everytime the physics sim updates. All update code runs from here.
 			*/
 			function render() {
 
@@ -258,7 +277,7 @@
 				handleController( controller1 );
 				handleController( controller2 );
 
-				updateGeometry( count, line.geometry.drawRange.count );	//should really be put in paintcontroller
+				
 				scene.simulate(); // run physics
 				requestAnimationFrame( render );
 				renderer.render( scene, camera );

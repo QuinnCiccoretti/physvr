@@ -1,6 +1,5 @@
 /**
  * @author quinnciccoretti
- * @author mrdoob / http://mrdoob.com
  */
 
 THREE.SlingshotController = function ( id ) {

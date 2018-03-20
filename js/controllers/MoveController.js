@@ -1,6 +1,5 @@
 /**
  * @author quinnciccoretti
- * @author mrdoob / http://mrdoob.com
  */
 
 
@@ -58,14 +57,12 @@ THREE.MoveController = function ( id ) {
 		
 		user.position.add(flat_dir);
 	}
-
+	function onGripsDown(){
+		window.location.reload();
+	}
 	
-
-	
-
 	this.addEventListener( 'axischanged', onAxisChanged );
-	
-
+	this.addEventListener( 'gripsdown', onGripsDown );	//Refresh the page when you press the grips of the MoveCtrlr
 };
 
 THREE.MoveController.prototype = Object.create( THREE.ViveController.prototype );
