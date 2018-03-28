@@ -174,8 +174,8 @@ function load_basic_model(){
 			basic_controller = controller;
 			controller1.add(basic_controller.clone());
 			controller2.add(basic_controller.clone());
-			controller1.addEventListener( 'menudown', on_menu_up );
-			controller2.addEventListener( 'menudown', on_menu_up );
+			controller1.addEventListener( 'menudown', on_menu_up1 );
+			controller2.addEventListener( 'menudown', on_menu_up2 );
 		} );
 
 
