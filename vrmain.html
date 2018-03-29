@@ -65,6 +65,7 @@
 
 			var block_material, block_geometry;
 			var phys_obj1, phys_obj2;
+			var phys_obj_list = [];
 			
 			var load_model;
 			var line;
@@ -79,7 +80,7 @@
 			var vector4 = new THREE.Vector3();
 			var point4 = new THREE.Vector3();
 			var point5 = new THREE.Vector3();
-			var count;
+			
 
 			window.onload = init();
 			var render_stats, physics_stats;
@@ -159,6 +160,7 @@
 				//offsets to center of controller
 				scene.add(phys_obj1);
 				scene.add(phys_obj2);
+				phys_obj_list = [phys_obj1,phys_obj2];
 				// Start simulation
 				window.addEventListener( 'resize', onWindowResize, false );
 				requestAnimationFrame( render );
@@ -213,49 +215,15 @@
 
 				controller2.addEventListener( 'menuup', on_menu_up2 );
 			}
-			/**
-			* Updates invisible boxes to follow controllers so they can physically interact
-			*/
-			function update_phys_objects(){
-				var user_pos = user.position;
-				//First controller
-				var c1rot = controller1.rotation;
-				phys_obj1.rotation.set(c1rot.x, c1rot.y, c1rot.z);
-				phys_obj1.__dirtyRotation = true;
-
-				
-				var c1pos = controller1.position;
-				phys_obj1.position.set( c1pos.x +user_pos.x, c1pos.y +user_pos.y + controller_offset_y, c1pos.z +user_pos.z );
-				phys_obj1.__dirtyPosition = true;
-
-
-			    //cancel the object's velocity
-			    phys_obj1.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-			    phys_obj1.setAngularVelocity(new THREE.Vector3(0, 0, 0));
-
-			   	//second contrdoller
-			   	var c2rot = controller2.rotation;
-			   	phys_obj2.rotation.set(c2rot.x, c2rot.y, c2rot.z);
-			   	phys_obj2.__dirtyRotation = true;
-
-			   	var c2pos = controller2.position;
-			   	phys_obj2.position.set( c2pos.x +user_pos.x, c2pos.y +user_pos.y + controller_offset_y, c2pos.z +user_pos.z );
-			   	phys_obj2.__dirtyPosition = true;
-
-			    //cancel the object's velocity
-			    phys_obj2.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-			    phys_obj2.setAngularVelocity(new THREE.Vector3(0, 0, 0));
-
-
-			}
+			
 			/**
 			* Main loop. Called everytime the physics sim updates. All update code runs from here.
 			*/
 			function render() {
 
-				count = line.geometry.drawRange.count;
-				update_phys_objects();
-				//controllers define their own handle method which calls .update()
+				
+				
+				//controllers define their own handle method which calls .update() and updates physics objs
 				controller1.handle_update();
 				controller2.handle_update();
 

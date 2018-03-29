@@ -47,7 +47,7 @@ THREE.MoveController = function ( id ) {
 		
 		var flat_dir = new THREE.Vector3(dir.x, 0 ,dir.z);
 		flat_dir.divideScalar(flat_dir.length());	//convert to unit vec as we are only interested in direction
-		flat_dir.multiplyScalar(r);	//scale to touchpad radius
+		flat_dir.multiplyScalar(r);	//scale to radius from center of touchpad
 		flat_dir.divideScalar(10);	//scale down to reasonable speed
 		if(y<0){
 			flat_dir.multiplyScalar(-1);	//flip around if thumpad forward, allows thumbpad back to go backwards.

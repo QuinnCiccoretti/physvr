@@ -198,8 +198,9 @@ THREE.PaintController = function ( id ) {
 
 
 	this.handle_update = function() {
-		
+		var count = line.geometry.drawRange.count;
 		this.update();
+		this.update_phys_objects();
 		updateGeometry( count, line.geometry.drawRange.count );
 		var pivot = this.getObjectByName( 'pivot' );
 
