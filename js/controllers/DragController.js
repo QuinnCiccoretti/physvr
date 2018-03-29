@@ -5,7 +5,7 @@
 
 THREE.DragController = function ( id ) {
 	
-	THREE.ViveController.call( this, id );
+	THREE.BasicController.call( this, id );
 	//ui - appears on touchpad
 	var geometry = new THREE.CircleGeometry( 1, 32 );
 	var material = new THREE.MeshBasicMaterial( { color:"#bb6600" } );
@@ -21,10 +21,6 @@ THREE.DragController = function ( id ) {
 	line.scale.z = 5;
 	this.add( line.clone() );
 
-
-	handleController = function( controller ) {
-		controller.update();
-	}
 	
 	function onTriggerDown(){
 		var controller = this;
@@ -82,5 +78,5 @@ THREE.DragController = function ( id ) {
 	this.addEventListener( 'triggerdown', onTriggerDown );
 };
 
-THREE.DragController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.DragController.prototype = Object.create( THREE.BasicController.prototype );
 THREE.DragController.prototype.constructor = THREE.DragController;

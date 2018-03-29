@@ -79,6 +79,7 @@
 			var vector4 = new THREE.Vector3();
 			var point4 = new THREE.Vector3();
 			var point5 = new THREE.Vector3();
+			var count;
 
 			window.onload = init();
 			var render_stats, physics_stats;
@@ -252,11 +253,11 @@
 			*/
 			function render() {
 
-				var count = line.geometry.drawRange.count;
+				count = line.geometry.drawRange.count;
 				update_phys_objects();
 				//controllers define their own handle method which calls .update()
-				handleController( controller1 );
-				handleController( controller2 );
+				controller1.handle_update();
+				controller2.handle_update();
 
 				
 				scene.simulate(); // run physics

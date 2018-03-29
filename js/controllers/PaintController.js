@@ -185,7 +185,7 @@ load_model = function(controller1){
 }
 THREE.PaintController = function ( id ) {
 
-	THREE.ViveController.call( this, id );
+	THREE.BasicController.call( this, id );
 
 	var PI2 = Math.PI * 2;
 
@@ -197,38 +197,34 @@ THREE.PaintController = function ( id ) {
 	
 
 
-	handleController = function( controller ) {
+	this.handle_update = function() {
+		
+		this.update();
+		updateGeometry( count, line.geometry.drawRange.count );
+		var pivot = this.getObjectByName( 'pivot' );
 
-	controller.update();
-	updateGeometry( count, line.geometry.drawRange.count );	//should really be put in paintcontroller
-	var pivot = controller.getObjectByName( 'pivot' );
+		if ( pivot ) {
 
-	if ( pivot ) {
+			pivot.material.color.copy( this.getColor() );
+			pivot.scale.setScalar(this.getSize());
 
-		pivot.material.color.copy( controller.getColor() );
-		pivot.scale.setScalar(controller.getSize());
+			var matrix = pivot.matrixWorld;
+			var point1 = this.userData.points[ 0 ];
+			var point2 = this.userData.points[ 1 ];
+			var matrix1 = this.userData.matrices[ 0 ];
+			var matrix2 = this.userData.matrices[ 1 ];
 
-		var matrix = pivot.matrixWorld;
+			point1.setFromMatrixPosition( matrix );
+			matrix1.lookAt( point2, point1, up );
 
-		var point1 = controller.userData.points[ 0 ];
-		var point2 = controller.userData.points[ 1 ];
+			if ( this.getButtonState( 'trigger' ) ) {
+				stroke( this, point1, point2, matrix1, matrix2 );
+			}
 
-		var matrix1 = controller.userData.matrices[ 0 ];
-		var matrix2 = controller.userData.matrices[ 1 ];
-
-		point1.setFromMatrixPosition( matrix );
-		matrix1.lookAt( point2, point1, up );
-
-		if ( controller.getButtonState( 'trigger' ) ) {
-
-			stroke( controller, point1, point2, matrix1, matrix2 );
+			point2.copy( point1 );
+			matrix2.copy( matrix1 );
 
 		}
-
-		point2.copy( point1 );
-		matrix2.copy( matrix1 );
-
-	}
 
 	}
 	function generateHueTexture() {
@@ -319,9 +315,6 @@ THREE.PaintController = function ( id ) {
 
 
 	function onAxisChanged( event ) {
-		//////////////////////////////////////////////////////
-		//						MAY BRICK					//
-		//////////////////////////////////////////////////////
 		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
 
@@ -388,5 +381,5 @@ THREE.PaintController = function ( id ) {
 
 };
 
-THREE.PaintController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.PaintController.prototype = Object.create( THREE.BasicController.prototype );
 THREE.PaintController.prototype.constructor = THREE.PaintController;

@@ -13,9 +13,13 @@ THREE.BasicController = function ( id ) {
 	ui.scale.setScalar( 0.02 );
 	this.add( ui );
 	
+	//The basic controller only updates its position
+	this.handle_update = function() {
+		this.update(); //refreshes controller data
+	}
 
-	function handle_update() {
-		this.update();
+	function test(){
+		console.log("logging from BasicController");
 	}
 };
 

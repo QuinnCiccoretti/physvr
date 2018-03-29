@@ -31,9 +31,7 @@ THREE.MoveController = function ( id ) {
 	var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
 	moveUI.add( ball );
 
-	handleController = function( controller ) {
-		controller.update();
-	}
+	
 
 	function onAxisChanged( event ) {
 		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
@@ -52,7 +50,7 @@ THREE.MoveController = function ( id ) {
 		flat_dir.multiplyScalar(r);	//scale to touchpad radius
 		flat_dir.divideScalar(10);	//scale down to reasonable speed
 		if(y<0){
-			flat_dir.multiplyScalar(-1);	//flip around if thumpad forward
+			flat_dir.multiplyScalar(-1);	//flip around if thumpad forward, allows thumbpad back to go backwards.
 		}
 		
 		user.position.add(flat_dir);
@@ -65,5 +63,5 @@ THREE.MoveController = function ( id ) {
 	this.addEventListener( 'gripsdown', onGripsDown );	//Refresh the page when you press the grips of the MoveCtrlr
 };
 
-THREE.MoveController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.MoveController.prototype = Object.create( THREE.BasicController.prototype );
 THREE.MoveController.prototype.constructor = THREE.MoveController;

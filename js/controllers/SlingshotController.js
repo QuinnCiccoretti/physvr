@@ -4,7 +4,7 @@
 
 THREE.SlingshotController = function ( id ) {
 	
-	THREE.ViveController.call( this, id );
+	THREE.BasicController.call( this, id );
 	//ui - appears on touchpad
 	var geometry = new THREE.SphereGeometry( 1, 32,32 );
 	var red_material = new THREE.MeshBasicMaterial( { color:"#ff0000" } );
@@ -21,9 +21,7 @@ THREE.SlingshotController = function ( id ) {
 	this.add( line.clone() );
 
 
-	handleController = function( controller ) {
-		controller.update();
-	}
+	
 	
 	function onTriggerDown(){
 		//a sphere to launch
@@ -53,5 +51,5 @@ THREE.SlingshotController = function ( id ) {
 	this.addEventListener( 'triggerdown', onTriggerDown );
 };
 
-THREE.SlingshotController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.SlingshotController.prototype = Object.create( THREE.BasicController.prototype );
 THREE.SlingshotController.prototype.constructor = THREE.SlingshotController;
