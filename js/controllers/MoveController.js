@@ -5,7 +5,7 @@
 
 THREE.MoveController = function ( id ) {
 
-	THREE.ViveController.call( this, id );
+	THREE.BasicController.call( this, id );
 
 	var PI2 = Math.PI * 2;
 

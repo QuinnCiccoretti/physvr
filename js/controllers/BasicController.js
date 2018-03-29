@@ -14,8 +14,8 @@ THREE.BasicController = function ( id ) {
 	this.add( ui );
 	
 
-	handleController = function( controller ) {
-		controller.update();
+	function handle_update() {
+		this.update();
 	}
 };
 

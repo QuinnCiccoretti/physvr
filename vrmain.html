@@ -56,7 +56,7 @@
 			var handleController;
 			var controller_offset_z = -0.07;
 			var controller_offset_y = 0.03;
-			handleController = function( controller ) {}	//start off with nothing
+			
 			//for dragcontroller
 			var intersected = [];
 			var raycaster = new THREE.Raycaster();
@@ -165,29 +165,21 @@
 			}	
 			
 			var ncontrollers = 4;
+			
+			
+			var ctrlr1list = [new THREE.PaintController( 0 ), new THREE.MoveController( 0 ), new THREE.DragController( 0 ), new THREE.SlingshotController( 0 )];
 			var current_controller1 = 0;
 			/**
 			* Toggles 1st ctrlr through various controller objects
 			*/
 			function on_menu_up1(){
 				user.remove(controller1);
-				console.log("menu pressed");
+				
 				current_controller1++;
 				if(current_controller1 == ncontrollers){
 					current_controller1 = 0;
 				}
-				if(current_controller1 == 0){
-					controller1 = new THREE.PaintController( 0 );
-				}
-				if(current_controller1 == 1){
-					controller1 = new THREE.MoveController( 0 );
-				}
-				if(current_controller1 == 2){
-					controller1 = new THREE.DragController( 0 );
-				}
-				if(current_controller1 == 3){
-					controller1 = new THREE.SlingshotController( 0 );
-				}
+				controller1 = ctrlr1list[current_controller1];
 				
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
@@ -195,41 +187,33 @@
 
 				load_model(controller1);
 				
-				controller1.addEventListener( 'menuup', on_menu_up );
+				controller1.addEventListener( 'menuup', on_menu_up1 );
 			}
 
+			
+			
 			var current_controller2 = 0;
+			var ctrlr2list = [new THREE.PaintController( 0 ), new THREE.MoveController( 0 ), new THREE.DragController( 0 ), new THREE.SlingshotController( 0 )];
 			/**
 			* Toggles 2nd ctrlr through various controller objects
 			*/
 			function on_menu_up2(){
 				user.remove(controller2);
-				console.log("menu pressed");
+				
 				current_controller2++;
 				if(current_controller2 == ncontrollers){
 					current_controller2 = 0;
 				}
-				if(current_controller2 == 0){
-					controller2 = new THREE.PaintController( 1 );
-				}
-				if(current_controller2 == 1){
-					controller2 = new THREE.MoveController( 1 );
-				}
-				if(current_controller2 == 2){
-					controller2 = new THREE.DragController( 1 );
-				}
-				if(current_controller2 == 3){
-					controller2 = new THREE.SlingshotController( 1 );
-				}
+				controller2 = ctrlr2list[current_controller2];
 				
-				
+			
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );
 
 				load_model(controller2);
 
-				controller2.addEventListener( 'menuup', on_menu_up );
+				controller2.addEventListener( 'menuup', on_menu_up2 );
 			}
 			/**
 			* Updates invisible boxes to follow controllers so they can physically interact
