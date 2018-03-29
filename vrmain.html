@@ -133,7 +133,6 @@
 
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
-				// controllers
 
 				controller1 = new THREE.BasicController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
@@ -144,25 +143,31 @@
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );
-				
+
+				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
 				load_basic_model(basic_model);
+				//toggle the controller mode
 				controller1.addEventListener( 'menudown', on_menu_up1 );
 				controller2.addEventListener( 'menudown', on_menu_up2 );
 				initGeometry();
 				createTower(10);
-				//Add physics object so controllers actually interact with scene. 
-				// Can't simply parent controllers because phys sim needs specific pos updating
-				var physGeom = new THREE.CubeGeometry(0.12, 0.1, 0.22); //makes box around controller
+				/**
+				* If you want the controllers to be able to push things, you need to make an
+				* invisible box that follows them around. You can't use .add becuase the 
+				* physics engine wants its own coords. So you just update the position
+				* of two boxes so they follow the controls, and make them invisible
+				*/
+				var physGeom = new THREE.CubeGeometry(0.12, 0.1, 0.22); 
 				var physMaterial = new Physijs.createMaterial(new THREE.MeshBasicMaterial({}), 0.5, 0.5);
-				physMaterial.visible = false;	//THis is the part that does the work
+				physMaterial.visible = false;	//Make them invisible
+
 				phys_obj1 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
 				phys_obj2 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
-				//offsets to center of controller
 				scene.add(phys_obj1);
 				scene.add(phys_obj2);
+				//helps updated phys objs in basiccontroller
 				phys_obj_list = [phys_obj1,phys_obj2];
 				// Start simulation
-				window.addEventListener( 'resize', onWindowResize, false );
 				requestAnimationFrame( render );
 				scene.simulate();
 			}	
@@ -190,8 +195,6 @@
 				controller1.addEventListener( 'menuup', on_menu_up1 );
 			}
 
-			
-			
 			var current_controller2 = 0;
 			var ctrlr2list = [new THREE.PaintController( 0 ), new THREE.MoveController( 0 ), new THREE.DragController( 0 ), new THREE.SlingshotController( 0 )];
 			/**
@@ -220,13 +223,9 @@
 			* Main loop. Called everytime the physics sim updates. All update code runs from here.
 			*/
 			function render() {
-
-				
-				
 				//controllers define their own handle method which calls .update() and updates physics objs
 				controller1.handle_update();
 				controller2.handle_update();
-
 				
 				scene.simulate(); // run physics
 				requestAnimationFrame( render );

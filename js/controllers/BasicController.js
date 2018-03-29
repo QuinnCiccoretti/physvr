@@ -4,7 +4,7 @@
 THREE.BasicController = function ( id ) {
 
 	THREE.ViveController.call( this, id );
-	//UI appears on the touchpad
+	//UI, appears on the touchpad
 	var geometry = new THREE.CircleGeometry( 1, 32 );
 	var material = new THREE.MeshBasicMaterial( { color:"#ff00ff" } );
 	var ui = new THREE.Mesh( geometry, material );
