@@ -164,9 +164,6 @@
 				scene.simulate();
 			}	
 			
-			var ncontrollers = 4;
-			
-			
 			var ctrlr1list = [new THREE.PaintController( 0 ), new THREE.MoveController( 0 ), new THREE.DragController( 0 ), new THREE.SlingshotController( 0 )];
 			var current_controller1 = 0;
 			/**
@@ -176,7 +173,7 @@
 				user.remove(controller1);
 				
 				current_controller1++;
-				if(current_controller1 == ncontrollers){
+				if(current_controller1 == ctrlr1list.length){
 					current_controller1 = 0;
 				}
 				controller1 = ctrlr1list[current_controller1];
@@ -201,7 +198,7 @@
 				user.remove(controller2);
 				
 				current_controller2++;
-				if(current_controller2 == ncontrollers){
+				if(current_controller2 == ctrlr2list.length){
 					current_controller2 = 0;
 				}
 				controller2 = ctrlr2list[current_controller2];
