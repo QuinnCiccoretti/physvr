@@ -4,6 +4,7 @@
 THREE.BasicController = function ( id ) {
 
 	THREE.ViveController.call( this, id );
+	console.log("BasicController instantiated with id:"+id);
 	//UI, appears on the touchpad
 	var geometry = new THREE.CircleGeometry( 1, 32 );
 	var material = new THREE.MeshBasicMaterial( { color:"#ff00ff" } );
@@ -12,6 +13,12 @@ THREE.BasicController = function ( id ) {
 	ui.rotation.x = - 1.45;
 	ui.scale.setScalar( 0.02 );
 	this.add( ui );
+	/**
+	* Returns controller id, 1 or 0
+	*/
+	this.get_id = function() {
+		return id;
+	}
 	/**
 	* The basic controller only updates its position
 	*/
