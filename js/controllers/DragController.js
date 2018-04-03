@@ -46,6 +46,14 @@ THREE.DragController = function ( id ) {
 			
 			controller.remove(object);	//remove from controller
 			scene.add(object);	//reenable physics
+			if(typeof object.setLinearVelocity !== 'undefined'){
+				var velo = new THREE.Vector3().fromArray(this.getGamepad().pose.linearVelocity);//returns a 3d float array
+				//set velocity proportional to distance between lifting object
+				//most realistic way
+				object.setLinearVelocity(velo.multiplyScalar(this.position.add(user.position).distanceTo(object.position)));	
+				var angvelo = new THREE.Vector3().fromArray(this.getGamepad().pose.angularVelocity);
+				object.setAngularVelocity(angvelo.divideScalar(2));
+			}
 			controller.userData.selected = undefined;
 		}
 	}
