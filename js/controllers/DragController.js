@@ -5,7 +5,7 @@
 
 THREE.DragController = function ( id ) {
 	
-	THREE.ViveController.call( this, id );
+	THREE.BasicController.call( this, id );
 	//ui - appears on touchpad
 	var geometry = new THREE.CircleGeometry( 1, 32 );
 	var material = new THREE.MeshBasicMaterial( { color:"#bb6600" } );
@@ -21,10 +21,6 @@ THREE.DragController = function ( id ) {
 	line.scale.z = 5;
 	this.add( line.clone() );
 
-
-	handleController = function( controller ) {
-		controller.update();
-	}
 	
 	function onTriggerDown(){
 		var controller = this;
@@ -50,6 +46,14 @@ THREE.DragController = function ( id ) {
 			
 			controller.remove(object);	//remove from controller
 			scene.add(object);	//reenable physics
+			if(typeof object.setLinearVelocity !== 'undefined'){
+				var velo = this.get_velocity();//returns a 3d float array
+				//set velocity proportional to distance between lifting object
+				//most realistic way
+				object.setLinearVelocity(velo.multiplyScalar(this.position.add(user.position).distanceTo(object.position)));	
+				var angvelo = this.get_angular_velocity();
+				object.setAngularVelocity(angvelo.divideScalar(2));
+			}
 			controller.userData.selected = undefined;
 		}
 	}
@@ -82,5 +86,5 @@ THREE.DragController = function ( id ) {
 	this.addEventListener( 'triggerdown', onTriggerDown );
 };
 
-THREE.DragController.prototype = Object.create( THREE.ViveController.prototype );
+THREE.DragController.prototype = Object.create( THREE.BasicController.prototype );
 THREE.DragController.prototype.constructor = THREE.DragController;

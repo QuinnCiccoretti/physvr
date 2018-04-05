@@ -28,12 +28,12 @@ function create_floor(texture_path){
 						.2 // low restitution
 				);
 				var floor = new Physijs.BoxMesh(
-					new THREE.CubeGeometry( 5, .1, 5 ),
+					new THREE.CubeGeometry( 10, .1, 10 ),
 					floor_material,
 					0
 				);
 				scene.add( floor );
-				scene.add( new THREE.GridHelper( 20, 40, 0x111111, 0x111111 ) );
+				// scene.add( new THREE.GridHelper( 20, 40, 0x111111, 0x111111 ) );
 }
 // Adds n random boxes to the scene
 function create_boxes(n){

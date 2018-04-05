@@ -26,14 +26,16 @@
 		<script type="text/javascript" src="js/scene.js"></script>
 		<script type="text/javascript" src="./js/phys/physi.js"></script>
 		<script src="./js/WebVR.js"></script>
-		<!-- Base controller class -->
+		<!-- Lower level controller classes -->
 		<script src="./js/controllers/ViveController.js"></script>
-		<!-- Custom controller classes, extend ViveController -->
 		<script src="./js/controllers/BasicController.js"></script>
+		<!-- Custom controller classes, extend BasicController -->
+		
 		<script src="./js/controllers/PaintController.js"></script>
 		<script src="./js/controllers/MoveController.js"></script>
 		<script src="./js/controllers/DragController.js"></script>
 		<script src="./js/controllers/SlingshotController.js"></script>
+		<!-- <script src="./js/controllers/BatController.js"></script> -->
 		<!-- model loaders -->
 		<script src="./js/OBJLoader.js"></script>
 		<script src="./js/MTLLoader.js"></script>
@@ -56,15 +58,17 @@
 			var handleController;
 			var controller_offset_z = -0.07;
 			var controller_offset_y = 0.03;
-			handleController = function( controller ) {}	//start off with nothing
+			
 			//for dragcontroller
 			var intersected = [];
 			var raycaster = new THREE.Raycaster();
 			var tempMatrix = new THREE.Matrix4();
-			
+			//for paintcontroller
+			var count;
 
 			var block_material, block_geometry;
 			var phys_obj1, phys_obj2;
+			var phys_obj_list = [];
 			
 			var load_model;
 			var line;
@@ -79,6 +83,7 @@
 			var vector4 = new THREE.Vector3();
 			var point4 = new THREE.Vector3();
 			var point5 = new THREE.Vector3();
+			
 
 			window.onload = init();
 			var render_stats, physics_stats;
@@ -131,7 +136,6 @@
 
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
-				// controllers
 
 				controller1 = new THREE.BasicController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
@@ -142,52 +146,48 @@
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );
-				
+
+				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
 				load_basic_model(basic_model);
+				//toggle the controller mode
 				controller1.addEventListener( 'menudown', on_menu_up1 );
 				controller2.addEventListener( 'menudown', on_menu_up2 );
 				initGeometry();
 				createTower(10);
-				//Add physics object so controllers actually interact with scene. 
-				// Can't simply parent controllers because phys sim needs specific pos updating
-				var physGeom = new THREE.CubeGeometry(0.12, 0.1, 0.22); //makes box around controller
+				/**
+				* If you want the controllers to be able to push things, you need to make an
+				* invisible box that follows them around. You can't use .add becuase the 
+				* physics engine wants its own coords. So you just update the position
+				* of two boxes so they follow the controls, and make them invisible
+				*/
+				var physGeom = new THREE.CubeGeometry(0.12, 0.1, 0.22); 
 				var physMaterial = new Physijs.createMaterial(new THREE.MeshBasicMaterial({}), 0.5, 0.5);
-				physMaterial.visible = false;	//THis is the part that does the work
+				physMaterial.visible = false;	//Make them invisible
+
 				phys_obj1 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
 				phys_obj2 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
-				//offsets to center of controller
 				scene.add(phys_obj1);
 				scene.add(phys_obj2);
+				//helps updated phys objs in basiccontroller
+				phys_obj_list = [phys_obj1,phys_obj2];
 				// Start simulation
-				window.addEventListener( 'resize', onWindowResize, false );
 				requestAnimationFrame( render );
 				scene.simulate();
 			}	
 			
-			var ncontrollers = 4;
+			var ctrlr1list = [new THREE.PaintController( 0 ), new THREE.MoveController( 0 ), new THREE.DragController( 0 ), new THREE.SlingshotController( 0 )];
 			var current_controller1 = 0;
 			/**
 			* Toggles 1st ctrlr through various controller objects
 			*/
 			function on_menu_up1(){
 				user.remove(controller1);
-				console.log("menu pressed");
+				
 				current_controller1++;
-				if(current_controller1 == ncontrollers){
+				if(current_controller1 == ctrlr1list.length){
 					current_controller1 = 0;
 				}
-				if(current_controller1 == 0){
-					controller1 = new THREE.PaintController( 0 );
-				}
-				if(current_controller1 == 1){
-					controller1 = new THREE.MoveController( 0 );
-				}
-				if(current_controller1 == 2){
-					controller1 = new THREE.DragController( 0 );
-				}
-				if(current_controller1 == 3){
-					controller1 = new THREE.SlingshotController( 0 );
-				}
+				controller1 = ctrlr1list[current_controller1];
 				
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
@@ -199,30 +199,20 @@
 			}
 
 			var current_controller2 = 0;
+			var ctrlr2list = [new THREE.PaintController( 1 ), new THREE.MoveController( 1 ), new THREE.DragController( 1 ), new THREE.SlingshotController( 1 )];
 			/**
 			* Toggles 2nd ctrlr through various controller objects
 			*/
 			function on_menu_up2(){
 				user.remove(controller2);
-				console.log("menu pressed");
+				
 				current_controller2++;
-				if(current_controller2 == ncontrollers){
+				if(current_controller2 == ctrlr2list.length){
 					current_controller2 = 0;
 				}
-				if(current_controller2 == 0){
-					controller2 = new THREE.PaintController( 1 );
-				}
-				if(current_controller2 == 1){
-					controller2 = new THREE.MoveController( 1 );
-				}
-				if(current_controller2 == 2){
-					controller2 = new THREE.DragController( 1 );
-				}
-				if(current_controller2 == 3){
-					controller2 = new THREE.SlingshotController( 1 );
-				}
+				controller2 = ctrlr2list[current_controller2];
 				
-				
+			
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );
@@ -230,6 +220,7 @@
 				load_model(controller2);
 
 				controller2.addEventListener( 'menuup', on_menu_up2 );
+<<<<<<< HEAD
 			}
 			/**
 			* Updates invisible boxes to follow controllers so they can physically interact
@@ -265,18 +256,17 @@
 			    phys_obj2.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 
 
+=======
+>>>>>>> oop
 			}
+			
 			/**
 			* Main loop. Called everytime the physics sim updates. All update code runs from here.
 			*/
 			function render() {
-
-				var count = line.geometry.drawRange.count;
-				update_phys_objects();
-				//controllers define their own handle method which calls .update()
-				handleController( controller1 );
-				handleController( controller2 );
-
+				//controllers define their own handle method which calls .update() and updates physics objs
+				controller1.handle_update();
+				controller2.handle_update();
 				
 				scene.simulate(); // run physics
 				requestAnimationFrame( render );
