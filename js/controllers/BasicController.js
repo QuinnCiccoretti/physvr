@@ -27,6 +27,18 @@ THREE.BasicController = function ( id ) {
 		this.update_phys_objects();
 	}
 	/**
+	* Gets the velocity of the controller from the gamepad
+	*/
+	this.get_velocity = function() {
+		return new THREE.Vector3().fromArray(this.getGamepad().pose.linearVelocity);
+	}
+	/**
+	* Gets the angular velocity of the controller from the gamepad
+	*/
+	this.get_angular_velocity = function() {
+		return new THREE.Vector3().fromArray(this.getGamepad().pose.angularVelocity);
+	}
+	/**
 	* Updates invisible boxes to follow controllers so they can push things
 	*/
 	this.update_phys_objects = function(){
