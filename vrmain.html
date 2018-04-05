@@ -26,14 +26,16 @@
 		<script type="text/javascript" src="js/scene.js"></script>
 		<script type="text/javascript" src="./js/phys/physi.js"></script>
 		<script src="./js/WebVR.js"></script>
-		<!-- Base controller class -->
+		<!-- Lower level controller classes -->
 		<script src="./js/controllers/ViveController.js"></script>
-		<!-- Custom controller classes, extend ViveController -->
 		<script src="./js/controllers/BasicController.js"></script>
+		<!-- Custom controller classes, extend BasicController -->
+		
 		<script src="./js/controllers/PaintController.js"></script>
 		<script src="./js/controllers/MoveController.js"></script>
 		<script src="./js/controllers/DragController.js"></script>
 		<script src="./js/controllers/SlingshotController.js"></script>
+		<!-- <script src="./js/controllers/BatController.js"></script> -->
 		<!-- model loaders -->
 		<script src="./js/OBJLoader.js"></script>
 		<script src="./js/MTLLoader.js"></script>
@@ -61,7 +63,8 @@
 			var intersected = [];
 			var raycaster = new THREE.Raycaster();
 			var tempMatrix = new THREE.Matrix4();
-			
+			//for paintcontroller
+			var count;
 
 			var block_material, block_geometry;
 			var phys_obj1, phys_obj2;

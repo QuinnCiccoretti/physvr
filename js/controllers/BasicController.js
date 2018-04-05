@@ -27,6 +27,12 @@ THREE.BasicController = function ( id ) {
 		this.update_phys_objects();
 	}
 	/**
+	* The basic controller only updates its position
+	*/
+	this.get_absolute_position = function() {
+		return user.position.add(this.position);
+	}
+	/**
 	* Gets the velocity of the controller from the gamepad
 	*/
 	this.get_velocity = function() {
