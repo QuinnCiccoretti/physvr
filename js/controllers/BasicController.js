@@ -65,6 +65,18 @@ THREE.BasicController = function ( id ) {
 	    phys_obj.setLinearVelocity(new THREE.Vector3(0, 0, 0));
 	    phys_obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 	}
+	/**
+	* Vibrates haptics if controller has them
+	* @param intensity a 0-1 value, 1 is highest vibration
+	* @param duration duration of a pulse in ms
+	*/
+	this.pulse = function(intensity, duration){
+		var gp = this.getGamepad();
+		if( gp.hapticActuators && gp.hapticActuators[ 0 ]){	//Check if it has haptics
+		    gp.hapticActuators[ 0 ].pulse( intensity, duration );
+		    //pulse at 0-1 intensity for (duration)ms
+		}
+	}
 
 };
 

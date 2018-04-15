@@ -32,7 +32,9 @@ THREE.MoveController = function ( id ) {
 	moveUI.add( ball );
 
 	
-
+	/**
+	* Moves user around the scene based on thumbpad
+	*/
 	function onAxisChanged( event ) {
 		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
@@ -54,7 +56,11 @@ THREE.MoveController = function ( id ) {
 		}
 		
 		user.position.add(flat_dir);
+		this.pulse(r, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
 	}
+	/**
+	* Refresh the page
+	*/
 	function onGripsDown(){
 		window.location.reload();
 	}
