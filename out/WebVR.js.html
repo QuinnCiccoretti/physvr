@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: WebVR.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: WebVR.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author mrdoob / http://mrdoob.com
+ * @author Mugen87 / https://github.com/Mugen87
+ *
+ * Based on @tojiro's vr-samples-utils.js
+ */
+
+var WEBVR = {
+
+	createButton: function ( renderer ) {
+
+		function showEnterVR( display ) {
+
+			button.style.display = '';
+
+			button.style.cursor = 'pointer';
+			button.style.left = 'calc(50% - 50px)';
+			button.style.width = '100px';
+
+			button.textContent = 'ENTER VR';
+
+			button.onmouseenter = function () { button.style.opacity = '1.0'; };
+			button.onmouseleave = function () { button.style.opacity = '0.5'; };
+
+			button.onclick = function () {
+
+				display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] );
+
+			};
+
+			renderer.vr.setDevice( display );
+
+		}
+
+		function showVRNotFound() {
+
+			button.style.display = '';
+
+			button.style.cursor = 'auto';
+			button.style.left = 'calc(50% - 75px)';
+			button.style.width = '150px';
+
+			button.textContent = 'VR NOT FOUND';
+
+			button.onmouseenter = null;
+			button.onmouseleave = null;
+
+			button.onclick = null;
+
+			renderer.vr.setDevice( null );
+
+		}
+
+		function stylizeElement( element ) {
+
+			element.style.position = 'absolute';
+			element.style.bottom = '20px';
+			element.style.padding = '12px 6px';
+			element.style.border = '1px solid #fff';
+			element.style.borderRadius = '4px';
+			element.style.background = 'transparent';
+			element.style.color = '#fff';
+			element.style.font = 'normal 13px sans-serif';
+			element.style.textAlign = 'center';
+			element.style.opacity = '0.5';
+			element.style.outline = 'none';
+			element.style.zIndex = '999';
+
+		}
+
+		if ( 'getVRDisplays' in navigator ) {
+
+			var button = document.createElement( 'button' );
+			button.style.display = 'none';
+
+			stylizeElement( button );
+
+			window.addEventListener( 'vrdisplayconnect', function ( event ) {
+
+				showEnterVR( event.display );
+
+			}, false );
+
+			window.addEventListener( 'vrdisplaydisconnect', function ( event ) {
+
+				showVRNotFound();
+
+			}, false );
+
+			window.addEventListener( 'vrdisplaypresentchange', function ( event ) {
+
+				button.textContent = event.display.isPresenting ? 'EXIT VR' : 'ENTER VR';
+
+			}, false );
+
+			window.addEventListener( 'vrdisplayactivate', function ( event ) {
+
+				event.display.requestPresent( [ { source: renderer.domElement } ] );
+
+			}, false );
+
+			navigator.getVRDisplays()
+				.then( function ( displays ) {
+
+					if ( displays.length > 0 ) {
+
+						showEnterVR( displays[ 0 ] );
+
+					} else {
+
+						showVRNotFound();
+
+					}
+
+				} );
+
+			return button;
+
+		} else {
+
+			var message = document.createElement( 'a' );
+			message.href = 'https://webvr.info';
+			message.innerHTML = 'WEBVR NOT SUPPORTED';
+
+			message.style.left = 'calc(50% - 90px)';
+			message.style.width = '180px';
+			message.style.textDecoration = 'none';
+
+			stylizeElement( message );
+
+			return message;
+
+		}
+
+	},
+
+	// DEPRECATED
+
+	checkAvailability: function () {
+		console.warn( 'WEBVR.checkAvailability has been deprecated.' );
+		return new Promise( function () {} );
+	},
+
+	getMessageContainer: function () {
+		console.warn( 'WEBVR.getMessageContainer has been deprecated.' );
+		return document.createElement( 'div' );
+	},
+
+	getButton: function () {
+		console.warn( 'WEBVR.getButton has been deprecated.' );
+		return document.createElement( 'div' );
+	},
+
+	getVRDisplay: function () {
+		console.warn( 'WEBVR.getVRDisplay has been deprecated.' );
+	}
+
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_lights">create_lights</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 14 2018 21:19:25 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

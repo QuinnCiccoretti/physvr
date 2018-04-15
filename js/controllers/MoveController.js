@@ -1,8 +1,8 @@
 /**
  * @author quinnciccoretti
+ * @class MoveController
+ * Moves user around scene
  */
-
-
 THREE.MoveController = function ( id ) {
 
 	THREE.BasicController.call( this, id );

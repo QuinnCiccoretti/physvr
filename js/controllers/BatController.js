@@ -1,9 +1,7 @@
 /**
  * WORK IN PROGRESS
- * WORK IN PROGRESS
- * WORK IN PROGRESS
- * WORK IN PROGRESS
  * @author quinnciccoretti
+ * @class BatController
  */
 
 THREE.BatController = function ( id ) {
