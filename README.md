@@ -1,10 +1,13 @@
 # physvr
 ## Quinn Ciccoretti, TJHSST
-Framework for doing physics with WebVR and physijs
-
+## Framework for doing physics with WebVR and physijs
+> physvr provides the [BasicController](./js/controllers/BasicController.js) class, which is ready to use for physics in webvr. Several implementations are also included, in js/controllers.
 ### Requires:
 - VR Headset with controllers (tested with HTC Vive)
 - WebVR compatible browser (tested with Firefox Nightly). See [WebVR's site](https://webvr.info/) for more info
+
+### Documentation
+- See [out/ directory](./out/)
 
 ### To run:
 (Try the live demo of master at https://physvr.herokuapp.com)
