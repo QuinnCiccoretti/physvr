@@ -15,12 +15,14 @@ THREE.BasicController = function ( id ) {
 	ui.rotation.x = - 1.45;
 	ui.scale.setScalar( 0.02 );
 	this.add( ui );
+
 	/**
 	* Returns controller id, 1 or 0
 	*/
 	this.get_id = function() {
 		return id;
 	}
+
 	/**
 	* Updates controller position data based on gamepad pose
 	*/
@@ -28,6 +30,7 @@ THREE.BasicController = function ( id ) {
 		this.update(); //refreshes controller data
 		this.update_phys_objects();
 	}
+
 	/**
 	* @returns the position of the controller in the scene, not relative to user
 	*/
@@ -46,6 +49,7 @@ THREE.BasicController = function ( id ) {
 	this.get_angular_velocity = function() {
 		return new THREE.Vector3().fromArray(this.getGamepad().pose.angularVelocity);
 	}
+
 	/**
 	* Updates invisible boxes to follow controllers so they can push things
 	*/
@@ -67,6 +71,7 @@ THREE.BasicController = function ( id ) {
 	    phys_obj.setLinearVelocity(new THREE.Vector3(0, 0, 0));
 	    phys_obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 	}
+	
 	/**
 	* Vibrates haptics if controller has them
 	* @param intensity a 0-1 value, 1 is highest vibration
