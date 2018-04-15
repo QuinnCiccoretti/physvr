@@ -1,7 +1,8 @@
 /**
  * @author quinnciccoretti
+ * @class SlingshotController
+ * Launches a ball from the controller
  */
-
 THREE.SlingshotController = function ( id ) {
 	
 	THREE.BasicController.call( this, id );
