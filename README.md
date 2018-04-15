@@ -7,7 +7,7 @@ physvr provides the [BasicController](./js/controllers/BasicController.js) class
 - WebVR compatible browser (tested with [Firefox Nightly](https://www.mozilla.org/en-US/firefox/)). See [WebVR's site](https://webvr.info/) for more info
 
 ### Documentation
-- See [out/](./out/) directory
+- See [out/](https://physvr.herokuapp.com/out/) directory
 
 ### To run:
 (Try the live demo of master at https://physvr.herokuapp.com)

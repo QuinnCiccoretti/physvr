@@ -22,26 +22,26 @@ THREE.BasicController = function ( id ) {
 		return id;
 	}
 	/**
-	* The basic controller only updates its position
+	* Updates controller position data based on gamepad pose
 	*/
 	this.handle_update = function() {
 		this.update(); //refreshes controller data
 		this.update_phys_objects();
 	}
 	/**
-	* The basic controller only updates its position
+	* @returns the position of the controller in the scene, not relative to user
 	*/
 	this.get_absolute_position = function() {
 		return user.position.add(this.position);
 	}
 	/**
-	* Gets the velocity of the controller from the gamepad
+	* @returns the velocity of the controller from the gamepad
 	*/
 	this.get_velocity = function() {
 		return new THREE.Vector3().fromArray(this.getGamepad().pose.linearVelocity);
 	}
 	/**
-	* Gets the angular velocity of the controller from the gamepad
+	* @returns the angular velocity of the controller from the gamepad
 	*/
 	this.get_angular_velocity = function() {
 		return new THREE.Vector3().fromArray(this.getGamepad().pose.angularVelocity);
