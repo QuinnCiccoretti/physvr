@@ -185,7 +185,7 @@ load_model = function(controller1){
 }
 THREE.PaintController = function ( id ) {
 
-	THREE.BasicController.call( this, id );
+	THREE.BasicController.call( this, id, "#000000" );
 
 	var PI2 = Math.PI * 2;
 
@@ -267,8 +267,7 @@ THREE.PaintController = function ( id ) {
 	pivot.rotation.x = Math.PI / 5.5;
 	this.add( pivot );
 
-	// COLOR UI
-
+	// COLOR UI - not using default
 	var geometry = new THREE.CircleGeometry( 1, 32 );
 	var material = new THREE.MeshBasicMaterial( { map: generateHueTexture() } );
 	var colorUI = new THREE.Mesh( geometry, material );

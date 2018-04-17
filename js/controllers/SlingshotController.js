@@ -4,18 +4,11 @@
 
 THREE.SlingshotController = function ( id ) {
 	
-	THREE.BasicController.call( this, id );
-	//ui - appears on touchpad
-	var geometry = new THREE.SphereGeometry( 1, 32,32 );
-	var red_material = new THREE.MeshBasicMaterial( { color:"#ff0000" } );
-	var ui = new THREE.Mesh( geometry, red_material );
-	ui.position.set( 0, 0.005, 0.0495 );
-	ui.rotation.x = - 1.45;
-	ui.scale.setScalar( 0.02 );
-	this.add( ui );
+	THREE.BasicController.call( this, id, "#ff0000" );
+	
 	//rays
 	var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
-	var line = new THREE.Line( geometry, red_material );
+	var line = new THREE.Line( geometry, new THREE.MeshBasicMaterial( { color: "#ff0000" } ) );
 	line.name = 'line';
 	line.scale.z = 2;
 	this.add( line.clone() );
