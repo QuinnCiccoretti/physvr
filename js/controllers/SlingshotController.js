@@ -1,7 +1,8 @@
 /**
  * @author quinnciccoretti
+ * @class SlingshotController
+ * Launches a ball from the controller
  */
-
 THREE.SlingshotController = function ( id ) {
 	
 	THREE.BasicController.call( this, id, "#ff0000" );
@@ -15,7 +16,9 @@ THREE.SlingshotController = function ( id ) {
 
 
 	
-	
+	/**
+	* Launches ball.
+	*/
 	function onTriggerDown(){
 		//a sphere to launch
 		var sphere = new Physijs.SphereMesh(
@@ -32,11 +35,7 @@ THREE.SlingshotController = function ( id ) {
 		sphere.position.set( pos.x, pos.y, pos.z );
     	sphere.__dirtyPosition = true;	//may be unneeded
 		sphere.applyCentralImpulse(dir.multiplyScalar(10));
-		var gp = this.getGamepad();
-		if( gp.hapticActuators && gp.hapticActuators[ 0 ]){	//Check if it has haptics
-		    gp.hapticActuators[ 0 ].pulse( 1, 100 );
-		    //pulse at 0-1 intensity for 100ms
-		}
+		this.pulse(1,100);
 	}
 
 	

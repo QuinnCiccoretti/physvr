@@ -1,4 +1,4 @@
+jsdoc -r js/ README.md
 git add -A
-read -p "Commit message: " msg
-git commit -m "$msg"
+git commit -a
 git push
