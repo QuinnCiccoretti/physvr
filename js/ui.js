@@ -1,5 +1,5 @@
 
-function load_text_geometry(text){
+function create_text_geometry(text){
 	var loader = new THREE.FontLoader();
 	var geometry;
 	loader.load( 'res/VT323_Regular.json', function ( font ) {
@@ -14,6 +14,7 @@ function load_text_geometry(text){
 			bevelSize: 8,
 			bevelSegments: 5
 		} );
+		return geometry;
 	} );
-	return geometry;
+	
 }
