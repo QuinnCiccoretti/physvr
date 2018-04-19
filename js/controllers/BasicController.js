@@ -35,7 +35,8 @@ THREE.BasicController = function ( id, uicolor="#ff00ff") {
 	* @returns the position of the controller in the scene, not relative to user
 	*/
 	this.get_absolute_position = function() {
-		return user.position.add(this.position);
+		var temp = user.position.clone();
+		return temp.add(this.position);
 	}
 	/**
 	* @returns the velocity of the controller from the gamepad

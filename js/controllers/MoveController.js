@@ -46,7 +46,7 @@ THREE.MoveController = function ( id ) {
 		}
 		
 		user.position.add(flat_dir);
-		this.pulse(r, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
+		this.pulse(r/4, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
 	}
 	/**
 	* Refresh the page
