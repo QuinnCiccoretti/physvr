@@ -1,5 +1,7 @@
 /**
  * @author quinnciccoretti
+ * @class LBowController
+ * the hand that is the bow. Should be used with other hand as LBowController.
  */
 
 THREE.LBowController = function ( id ) {
@@ -12,6 +14,12 @@ THREE.LBowController = function ( id ) {
 	);
 	cyl.material.side = THREE.DoubleSide;
 	this.add(cyl);
+
+	//dont update physics so it doesn't mess with arrow.
+	this.handle_update = function() {
+		this.update(); //refreshes controller data
+		//this.update_phys_objects();	//Temporary solution
+	}
 };
 
 THREE.LBowController.prototype = Object.create( THREE.BasicController.prototype );
