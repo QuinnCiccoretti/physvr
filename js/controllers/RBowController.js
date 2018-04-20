@@ -14,10 +14,17 @@ THREE.RBowController = function ( id ) {
 		// this.update_phys_objects();
 		if(this.getButtonState("trigger")){	//while trigger held
 			if(typeof arrow !== "undefined"){
-				var mypos = this.get_absolute_position();
-				arrow.position.set(mypos.x,mypos.y,mypos.z);
+				var handpos = this.get_absolute_position();
+				var bowpos = controller1.get_absolute_position()
+				arrow.position.set(handpos.x,handpos.y,handpos.z);
 				arrow.__dirtyPosition = true;
-				arrow.rotation.setFromQuaternion(calculate_quat(controller1.get_absolute_position().clone(), mypos.clone()));
+				 // Change the object's rotation
+    mesh.rotation.set(0, 90, 180);
+    mesh.__dirtyRotation = true;
+    
+    // You may also want to cancel the object's velocity
+    mesh.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+    mesh.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 
 				var gp = this.getGamepad();
 				var d = this.get_absolute_position().distanceTo(controller1.get_absolute_position());
@@ -40,8 +47,8 @@ THREE.RBowController = function ( id ) {
 		);
 		arrow.material.side = THREE.DoubleSide;
 
-		var mypos = this.get_absolute_position();
-		arrow.position.set(mypos.x,mypos.y,mypos.z);
+		var handpos = this.get_absolute_position();
+		arrow.position.set(handpos.x,handpos.y,handpos.z);
 		arrow.__dirtyPosition = true;
 		scene.add(arrow);
 	}
