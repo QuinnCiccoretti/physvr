@@ -137,6 +137,9 @@
 
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
+				///NEW
+				init_font_loader();
+				///NEW
 
 				controller1 = new THREE.BasicController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
@@ -182,6 +185,10 @@
 			* Toggles 1st ctrlr through various controller objects
 			*/
 			function on_menu_up1(){
+				var uimesh = create_text_mesh("hello there!");
+				user.add(uimesh);
+				uimesh.position.set(0,0,-.5);
+
 				user.remove(controller1);
 				
 				current_controller1++;
