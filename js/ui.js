@@ -10,19 +10,17 @@ function init_font_loader(){
 		
 	});
 }
-function create_text_mesh(text){
-	var text_geometry = create_text_geometry(text);
+function create_text_mesh(text, textsize = 0.05){
+	var text_geometry = create_text_geometry(text, textsize);
 	var text_material = new THREE.MeshBasicMaterial({color:"#ff0000"});
 	var text_mesh = new THREE.Mesh( text_geometry, text_material);
-	//var text_scale = 1;
-	//text_mesh.scale.set(text_scale,text_scale,text_scale);
-	// text_mesh.rotation.z = 3.14;
+	
 	return text_mesh;
 }
-function create_text_geometry(text){
+function create_text_geometry(text, textsize){
 	var text_geom = new THREE.TextGeometry( text, {
 		font: uifont,	//the already loaded font
-		size: 0.05,
+		size: textsize,
 		height: 0.01,
 		curveSegments: 2,
 		bevelEnabled: false,
