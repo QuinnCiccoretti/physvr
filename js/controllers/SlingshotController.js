@@ -5,7 +5,7 @@
  */
 THREE.SlingshotController = function ( id ) {
 	
-	THREE.BasicController.call( this, id, "#ff0000" );
+	THREE.BasicController.call( this, id, "#ff0000", "Slingshot");
 	
 	//rays
 	var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );

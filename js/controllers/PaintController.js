@@ -191,7 +191,7 @@ load_model = function(controller1){
  */
 THREE.PaintController = function ( id ) {
 
-	THREE.BasicController.call( this, id, "#000000" );
+	THREE.BasicController.call( this, id, "#000000", "Paint");
 
 	var PI2 = Math.PI * 2;
 

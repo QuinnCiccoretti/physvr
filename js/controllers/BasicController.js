@@ -3,7 +3,7 @@
  * @class BasicController
  * Defines basic methods for getting sensor data and using haptics
  */
-THREE.BasicController = function ( id, uicolor="#ff00ff") {
+THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 
 	THREE.ViveController.call( this, id );
 	console.log("BasicController instantiated with id:"+id);
@@ -14,6 +14,14 @@ THREE.BasicController = function ( id, uicolor="#ff00ff") {
 	this.ui.position.set( 0, 0.005, 0.0495 );
 	this.ui.rotation.x = - 1.45;
 	this.ui.scale.setScalar( 0.02 );
+	
+	this.name = name;
+	if(typeof uifont !== "undefined"){
+		var nameplate = create_text_mesh(name, 0.007);
+		this.ui.add(nameplate);
+	}
+	
+	
 	this.add( this.ui );
 
 	/**

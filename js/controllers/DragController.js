@@ -7,15 +7,8 @@
 
 THREE.DragController = function ( id ) {
 	
-	THREE.BasicController.call( this, id );
-	//ui - appears on touchpad
-	var geometry = new THREE.CircleGeometry( 1, 32 );
-	var material = new THREE.MeshBasicMaterial( { color:"#bb6600" } );
-	var ui = new THREE.Mesh( geometry, material );
-	ui.position.set( 0, 0.005, 0.0495 );
-	ui.rotation.x = - 1.45;
-	ui.scale.setScalar( 0.02 );
-	this.add( ui );
+	THREE.BasicController.call( this, id, "#bb6600", "Drag");
+	
 	//rays
 	var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
 	var line = new THREE.Line( geometry );

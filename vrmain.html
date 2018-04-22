@@ -88,7 +88,7 @@
 			var point5 = new THREE.Vector3();
 			
 
-			window.onload = init();
+			window.onload = preload();
 			var render_stats, physics_stats;
 			/**
 			* Create stats element
@@ -105,10 +105,19 @@
 				physics_stats.domElement.style.zIndex = 100;
 				container.appendChild( physics_stats.domElement );
 			}
+
+			function preload(){
+				console.log("preloading...")
+				init_font_loader();
+				// setTimeout(init, 1000);
+				init();
+			}
 			/**
 			* Main initialization
 			*/
+
 			function init() {
+				console.log("init....")
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 				init_stats();				
@@ -139,9 +148,7 @@
 
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
-				///NEW
-				init_font_loader();
-				///NEW
+				
 
 				controller1 = new THREE.BasicController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
@@ -187,7 +194,7 @@
 			* Toggles 1st ctrlr through various controller objects
 			*/
 			function on_menu_up1(){
-				var uimesh = create_text_mesh("hello there!", 0.01);
+				var uimesh = create_text_mesh("hello there!", 0.007);
 				user.add(uimesh);
 				uimesh.position.set(0,0,-.5);
 

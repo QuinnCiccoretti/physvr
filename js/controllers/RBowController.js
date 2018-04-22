@@ -8,7 +8,7 @@ var arrow;
 
 THREE.RBowController = function ( id ) {
 	
-	THREE.BasicController.call( this, id, "#703101" );
+	THREE.BasicController.call( this, id, "#703101", "RBow");
 	//////////////////////////////////////////
 	//test using another controller with this one 
 	///////////////////////////////////////////

@@ -5,10 +5,11 @@ function init_font_loader(){
 	loader.load( 'res/VT323_Regular.json', function ( font ) {
 		//font is loaded
 		uifont = font;
-		//
-		console.log(uifont);
+		
+		
 		
 	});
+	
 }
 function create_text_mesh(text, textsize = 0.05){
 	var text_geometry = create_text_geometry(text, textsize);
