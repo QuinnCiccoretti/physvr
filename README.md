@@ -14,9 +14,26 @@ physvr provides the [BasicController](./js/controllers/BasicController.js) class
 1. Start a node server locally
    1. Ensure that node is installed properly with `node -v`
    2. Ensure that npm is installed properly with `npm -v`
-   3. Run `npm install`
+   3. Run `npm install`. (The only true dependency is express, which statically serves the directory. The python method below will work without `npm install`)
    4. Run `node serve.js`
-   5. Use a browser to navigate to http://localhost:5000
 2. If you don't have node, you can use python
-- `python -m http.server` python3
-- `python -m SimpleHTTPServer` python2
+- `python -m http.server 5000` python3
+- `python -m SimpleHTTPServer 5000` python2
+3. Navigate to http://localhost:5000 on a [WebVR compatible browser](https://webvr.info/)
+4. Hit "Start VR"
+5. Use the menu button on your controller (above the touchpad on the Vive) to switch controller modes. Most modes perform an action when you press the trigger.
+
+### Adding your own Controller class:
+1. All controller modes are objects that extend the [BasicController](./js/controllers/BasicController.js) class. (This class in turn extends [ViveController](./js/controllers/ViveController.js), which is a lower level class that stores gamepad data and doesn't include physics support)
+2. To add your own controller mode, create an object that extends the BasicController class (or copy an existing controller and modify the class name)
+3. Call:
+ - `ctrlr1list.append(new Controller(0));`	Adds to controller 0
+ - `ctrlr2list.append(new Controller(1));`	Adds to controller 1
+ - 0 and 1 are unique controller IDs, that correspond to `controller1` and `controller2` respectively.
+ - if you want a Controller Class to be available to only one controller, only append to one list.
+
+## TO DO
+ - [ ] Fix rotation of arrow on BowControllers
+ - [ ] Add multi-axis movement modes on MoveController
+ - [ ] Add CreatorController to add objects to the scene
+ - [ ] Use VRStageParameters from WebVR api to create walls where they are in Vive Chaperone

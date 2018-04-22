@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: controllers/BatController.js</title>
+    <title>JSDoc: Source: controllers/LBowController.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: controllers/BatController.js</h1>
+    <h1 class="page-title">Source: controllers/LBowController.js</h1>
 
     
 
@@ -27,39 +27,31 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * WORK IN PROGRESS
  * @author quinnciccoretti
- * @class BatController
+ * @class LBowController
+ * the hand that is the bow. Should be used with other hand as LBowController.
  */
 
-THREE.BatController = function ( id ) {
+THREE.LBowController = function ( id ) {
 	
-	THREE.BasicController.call( this, id );
-	//bat cylinder
+	THREE.BasicController.call( this, id, "#703101", "LBow");
+	//ui - appears on touchpad
 	var cyl  = new Physijs.CylinderMesh(
-    new THREE.CylinderGeometry( .1, .1, 2, 32 ),
-    new THREE.MeshBasicMaterial({ color: 0x888888 })
+    new THREE.CylinderGeometry( .01, .01, 1, 32 ),
+    new THREE.MeshBasicMaterial({ color: 0x703101 })
 	);
 	cyl.material.side = THREE.DoubleSide;
-	cyl.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-	    // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
-		other_object.setLinearVelocity(this.get_velocity().multiplyScalar(10));
-		console.log("collided!!!")
-	});
-	this.handle_update = function() {
-		this.update();
-		this.update_phys_objects();
-		var pos = this.get_absolute_position();
-		cyl.position.set(pos.x, pos.y, pos.z);
-		cyl.__dirtyPosition = true;
-		
-	}
-	this.addEventListener()
+	this.add(cyl);
 
+	//dont update physics so it doesn't mess with arrow.
+	this.handle_update = function() {
+		this.update(); //refreshes controller data
+		//this.update_phys_objects();	//Temporary solution
+	}
 };
 
-THREE.BatController.prototype = Object.create( THREE.BasicController.prototype );
-THREE.BatController.prototype.constructor = THREE.BatController;
+THREE.LBowController.prototype = Object.create( THREE.BasicController.prototype );
+THREE.LBowController.prototype.constructor = THREE.LBowController;
 </code></pre>
         </article>
     </section>
