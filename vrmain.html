@@ -24,6 +24,7 @@
 		<script src="./js/three.js"></script>
 		<script type="text/javascript" src="js/stats.js"></script>
 		<script type="text/javascript" src="js/scene.js"></script>
+		<script src = "./js/ui.js"></script>
 		<script type="text/javascript" src="./js/phys/physi.js"></script>
 		<script src="./js/WebVR.js"></script>
 		<!-- Lower level controller classes -->
@@ -138,6 +139,9 @@
 
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
+				///NEW
+				init_font_loader();
+				///NEW
 
 				controller1 = new THREE.BasicController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
@@ -183,6 +187,10 @@
 			* Toggles 1st ctrlr through various controller objects
 			*/
 			function on_menu_up1(){
+				var uimesh = create_text_mesh("hello there!", 0.01);
+				user.add(uimesh);
+				uimesh.position.set(0,0,-.5);
+
 				user.remove(controller1);
 				
 				current_controller1++;
@@ -224,6 +232,7 @@
 				controller2.addEventListener( 'menuup', on_menu_up2 );
 
 			}
+	
 			
 			/**
 			* Main loop. Called everytime the physics sim updates. All update code runs from here.
