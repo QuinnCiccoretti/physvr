@@ -31,7 +31,7 @@ THREE.RBowController = function ( id ) {
 				arrow.__dirtyPosition = true; //needed for the physics scene to update pos
 				 
 				 //quaternion that will align objects between the two controllers
-				var rot_between = calculate_quat(bowpos.clone(), handpos.clone());
+				var rot_between = calculate_euler(bowpos.clone(), handpos.clone());
 			    arrow.rotation.setFromQuaternion(rot_between);
 			    arrow.__dirtyRotation = true;	//needed for the physics scene to update rot
 			    
@@ -52,7 +52,7 @@ THREE.RBowController = function ( id ) {
 	 */
 	function onTriggerUp(){
 		var diff = this.get_absolute_position().sub(controller1.get_absolute_position());
-		arrow.setLinearVelocity(diff.multiplyScalar(-30));
+		arrow.setLinearVelocity(diff.multiplyScalar(-20));
 	}
 	/**
 	 * instantiates new arrow with physics
@@ -71,18 +71,14 @@ THREE.RBowController = function ( id ) {
 		scene.add(arrow);
 	}
 	/**
-	 * calculates a quaternion that will rotate the arrow parralell to
+	 * calculates a euler that will rotate the arrow parralell to
 	 * the line between both controllers.
 	 */
-	function calculate_quat(a,b){
-		a.normalize(); //possibly unneeded
-		b.normalize();
-		var theta = Math.acos( a.dot(b) / (a.length()*b.length()));
-		var c = a.cross(b);
-
-		var quaternion = new THREE.Quaternion();
-		quaternion.setFromAxisAngle( c, theta * 8);
-		return quaternion;
+	function calculate_euler(a,b){
+		var diff = b.sub(a);
+		var spher = new THREE.Spherical().setFromVector3(diff);
+		var rot = new THREE.Euler( 0, spher.theta, spher.phi);
+		return rot;
 	}
 	
 	
