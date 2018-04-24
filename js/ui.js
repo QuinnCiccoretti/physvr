@@ -5,15 +5,13 @@ function init_font_loader(){
 	loader.load( 'res/VT323_Regular.json', function ( font ) {
 		//font is loaded
 		uifont = font;
-		
-		
-		
+		return uifont;
 	});
 	
 }
 function create_text_mesh(text, textsize = 0.05){
 	var text_geometry = create_text_geometry(text, textsize);
-	var text_material = new THREE.MeshBasicMaterial({color:"#ff0000"});
+	var text_material = new THREE.MeshBasicMaterial({color:"#000000"});
 	var text_mesh = new THREE.Mesh( text_geometry, text_material);
 	
 	return text_mesh;

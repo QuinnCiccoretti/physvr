@@ -15,10 +15,16 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	this.ui.rotation.x = - 1.45;
 	this.ui.scale.setScalar( 0.02 );
 	
-	this.name = name;
-	if(typeof uifont !== "undefined"){
-		var nameplate = create_text_mesh(name, 0.007);
-		this.ui.add(nameplate);
+	this.make_nameplate = function(){
+		this.name = name;
+		if(typeof uifont !== "undefined"){
+			var nameplate = create_text_mesh(name, 12);
+			this.ui.add(nameplate);
+		}
+		else{
+			console.log("font not yet loaded");
+		}
+		
 	}
 	
 	

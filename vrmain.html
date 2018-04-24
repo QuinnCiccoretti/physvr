@@ -109,7 +109,7 @@
 			function preload(){
 				console.log("preloading...")
 				init_font_loader();
-				// setTimeout(init, 1000);
+				
 				init();
 			}
 			/**
@@ -211,7 +211,7 @@
 				user.add( controller1 );
 
 				load_model(controller1);
-				
+				controller1.make_nameplate();
 				controller1.addEventListener( 'menuup', on_menu_up1 );
 			}
 
@@ -235,7 +235,7 @@
 				user.add( controller2 );
 
 				load_model(controller2);
-
+				controller2.make_nameplate();
 				controller2.addEventListener( 'menuup', on_menu_up2 );
 
 			}

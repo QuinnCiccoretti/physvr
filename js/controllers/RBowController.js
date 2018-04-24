@@ -32,12 +32,15 @@ THREE.RBowController = function ( id ) {
 				 
 				 //quaternion that will align objects between the two controllers
 				var rot_between = calculate_euler(bowpos.clone(), handpos.clone());
-			    arrow.rotation.setFromQuaternion(rot_between);
+			    // console.log(rot_between);
+			    arrow.rotation.set(rot_between.x, rot_between.y, rot_between.z);
+			    // console.log("a");
+			    // console.log(arrow.rotation);
 			    arrow.__dirtyRotation = true;	//needed for the physics scene to update rot
 			    
 			    //Cancel any movement of the arrow
-			    // arrow.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-			    // arrow.setAngularVelocity(new THREE.Vector3(0, 0, 0));
+			    arrow.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+			    arrow.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 
 			    //vibrate proportional to distance to simulate pulling bowstring
 				var d = handpos.distanceTo(bowpos);
@@ -75,9 +78,10 @@ THREE.RBowController = function ( id ) {
 	 * the line between both controllers.
 	 */
 	function calculate_euler(a,b){
-		var diff = b.sub(a);
+		var diff = a.sub(b);
 		var spher = new THREE.Spherical().setFromVector3(diff);
-		var rot = new THREE.Euler( 0, spher.theta, spher.phi);
+		var rot = new THREE.Euler( spher.phi, 0, -1*spher.theta);
+		
 		return rot;
 	}
 	
