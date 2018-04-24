@@ -25,9 +25,9 @@ THREE.RBowController = function ( id ) {
 			if(typeof arrow !== "undefined"){
 				var handpos = this.get_absolute_position();
 				var bowpos = controller1.get_absolute_position();
-				var midpoint = handpos.clone().add(bowpos).divideScalar(2);
+				// var midpoint = handpos.clone().add(bowpos).divideScalar(2);
 				//position arrow
-				arrow.position = midpoint;
+				arrow.position.set(handpos.x, handpos.y, handpos.z);
 				arrow.__dirtyPosition = true; //needed for the physics scene to update pos
 				 
 				 //quaternion that will align objects between the two controllers
@@ -36,8 +36,8 @@ THREE.RBowController = function ( id ) {
 			    arrow.__dirtyRotation = true;	//needed for the physics scene to update rot
 			    
 			    //Cancel any movement of the arrow
-			    arrow.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-			    arrow.setAngularVelocity(new THREE.Vector3(0, 0, 0));
+			    // arrow.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+			    // arrow.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 
 			    //vibrate proportional to distance to simulate pulling bowstring
 				var d = handpos.distanceTo(bowpos);
