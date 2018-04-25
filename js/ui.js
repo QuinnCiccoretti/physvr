@@ -9,9 +9,9 @@ function init_font_loader(){
 	});
 	
 }
-function create_text_mesh(text, textsize = 0.05){
+function create_text_mesh(text, textsize = 0.05, uicolor = "#000000"){
 	var text_geometry = create_text_geometry(text, textsize);
-	var text_material = new THREE.MeshBasicMaterial({color:"#000000"});
+	var text_material = new THREE.MeshBasicMaterial({color: uicolor});
 	var text_mesh = new THREE.Mesh( text_geometry, text_material);
 	
 	return text_mesh;

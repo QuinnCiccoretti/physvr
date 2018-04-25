@@ -44,7 +44,7 @@ THREE.RBowController = function ( id ) {
 
 			    //vibrate proportional to distance to simulate pulling bowstring
 				var d = handpos.distanceTo(bowpos);
-				this.pulse(d/5,1);
+				this.pulse(d,1);
 			}
 			
 		}
