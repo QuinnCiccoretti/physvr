@@ -12,16 +12,16 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	var material = new THREE.MeshBasicMaterial( { color: uicolor } );
 	this.ui = new THREE.Mesh( geometry, material );
 	this.ui.position.set( 0, 0.005, 0.0495 );
-	this.ui.rotation.x = - 1.5;
+	this.ui.rotation.x = - 1.45;
 	this.ui.scale.setScalar( 0.02 );
 	
 	this.make_nameplate = function(){
 		this.name = name;
 		if(typeof uifont !== "undefined"){
 			var nameplate = create_text_mesh(name, 2, uicolor);
-			nameplate.rotation.z = -1.6;
+			nameplate.rotation.z = -1.55;
 			this.ui.add(nameplate);
-			nameplate.position.set(-0.5, -0.8, 0.1);
+			nameplate.position.set(-0.5, -0.8, 0.3);
 		}
 		else{
 			console.log("font not yet loaded");

@@ -15,6 +15,7 @@ THREE.RBowController = function ( id ) {
 	/**
 	 * positions and points arrow between controllers.
 	 */
+	 var last_threshold = .1;	//for vibrating with distance
 	this.handle_update = function() {
 		this.update(); //refreshes controller data
 		// this.update_phys_objects(); //TODO -> cancel physics, as arrow collides with controller
@@ -44,7 +45,11 @@ THREE.RBowController = function ( id ) {
 
 			    //vibrate proportional to distance to simulate pulling bowstring
 				var d = handpos.distanceTo(bowpos);
-				this.pulse(d,1);
+				if(d>last_threshold){//vibrates if the controller has moved a certain distance (0.025 meters)
+					this.pulse(d,1);
+					last_threshold+=.025;
+				}
+				
 			}
 			
 		}
@@ -54,6 +59,7 @@ THREE.RBowController = function ( id ) {
 	 * launches arrow proportional to draw distance
 	 */
 	function onTriggerUp(){
+		last_threshold = .1;	//for vibrating with distance
 		var diff = this.get_absolute_position().sub(controller1.get_absolute_position());
 		arrow.setLinearVelocity(diff.multiplyScalar(-20));
 	}
