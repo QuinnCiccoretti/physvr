@@ -5,6 +5,7 @@ function init_font_loader(){
 	loader.load( 'res/VT323_Regular.json', function ( font ) {
 		//font is loaded
 		uifont = font;
+		create_HUD();
 		return uifont;
 	});
 	
@@ -25,4 +26,10 @@ function create_text_geometry(text, textsize){
 		bevelEnabled: false,
 	} );
 	return text_geom;
+}
+function create_HUD(){
+	var text1 = create_text_mesh("physvr", 0.05, "#ff0000");
+	text1.rotation.x = 3.14/6;
+	camera.add(text1);
+	text1.position.set(0.1, 0.25, -0.4);
 }
