@@ -15,21 +15,6 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	this.ui.rotation.x = - 1.45;
 	this.ui.scale.setScalar( 0.02 );
 	
-	this.make_nameplate = function(){
-		this.name = name;
-		if(typeof uifont !== "undefined"){
-			var nameplate = create_text_mesh(name, 2, uicolor);
-			nameplate.rotation.z = -1.55;
-			this.ui.add(nameplate);
-			nameplate.position.set(-0.5, -0.8, 0.3);
-		}
-		else{
-			console.log("font not yet loaded");
-		}
-		
-	}
-	
-	
 	this.add( this.ui );
 
 	/**
@@ -68,11 +53,12 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	}
 
 	/**
-	* Updates invisible boxes to follow controllers so they can push things
+	* Updates invisible boxes (phys_obj1 and phys_obj2)
+	* to follow controllers so they can push things
 	*/
 	this.update_phys_objects = function(){
 		
-		var user_pos = user.position;
+		var this_abs_pos = this.get_absolute_position();
 		//get the appropriate physics object, object 1 or 2, from a global list
 		var phys_obj = phys_obj_list[id];	
 
@@ -80,15 +66,29 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 		phys_obj.rotation.set(rot.x, rot.y, rot.z);
 		phys_obj.__dirtyRotation = true;
 
-		var pos = this.position;
-		phys_obj.position.set( pos.x +user_pos.x, pos.y +user_pos.y + controller_offset_y, pos.z +user_pos.z );
+		phys_obj.position.set( my_pos.x, my_pos.y + controller_offset_y, my_pos.z  );
 		phys_obj.__dirtyPosition = true;
 
 	    //cancel the object's velocity
 	    phys_obj.setLinearVelocity(new THREE.Vector3(0, 0, 0));
 	    phys_obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 	}
-	
+	/**
+	 * Adds a text label to controller and sets .name attribute
+	 */
+	this.make_nameplate = function(){
+		this.name = name;
+		if(typeof uifont !== "undefined"){
+			var nameplate = create_text_mesh(name, 2, uicolor);
+			nameplate.rotation.z = -1.55;	//align w/ controller handle
+			this.ui.add(nameplate);
+			nameplate.position.set(-0.5, -0.8, 0.3); //set relative pos
+		}
+		else{
+			console.log("Font unloaded, no nameplate made");
+		}
+		
+	}
 	/**
 	* Vibrates haptics if controller has them
 	* @param intensity a 0-1 value, 1 is highest vibration

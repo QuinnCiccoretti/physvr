@@ -59,7 +59,7 @@ THREE.RBowController = function ( id ) {
 	 * launches arrow proportional to draw distance
 	 */
 	function onTriggerUp(){
-		last_threshold = .1;	//for vibrating with distance
+		last_threshold = .1;	//reset threshold for vibrating with distance
 		var diff = this.get_absolute_position().sub(controller1.get_absolute_position());
 		arrow.setLinearVelocity(diff.multiplyScalar(-20));
 	}
