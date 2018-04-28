@@ -80,6 +80,7 @@ THREE.RBowController = function ( id ) {
 		scene.add(arrow);
 	}
 	/**
+	 * WORK IN PROGRESS -> TODO: Use local coords and add to user, then remove from scene
 	 * calculates a euler that will rotate the arrow parralell to
 	 * the line between both controllers.
 	 */
