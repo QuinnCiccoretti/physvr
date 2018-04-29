@@ -412,6 +412,92 @@ Based on @tojiro's vr-samples-utils.js</li>
     
 
     
+    <h4 class="name" id="create_HUD"><span class="type-signature"></span>create_HUD<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    WORK IN PROGRESS
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="create_lights"><span class="type-signature"></span>create_lights<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
@@ -584,6 +670,242 @@ Based on @tojiro's vr-samples-utils.js</li>
     
 
     
+    <h4 class="name" id="create_text_geometry"><span class="type-signature"></span>create_text_geometry<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line31">line 31</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    text geometry with given size
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="create_text_mesh"><span class="type-signature"></span>create_text_mesh<span class="signature">(uicolor)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uicolor</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    #000000
+                
+                </td>
+            
+
+            <td class="description last">the color of the material</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    a mesh with a certain color and a text geometry
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="createTower"><span class="type-signature"></span>createTower<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
@@ -723,6 +1045,93 @@ Based on @tojiro's vr-samples-utils.js</li>
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="three.js.html">three.js</a>, <a href="three.js.html#line20567">line 20567</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="init_font_loader"><span class="type-signature"></span>init_font_loader<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Loads a font. Note this is async and must load completely
+before creating text from the font
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui.js.html">ui.js</a>, <a href="ui.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -1064,13 +1473,13 @@ then for each monitor you would call it like this
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="arrow.html">arrow</a></li><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.LBowController.html">LBowController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_lights">create_lights</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.LBowController.html">LBowController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.RBowController.html">RBowController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_HUD">create_HUD</a></li><li><a href="global.html#create_lights">create_lights</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#create_text_geometry">create_text_geometry</a></li><li><a href="global.html#create_text_mesh">create_text_mesh</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#init_font_loader">init_font_loader</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 22 2018 13:45:12 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 29 2018 10:48:16 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

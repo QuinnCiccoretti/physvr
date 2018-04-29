@@ -1,21 +1,18 @@
+var arrow;
 /**
  * @author quinnciccoretti
  * @class RBowController
  * the hand that pulls the bowstring. Should be used with other hand as LBowController
  */
-
-var arrow;
-
 THREE.RBowController = function ( id ) {
 	
 	THREE.BasicController.call( this, id, "#703101", "RBow");
-	//////////////////////////////////////////
-	//test using another controller with this one 
-	///////////////////////////////////////////
-	/**
+	
+	/**for vibrating with distance*/
+	var last_threshold = .1;	
+	 /**
 	 * positions and points arrow between controllers.
 	 */
-	 var last_threshold = .1;	//for vibrating with distance
 	this.handle_update = function() {
 		this.update(); //refreshes controller data
 		// this.update_phys_objects(); //TODO -> cancel physics, as arrow collides with controller

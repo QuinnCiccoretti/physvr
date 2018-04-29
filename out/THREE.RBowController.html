@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: MoveController</title>
+    <title>JSDoc: Class: RBowController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: MoveController</h1>
+    <h1 class="page-title">Class: RBowController</h1>
 
     
 
@@ -28,10 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>MoveController<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>RBowController<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">MoveController
-Moves user around scene</div>
+            <div class="class-description">RBowController
+the hand that pulls the bowstring. Should be used with other hand as LBowController</div>
         
     
 </header>
@@ -46,7 +46,7 @@ Moves user around scene</div>
     
 
     
-    <h4 class="name" id="MoveController"><span class="type-signature"></span>new MoveController<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="RBowController"><span class="type-signature"></span>new RBowController<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -101,7 +101,7 @@ Moves user around scene</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_MoveController.js.html">controllers/MoveController.js</a>, <a href="controllers_MoveController.js.html#line6">line 6</a>
+        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -145,6 +145,72 @@ Moves user around scene</div>
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~last_threshold"><span class="type-signature">(inner) </span>last_threshold<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    for vibrating with distance
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -155,7 +221,7 @@ Moves user around scene</div>
     
 
     
-    <h4 class="name" id="~onAxisChanged"><span class="type-signature">(inner) </span>onAxisChanged<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="handle_update"><span class="type-signature"></span>handle_update<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -163,7 +229,7 @@ Moves user around scene</div>
 
 
 <div class="description">
-    Moves user around the scene based on thumbpad
+    positions and points arrow between controllers.
 </div>
 
 
@@ -207,7 +273,7 @@ Moves user around scene</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_MoveController.js.html">controllers/MoveController.js</a>, <a href="controllers_MoveController.js.html#line28">line 28</a>
+        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -241,7 +307,7 @@ Moves user around scene</div>
     
 
     
-    <h4 class="name" id="~onGripsDown"><span class="type-signature">(inner) </span>onGripsDown<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~calculate_euler"><span class="type-signature">(inner) </span>calculate_euler<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -249,7 +315,9 @@ Moves user around scene</div>
 
 
 <div class="description">
-    Refresh the page
+    WORK IN PROGRESS -> TODO: Use local coords and add to user, then remove from scene
+calculates a euler that will rotate the arrow parralell to
+the line between both controllers.
 </div>
 
 
@@ -293,7 +361,179 @@ Moves user around scene</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_MoveController.js.html">controllers/MoveController.js</a>, <a href="controllers_MoveController.js.html#line54">line 54</a>
+        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line84">line 84</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~onTriggerDown"><span class="type-signature">(inner) </span>onTriggerDown<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    instantiates new arrow with physics
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line66">line 66</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~onTriggerUp"><span class="type-signature">(inner) </span>onTriggerUp<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    launches arrow proportional to draw distance
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line58">line 58</a>
     </li></ul></dd>
     
 

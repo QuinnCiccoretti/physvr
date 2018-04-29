@@ -26,21 +26,19 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>var arrow;
+/**
  * @author quinnciccoretti
  * @class RBowController
  * the hand that pulls the bowstring. Should be used with other hand as LBowController
  */
-
-var arrow;
-
 THREE.RBowController = function ( id ) {
 	
 	THREE.BasicController.call( this, id, "#703101", "RBow");
-	//////////////////////////////////////////
-	//test using another controller with this one 
-	///////////////////////////////////////////
-	/**
+	
+	/**for vibrating with distance*/
+	var last_threshold = .1;	
+	 /**
 	 * positions and points arrow between controllers.
 	 */
 	this.handle_update = function() {
@@ -53,14 +51,17 @@ THREE.RBowController = function ( id ) {
 			if(typeof arrow !== "undefined"){
 				var handpos = this.get_absolute_position();
 				var bowpos = controller1.get_absolute_position();
-				var midpoint = handpos.clone().add(bowpos).divideScalar(2);
+				// var midpoint = handpos.clone().add(bowpos).divideScalar(2);
 				//position arrow
-				arrow.position = midpoint;
+				arrow.position.set(handpos.x, handpos.y, handpos.z);
 				arrow.__dirtyPosition = true; //needed for the physics scene to update pos
 				 
 				 //quaternion that will align objects between the two controllers
-				var rot_between = calculate_quat(bowpos.clone(), handpos.clone());
-			    arrow.rotation.setFromQuaternion(rot_between);
+				var rot_between = calculate_euler(bowpos.clone(), handpos.clone());
+			    // console.log(rot_between);
+			    arrow.rotation.set(rot_between.x, rot_between.y, rot_between.z);
+			    // console.log("a");
+			    // console.log(arrow.rotation);
 			    arrow.__dirtyRotation = true;	//needed for the physics scene to update rot
 			    
 			    //Cancel any movement of the arrow
@@ -69,7 +70,11 @@ THREE.RBowController = function ( id ) {
 
 			    //vibrate proportional to distance to simulate pulling bowstring
 				var d = handpos.distanceTo(bowpos);
-				this.pulse(d/5,1);
+				if(d>last_threshold){//vibrates if the controller has moved a certain distance (0.025 meters)
+					this.pulse(d,1);
+					last_threshold+=.025;
+				}
+				
 			}
 			
 		}
@@ -79,8 +84,9 @@ THREE.RBowController = function ( id ) {
 	 * launches arrow proportional to draw distance
 	 */
 	function onTriggerUp(){
+		last_threshold = .1;	//reset threshold for vibrating with distance
 		var diff = this.get_absolute_position().sub(controller1.get_absolute_position());
-		arrow.setLinearVelocity(diff.multiplyScalar(-30));
+		arrow.setLinearVelocity(diff.multiplyScalar(-20));
 	}
 	/**
 	 * instantiates new arrow with physics
@@ -99,18 +105,16 @@ THREE.RBowController = function ( id ) {
 		scene.add(arrow);
 	}
 	/**
-	 * calculates a quaternion that will rotate the arrow parralell to
+	 * WORK IN PROGRESS -> TODO: Use local coords and add to user, then remove from scene
+	 * calculates a euler that will rotate the arrow parralell to
 	 * the line between both controllers.
 	 */
-	function calculate_quat(a,b){
-		a.normalize(); //possibly unneeded
-		b.normalize();
-		var theta = Math.acos( a.dot(b) / (a.length()*b.length()));
-		var c = a.cross(b);
-
-		var quaternion = new THREE.Quaternion();
-		quaternion.setFromAxisAngle( c, theta * 8);
-		return quaternion;
+	function calculate_euler(a,b){
+		var diff = a.sub(b);
+		var spher = new THREE.Spherical().setFromVector3(diff);
+		var rot = new THREE.Euler( spher.phi, 0, -1*spher.theta);
+		
+		return rot;
 	}
 	
 	
@@ -130,13 +134,13 @@ THREE.RBowController.prototype.constructor = THREE.RBowController;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="arrow.html">arrow</a></li><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.LBowController.html">LBowController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_lights">create_lights</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.LBowController.html">LBowController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.RBowController.html">RBowController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_HUD">create_HUD</a></li><li><a href="global.html#create_lights">create_lights</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#create_text_geometry">create_text_geometry</a></li><li><a href="global.html#create_text_mesh">create_text_mesh</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#init_font_loader">init_font_loader</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 22 2018 13:45:11 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 29 2018 10:48:16 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
