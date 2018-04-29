@@ -58,7 +58,7 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	*/
 	this.update_phys_objects = function(){
 		
-		var this_abs_pos = this.get_absolute_position();
+		var my_pos = this.get_absolute_position();
 		//get the appropriate physics object, object 1 or 2, from a global list
 		var phys_obj = phys_obj_list[id];	
 
