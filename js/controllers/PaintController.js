@@ -204,10 +204,12 @@ THREE.PaintController = function ( id ) {
 
 
 	this.handle_update = function() {
+		var count = line.geometry.drawRange.count;
+				
 		count = line.geometry.drawRange.count;
 		this.update();
 		this.update_phys_objects();
-		updateGeometry( count, line.geometry.drawRange.count );
+		// updateGeometry( count, line.geometry.drawRange.count );
 		var pivot = this.getObjectByName( 'pivot' );
 
 		if ( pivot ) {
@@ -232,6 +234,7 @@ THREE.PaintController = function ( id ) {
 			matrix2.copy( matrix1 );
 
 		}
+		updateGeometry( count, line.geometry.drawRange.count );
 
 	}
 	function generateHueTexture() {

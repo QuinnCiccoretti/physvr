@@ -21,8 +21,8 @@ THREE.RBowController = function ( id ) {
 
 		if(this.getButtonState("trigger")){	//while trigger held
 			if(typeof arrow !== "undefined"){
-				var handpos = this.get_absolute_position();
-				var bowpos = controller1.get_absolute_position();
+				var handpos = this.position;
+				var bowpos = controller1.position;
 				// var midpoint = handpos.clone().add(bowpos).divideScalar(2);
 				//position arrow
 				arrow.position.set(handpos.x, handpos.y, handpos.z);
@@ -57,7 +57,12 @@ THREE.RBowController = function ( id ) {
 	 */
 	function onTriggerUp(){
 		last_threshold = .1;	//reset threshold for vibrating with distance
-		var diff = this.get_absolute_position().sub(controller1.get_absolute_position());
+		var my_pos = this.get_absolute_position();
+		var diff = my_pos.sub(controller1.get_absolute_position());
+		user.remove(arrow);
+
+		arrow.position.set(my_pos.x, my_pos.y, my_pos.z);
+		scene.add(arrow);
 		arrow.setLinearVelocity(diff.multiplyScalar(-20));
 	}
 	/**
@@ -74,7 +79,7 @@ THREE.RBowController = function ( id ) {
 		var handpos = this.get_absolute_position();
 		arrow.position.set(handpos.x,handpos.y,handpos.z);
 		arrow.__dirtyPosition = true;
-		scene.add(arrow);
+		user.add(arrow);
 	}
 	/**
 	 * WORK IN PROGRESS -> TODO: Use local coords and add to user, then remove from scene
@@ -84,6 +89,7 @@ THREE.RBowController = function ( id ) {
 	function calculate_euler(a,b){
 		var diff = a.sub(b);
 		var spher = new THREE.Spherical().setFromVector3(diff);
+		spher.makeSafe();
 		var rot = new THREE.Euler( spher.phi, 0, -1*spher.theta);
 		
 		return rot;
