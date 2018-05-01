@@ -332,13 +332,14 @@ THREE.PaintController = function ( id ) {
 
 		if ( mode === MODES.COLOR ) {
 			color.setHSL( Math.atan2( y, x ) / PI2, 1, ( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
-
-			
+			this.nameplate.material.color.setHSL( Math.atan2( y, x ) / PI2, 1, ( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
+			//or try
+			// this.nameplate.material.color = color;
 		}
 
 		if ( mode === MODES.SIZE ) {
 			var ratio = (0.5 - y);
-			size = ratio * 2;
+			size = ratio * ratio * 4;
 
 			resizeTriangleGeometry(sizeUIFill.geometry, ratio);
 		}

@@ -79,10 +79,10 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	this.make_nameplate = function(){
 		this.name = name;
 		if(typeof uifont !== "undefined"){
-			var nameplate = create_text_mesh(name, 2, uicolor);
-			nameplate.rotation.z = -1.55;	//align w/ controller handle
-			this.ui.add(nameplate);
-			nameplate.position.set(-0.5, -0.8, 0.3); //set relative pos
+			this.nameplate = create_text_mesh(name, 2, uicolor);
+			this.nameplate.rotation.z = -1.55;	//align w/ controller handle
+			this.ui.add(this.nameplate);
+			this.nameplate.position.set(-0.5, -0.8, 0.3); //set relative pos
 		}
 		else{
 			console.log("Font unloaded, no nameplate made");
