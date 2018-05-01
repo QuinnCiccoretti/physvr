@@ -191,7 +191,7 @@ load_model = function(controller1){
  */
 THREE.PaintController = function ( id ) {
 
-	THREE.BasicController.call( this, id, "#000000", "Paint");
+	THREE.BasicController.call( this, id, "#ffffff", "Paint");
 
 	var PI2 = Math.PI * 2;
 
@@ -339,7 +339,7 @@ THREE.PaintController = function ( id ) {
 
 		if ( mode === MODES.SIZE ) {
 			var ratio = (0.5 - y);
-			size = ratio * ratio * 4;
+			size = ratio * ratio * 10;
 
 			resizeTriangleGeometry(sizeUIFill.geometry, ratio);
 		}

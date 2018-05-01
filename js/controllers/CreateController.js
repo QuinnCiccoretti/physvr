@@ -14,17 +14,23 @@ THREE.CreateController = function ( id ) {
 	table.receiveShadow = true;
 
 	var sphere = new Physijs.SphereMesh(
-		new THREE.SphereGeometry( 0.1, 12, 12 ),
+		new THREE.SphereGeometry( .5, 12, 12 ),
 		new THREE.MeshBasicMaterial({ color: 0xff0000 }),
-		.5 //mass
+		0 //mass
 	);
 	
 	/**
 	* Creates object
 	*/
+	//dont update physics so it doesn't mess with arrow.
+	this.handle_update = function() {
+		this.update(); //refreshes controller data
+		//this.update_phys_objects();	//Temporary solution
+	}
+	var object;
 	function onTriggerDown(){
-		var pos = this.get_absolute_position();
-		var object;
+		
+		
 		//a sphere to launch
 		if ( mode == 0 ) {
 			object = table.clone();
@@ -33,8 +39,19 @@ THREE.CreateController = function ( id ) {
 		if ( mode == 1 ) {
 			object = sphere.clone();
 		}
+		
+		this.add(object);
+	}
+	/** Add object to scene */
+	function onTriggerUp(){
+		object.matrix.premultiply( this.matrixWorld );
+		object.matrix.decompose( object.position, object.quaternion, object.scale );
+		var pos = this.get_absolute_position();
 		object.position.set(pos.x, pos.y, pos.z);
+		this.remove(object);
 		scene.add(object);
+		object.setLinearVelocity(this.get_velocity().multiplyScalar(4));
+		this.pulse(.5,25);
 	}
 	var mode = 0;
 	/** Switch modes */
@@ -54,6 +71,7 @@ THREE.CreateController = function ( id ) {
 	
 	this.addEventListener( 'gripsdown', onGripsDown );
 	this.addEventListener( 'triggerdown', onTriggerDown );
+	this.addEventListener( 'triggerup', onTriggerUp );
 };
 
 THREE.CreateController.prototype = Object.create( THREE.BasicController.prototype );
