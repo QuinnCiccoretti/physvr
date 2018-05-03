@@ -1,9 +1,10 @@
 function create_scene_objects(x = 0, y = 0, z = 0){
+	y = y-.5;
 	create_table(x, y, z);
 	create_floor('img/ground.jpg', x, y, z);
 	
 	create_boxes(20, x, y, z);
-	create_lights(x, y+6, z);
+	createTower(10, x, y, z);
 }
 /** A small table for really no reason**/
 function create_table(){

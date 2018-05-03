@@ -137,7 +137,7 @@
 				user.add( camera );
 				//add floor, grid, table, etc.
 				create_scene_objects();
-
+				create_lights(0, 6, 0);
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
@@ -167,7 +167,7 @@
 				controller1.addEventListener( 'menudown', on_menu_up1 );
 				controller2.addEventListener( 'menudown', on_menu_up2 );
 				initGeometry();
-				createTower(10);
+				// createTower(10);
 				/**
 				* If you want the controllers to be able to push things, you need to make an
 				* invisible box that follows them around. You can't use .add becuase the 

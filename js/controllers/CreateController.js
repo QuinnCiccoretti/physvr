@@ -7,6 +7,7 @@ THREE.CreateController = function ( id ) {
 	
 	THREE.BasicController.call( this, id, "#0066ff", "Create");
 	//Init geometries
+	var modelabel;
 	//table
 	var table_geometry = new THREE.BoxGeometry( 0.5, 0.8, 0.5 );
 	var table_material = new THREE.MeshBasicMaterial({ color: 0x888888 })
@@ -76,11 +77,12 @@ THREE.CreateController = function ( id ) {
 	var mode = 0;
 	/** Switch modes */
 	function onGripsDown( event ) {
+		this.ui.remove(modelabel);
 		mode +=1;
-		if(mode == modelist.length()){
+		if(mode == modelist.length){
 			mode = 0;
 		}
-		var modelabel = create_text_mesh(modelist[mode], 2, "#ff0000");
+		modelabel = create_text_mesh(modelist[mode], 2, "#ff0000");
 		this.ui.add(modelabel);
 	}
 	
