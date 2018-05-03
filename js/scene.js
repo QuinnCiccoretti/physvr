@@ -1,9 +1,9 @@
-function create_scene_objects(){
-	create_table();
-	create_floor('img/ground.jpg');
+function create_scene_objects(x = 0, y = 0, z = 0){
+	create_table(x, y, z);
+	create_floor('img/ground.jpg', x, y, z);
 	
-	// create_boxes(100);
-	create_lights();
+	create_boxes(20, x, y, z);
+	create_lights(x, y+6, z);
 }
 /** A small table for really no reason**/
 function create_table(){
@@ -19,7 +19,7 @@ function create_table(){
 	scene.add( table );
 }
 /** A textured floor about the size of the vive play area and a grid that extends beyond. **/
-function create_floor(texture_path){
+function create_floor(texture_path, x, y, z){
 	// Floor made of grass
 				loader = new THREE.TextureLoader();
 				var floor_material = Physijs.createMaterial(
@@ -32,11 +32,12 @@ function create_floor(texture_path){
 					floor_material,
 					0
 				);
+				floor.position.set(x, y, z);
 				scene.add( floor );
 				// scene.add( new THREE.GridHelper( 20, 40, 0x111111, 0x111111 ) );
 }
 /**  Adds n random boxes to the scene **/
-function create_boxes(n){
+function create_boxes(n, x, y, z){
 	var box_material = Physijs.createMaterial(
 		new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
 		.4, // low friction
@@ -51,9 +52,9 @@ function create_boxes(n){
 			5
 		);
 		box.position.set(
-			Math.random() * 5,
-			Math.random() * 5,
-			Math.random() * 5
+			(Math.random() * 5)+x,
+			(Math.random() * 5)+y,
+			(Math.random() * 5)+z
 		);
 		box.rotation.set(
 			Math.random() * Math.PI * 2,
@@ -68,10 +69,10 @@ function create_boxes(n){
 	}
 }
 /** Adds ambient and directional light that looks natural **/
-function create_lights(){
+function create_lights(x, y, z){
 	scene.add( new THREE.HemisphereLight( 0x888877, 0x777788 ) );
 	var light = new THREE.DirectionalLight( 0xffffff );
-	light.position.set( 0, 6, 0 );
+	light.position.set( x, y, z );
 	light.castShadow = true;
 	light.shadow.camera.top = 2;
 	light.shadow.camera.bottom = -2;
@@ -92,7 +93,7 @@ function load_materials(){
 	);
 }
 /** creates a jenga stack of height n **/
-createTower = (function(nrows) {
+createTower = function(nrows, x=0, y=0, z=0) {
 		var worldscale = 1/5;
 		var block_length = 6*worldscale, block_height = 1*worldscale, block_width = 1.5*worldscale, block_offset = 2*worldscale,
 		block_geometry = new THREE.BoxGeometry( block_length, block_height, block_width );
@@ -102,12 +103,15 @@ createTower = (function(nrows) {
 			for ( j = 0; j < 3; j++ ) {
 				block = new Physijs.BoxMesh( block_geometry, block_material );
 				block.position.y = (block_height / 2) + block_height * i;
+				block.position.y += y;
 				if ( i % 2 === 0 ) {
 					block.rotation.y = Math.PI / 2.01; // #TODO: There's a bug somewhere when this is to close to 2
 					block.position.x = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
+					block.position.x += x;
 				} 
 				else {
 					block.position.z = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
+					block.position.z += z;
 				}
 				//block.receiveShadow = true;
 				block.castShadow = true;
@@ -117,4 +121,4 @@ createTower = (function(nrows) {
 		
 		
 	}
-});
+};
