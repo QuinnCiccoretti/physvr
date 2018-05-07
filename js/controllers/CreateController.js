@@ -16,7 +16,7 @@ THREE.CreateController = function ( id ) {
 	table.receiveShadow = true;
 	//Sphere
 	var sphere = new Physijs.SphereMesh(
-		new THREE.SphereGeometry( .5, 12, 12 ),
+		new THREE.SphereGeometry( .25, 12, 12 ),
 		new THREE.MeshBasicMaterial({ color: 0xff0000 }),
 		0 //mass
 	);
@@ -60,6 +60,9 @@ THREE.CreateController = function ( id ) {
 			object = brick.clone();
 		}
 		
+		if (mode == 3){
+			object = brick.clone();
+		}
 		this.add(object);
 	}
 	/** Add object to scene */
@@ -73,7 +76,7 @@ THREE.CreateController = function ( id ) {
 		object.setLinearVelocity(this.get_velocity().multiplyScalar(4));
 		this.pulse(.5,25);
 	}
-	var modelist = ["table", "sphere","scene"];
+	var modelist = ["table", "sphere","scene", "brick"];
 	var mode = 0;
 	/** Switch modes */
 	function onGripsDown( event ) {

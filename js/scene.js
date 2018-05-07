@@ -3,7 +3,7 @@ function create_scene_objects(x = 0, y = 0, z = 0){
 	create_table(x, y, z);
 	create_floor('img/ground.jpg', x, y, z);
 	
-	create_boxes(20, x, y, z);
+	create_boxes(4, x, y, z);
 	createTower(10, x, y, z);
 }
 /** A small table for really no reason**/
@@ -95,31 +95,33 @@ function load_materials(){
 }
 /** creates a jenga stack of height n **/
 createTower = function(nrows, x=0, y=0, z=0) {
-		var worldscale = 1/5;
-		var block_length = 6*worldscale, block_height = 1*worldscale, block_width = 1.5*worldscale, block_offset = 2*worldscale,
-		block_geometry = new THREE.BoxGeometry( block_length, block_height, block_width );
-		var i, j,block;
-		
-		for ( i = 0; i < nrows; i++ ) {
-			for ( j = 0; j < 3; j++ ) {
-				block = new Physijs.BoxMesh( block_geometry, block_material );
-				block.position.y = (block_height / 2) + block_height * i;
-				block.position.y += y;
-				if ( i % 2 === 0 ) {
-					block.rotation.y = Math.PI / 2.01; // #TODO: There's a bug somewhere when this is to close to 2
-					block.position.x = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
-					block.position.x += x;
-				} 
-				else {
-					block.position.z = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
-					block.position.z += z;
-				}
-				//block.receiveShadow = true;
-				block.castShadow = true;
-				scene.add( block );
-				// blocks.push( block );
+	var worldscale = 1/5;
+	var block_length = 6*worldscale, block_height = 1*worldscale, block_width = 1.5*worldscale, block_offset = 2*worldscale,
+	block_geometry = new THREE.BoxGeometry( block_length, block_height, block_width );
+	var i, j,block;
+	// var tower = new THREE.Objec();
+	
+	for ( i = 0; i < nrows; i++ ) {
+		for ( j = 0; j < 3; j++ ) {
+			block = new Physijs.BoxMesh( block_geometry, block_material );
+			block.position.y = (block_height / 2) + block_height * i;
+			block.position.y += y;
+			if ( i % 2 === 0 ) {
+				block.rotation.y = Math.PI / 2.01; // #TODO: There's a bug somewhere when this is to close to 2
+				block.position.x = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
+				block.position.x += x;
+			} 
+			else {
+				block.position.z = block_offset * j - ( block_offset * 3 / 2 - block_offset / 2 );
+				block.position.z += z;
 			}
-		
-		
+			//block.receiveShadow = true;
+			block.castShadow = true;
+			// tower.add(block);
+			scene.add( block );
+			// blocks.push( block );
+		}
 	}
+	// tower.position.set(x,y,z);
+	// scene.add(tower);
 };

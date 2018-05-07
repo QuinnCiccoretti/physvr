@@ -130,7 +130,7 @@
 				scene.background = new THREE.Color( 0x222222 );
 
 				user = new THREE.Group();
-				user.position.set( 0, 1.6, 0 );	//may need to be fixed
+				user.position.set( 3, 1.6, 0 );	//may need to be fixed
 				scene.add( user );
 
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
@@ -184,12 +184,13 @@
 				scene.add(phys_obj2);
 				//helps updated phys objs in basiccontroller
 				phys_obj_list = [phys_obj1,phys_obj2];
+
 				// Start simulation
 				requestAnimationFrame( render );
 				scene.simulate();
 			}	
 			
-			var ctrlr1list = [new THREE.PaintController( 0 ), new THREE.MoveController( 0 ), new THREE.DragController( 0 ), new THREE.SlingshotController( 0 ),new THREE.LBowController(0), new THREE.CreateController(0)];
+			var ctrlr1list = [new THREE.PaintController( 0 ), new THREE.MoveController( 0 ), new THREE.DragController( 0 ), new THREE.SlingshotController( 0 ),/*new THREE.LBowController(0),*/ new THREE.CreateController(0)];
 			var current_controller1 = 0;
 			/**
 			* Toggles 1st ctrlr through various controller objects
@@ -217,7 +218,7 @@
 			}
 
 			var current_controller2 = 0;
-			var ctrlr2list = [new THREE.PaintController( 1 ), new THREE.MoveController( 1 ), new THREE.DragController( 1 ), new THREE.SlingshotController( 1 ), new THREE.RBowController(1), new THREE.CreateController(1)];
+			var ctrlr2list = [new THREE.PaintController( 1 ), new THREE.MoveController( 1 ), new THREE.DragController( 1 ), new THREE.SlingshotController( 1 ), /* new THREE.RBowController(1),*/ new THREE.CreateController(1)];
 			/**
 			* Toggles 2nd ctrlr through various controller objects
 			*/

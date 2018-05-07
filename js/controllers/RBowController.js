@@ -62,6 +62,7 @@ THREE.RBowController = function ( id ) {
 		user.remove(arrow);
 
 		arrow.position.set(my_pos.x, my_pos.y, my_pos.z);
+		arrow.__dirtyPosition = true; //needed for the physics scene to update pos
 		scene.add(arrow);
 		arrow.setLinearVelocity(diff.multiplyScalar(-20));
 	}
