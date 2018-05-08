@@ -6,14 +6,9 @@
 THREE.MoveController = function ( id ) {
 
 	THREE.BasicController.call( this, id, "#009933", "Move");
-
-	var PI2 = Math.PI * 2;
-
-	var MODES = { COLOR: 0, SIZE: 1 };
-	var mode = MODES.COLOR;
-
-	var color = new THREE.Color( 1, 1, 1 );
-	var size = 1.0;
+	
+	var MODES = { FLAT: 0, MULTI: 1 };
+    var mode = MODES.MULTI;
 	
 	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
 	var material = new THREE.MeshBasicMaterial();
@@ -36,8 +31,13 @@ THREE.MoveController = function ( id ) {
 
 		var dir = new THREE.Vector3(0,0,1);
 		dir.applyEuler(this.rotation);
-		
-		var flat_dir = new THREE.Vector3(dir.x, 0 ,dir.z);
+		var flat_dir;
+		if(mode === MODES.FLAT){
+    		flat_dir = new THREE.Vector3(dir.x, 0 ,dir.z);
+		}
+		if(mode === MODES.MULTI){
+		    flat_dir = new THREE.Vector3(dir.x, dir.y, dir.z);
+		}
 		flat_dir.divideScalar(flat_dir.length());	//convert to unit vec as we are only interested in direction
 		flat_dir.multiplyScalar(r);	//scale to radius from center of touchpad
 		flat_dir.divideScalar(10);	//scale down to reasonable speed
@@ -46,13 +46,18 @@ THREE.MoveController = function ( id ) {
 		}
 		
 		user.position.add(flat_dir);
-		this.pulse(r/4, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
+		this.pulse(r/6, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
 	}
 	/**
 	* Refresh the page
 	*/
 	function onGripsDown(){
-		window.location.reload();
+		if(mode === MODES.FLAT){
+		    mode = MODES.MULTI;
+		}
+		if(mode === MODES.MULTI){
+		    mode = MODES.FLAT;
+		}
 	}
 	
 	this.addEventListener( 'axischanged', onAxisChanged );
