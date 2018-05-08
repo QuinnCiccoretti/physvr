@@ -157,32 +157,7 @@ function onWindowResize() {
 //
 
 
-function load_basic_model(){
-	var loader = new THREE.OBJLoader();
-		loader.setPath( 'models/' );
-		//this part is weird and asyncy. Functions inside will execute when loaded.
-		loader.load( 'vr_controller_vive_1_5.obj', function ( object ) {
-		var loader = new THREE.TextureLoader();
-			loader.setPath( 'models/' );
-			basic_model = object;
-			var controller = basic_model.children[ 0 ];
-			controller.material.map = loader.load( 'onepointfive_texture.png' );
-			controller.material.specularMap = loader.load( 'onepointfive_spec.png' );
-			controller.castShadow = true;
-			controller.receiveShadow = true;
-			
-			basic_controller = controller;
-			controller1.add(basic_controller.clone());
-			controller2.add(basic_controller.clone());
-			controller1.addEventListener( 'menudown', on_menu_up1 );
-			controller2.addEventListener( 'menudown', on_menu_up2 );
-		} );
 
-
-}
-load_model = function(controller1){
-		controller1.add( basic_controller.clone() );
-}
 /**
  * @author quinnciccoretti
  * @author mrdoob

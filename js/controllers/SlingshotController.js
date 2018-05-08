@@ -11,7 +11,7 @@ THREE.SlingshotController = function ( id ) {
 	var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
 	var line = new THREE.Line( geometry, new THREE.MeshBasicMaterial( { color: "#ff0000" } ) );
 	line.name = 'line';
-	line.scale.z = 2;
+	line.scale.z = 0.5;
 	this.add( line.clone() );
 
 

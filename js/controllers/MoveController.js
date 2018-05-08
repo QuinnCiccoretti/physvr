@@ -31,25 +31,25 @@ THREE.MoveController = function ( id ) {
 
 		var dir = new THREE.Vector3(0,0,1);
 		dir.applyEuler(this.rotation);
-		var flat_dir;
+		var final_dir;
 		if(mode === MODES.FLAT){
-    		flat_dir = new THREE.Vector3(dir.x, 0 ,dir.z);
+    		final_dir = new THREE.Vector3(dir.x, 0 ,dir.z);
 		}
 		if(mode === MODES.MULTI){
-		    flat_dir = new THREE.Vector3(dir.x, dir.y, dir.z);
+		    final_dir = dir;
 		}
-		flat_dir.divideScalar(flat_dir.length());	//convert to unit vec as we are only interested in direction
-		flat_dir.multiplyScalar(r);	//scale to radius from center of touchpad
-		flat_dir.divideScalar(10);	//scale down to reasonable speed
+		final_dir.divideScalar(final_dir.length());	//convert to unit vec as we are only interested in direction
+		final_dir.multiplyScalar(r);	//scale to radius from center of touchpad
+		final_dir.divideScalar(10);	//scale down to reasonable speed
 		if(y<0){
-			flat_dir.multiplyScalar(-1);	//flip around if thumpad forward, allows thumbpad back to go backwards.
+			final_dir.multiplyScalar(-1);	//flip around if thumpad forward, allows thumbpad back to go backwards.
 		}
 		
-		user.position.add(flat_dir);
+		user.position.add(final_dir);
 		this.pulse(r/6, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
 	}
 	/**
-	* Refresh the page
+	* Change mode
 	*/
 	function onGripsDown(){
 		if(mode === MODES.FLAT){
