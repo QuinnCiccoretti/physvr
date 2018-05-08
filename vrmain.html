@@ -154,12 +154,14 @@
 				controller1 = new THREE.BasicController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
+				controller1.position.set(0,10,0); //start controller high and away to avoid collisions
 				user.add( controller1 );
 
 				controller2 = new THREE.BasicController( 1 );
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
-				user.add( controller2 );
+				controller2.position.set(0,10,0);
+				user.add( controller2 ); //start controller high and away to avoid collisions
 
 				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
 				load_basic_model(basic_model);
