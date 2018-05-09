@@ -12,7 +12,7 @@ THREE.MoveController = function ( id ) {
 	
 	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
 	var material = new THREE.MeshBasicMaterial();
-	material.color = color;
+	// material.color = "#000000";
 	var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
 	this.ui.add( ball );
 
