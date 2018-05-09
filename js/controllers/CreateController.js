@@ -63,6 +63,10 @@ THREE.CreateController = function ( id ) {
 		if (mode == 3){
 			object = brick.clone();
 		}
+		//sets it a little higher than the halo
+		//relative to controller
+		object.position.y = -0.016;
+		object.position.z = -0.043;
 		this.add(object);
 	}
 	/** Add object to scene */

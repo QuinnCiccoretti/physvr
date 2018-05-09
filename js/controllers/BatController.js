@@ -20,7 +20,7 @@ THREE.BatController = function ( id ) {
 	});
 	this.handle_update = function() {
 		this.update();
-		this.update_phys_objects();
+		// this.update_phys_objects();
 		var pos = this.get_absolute_position();
 		cyl.position.set(pos.x, pos.y, pos.z);
 		cyl.__dirtyPosition = true;

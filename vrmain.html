@@ -57,7 +57,7 @@
 
 			var camera, scene, renderer;
 			var user;
-			var basic_model,basic_controller;
+			var basic_controller_model1, basic_controller_model2;
 			var controller1, controller2;
 			var handleController;
 			var controller_offset_z = -0.07;
@@ -125,18 +125,19 @@
 				load_materials();
 
 				scene = new Physijs.Scene;
+				scene.background = new THREE.Color( 0x162354 );
 				// scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
 				scene.setGravity(new THREE.Vector3( 0, -10, 0 ));
-				scene.background = new THREE.Color( 0x222222 );
+				
 
 				user = new THREE.Group();
-				user.position.set( 3, 1.6, 0 );	//may need to be fixed
+				user.position.set( 3, 1.6, 0 );	//a little to the side of the origin
 				scene.add( user );
 
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
 				user.add( camera );
 				//add floor, grid, table, etc.
-				create_scene_objects();
+				create_scene_objects(0,1.0,0);
 				create_lights(0, 6, 0);
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -164,7 +165,7 @@
 				user.add( controller2 ); //start controller high and away to avoid collisions
 
 				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
-				load_basic_model(basic_model);
+				load_basic_model();
 				//toggle the controller mode
 				controller1.addEventListener( 'menudown', on_menu_up1 );
 				controller2.addEventListener( 'menudown', on_menu_up2 );
@@ -198,7 +199,8 @@
 			* Toggles 1st ctrlr through various controller objects
 			*/
 			function on_menu_up1(){
-
+				//this removes the model to conserve memory
+				controller1.remove(basic_controller_model1);
 				user.remove(controller1);
 				
 				current_controller1++;
@@ -211,7 +213,7 @@
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller1 );
 
-				load_model(controller1);
+				controller1.add(basic_controller_model1);
 				controller1.make_nameplate();
 				controller1.addEventListener( 'menuup', on_menu_up1 );
 			}
@@ -222,6 +224,8 @@
 			* Toggles 2nd ctrlr through various controller objects
 			*/
 			function on_menu_up2(){
+				//this removes the model from the object to conserve memory
+				controller2.remove(basic_controller_model2);
 				user.remove(controller2);
 				
 				current_controller2++;
@@ -234,8 +238,7 @@
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				user.add( controller2 );
-
-				load_model(controller2);
+				controller2.add(basic_controller_model2);
 				controller2.make_nameplate();
 				controller2.addEventListener( 'menuup', on_menu_up2 );
 
