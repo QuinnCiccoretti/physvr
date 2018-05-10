@@ -15,7 +15,7 @@ THREE.BatController = function ( id ) {
 	cyl.material.side = THREE.DoubleSide;
 	cyl.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
 	    // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
-		other_object.setLinearVelocity(this.get_velocity().multiplyScalar(10));
+		other_object.setLinearVelocity(relative_velocity.multiplyScalar(10));
 		console.log("collided!!!")
 	});
 	this.handle_update = function() {
@@ -26,7 +26,7 @@ THREE.BatController = function ( id ) {
 		cyl.__dirtyPosition = true;
 		
 	}
-	this.addEventListener()
+	
 
 };
 
