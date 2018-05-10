@@ -29,6 +29,7 @@ function create_scene_objects(x = 0, y = 0, z = 0){
 	
 	create_boxes(4, x, y, z);
 	createTower(10, x, y, z);
+	create_dir_light(x+2, y+6, z)
 }
 /** A small table for really no reason**/
 function create_table(x,y,z){
@@ -92,9 +93,9 @@ function create_boxes(n, x, y, z){
 		
 	}
 }
-/** Adds ambient and directional light that looks natural **/
-function create_lights(x, y, z){
-	scene.add( new THREE.HemisphereLight( 0x888877, 0x777788, .4) );
+
+
+function create_dir_light(x,y,z){
 	var light = new THREE.DirectionalLight( 0xffffff );
 	light.position.set( x, y, z );
 	light.castShadow = true;
