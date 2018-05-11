@@ -97,7 +97,7 @@ function create_boxes(n, x, y, z){
 
 function create_dir_light(x,y,z){
 	var light = new THREE.DirectionalLight( 0xffffff );
-	light.position.set( x, y, z );
+	light.position.set( x+4, y, z );
 	light.castShadow = true;
 	var shadow_range = 8
 	light.shadow.camera.top = shadow_range;
