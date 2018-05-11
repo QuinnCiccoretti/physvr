@@ -40,7 +40,7 @@
 		<script src="./js/controllers/RBowController.js"></script>
 		<script src="./js/controllers/CreateController.js"></script>
 		<script src="./js/controllers/RefreshController.js"></script>
-		<!-- <script src="./js/controllers/BatController.js"></script> -->
+		<script src="./js/controllers/BatController.js"></script>
 		<!-- model loaders -->
 		<script src="./js/OBJLoader.js"></script>
 		<script src="./js/MTLLoader.js"></script>
@@ -200,7 +200,16 @@
 				scene.simulate();
 			}	
 			
-			var ctrlr1list = [new THREE.PaintController( 0 ), new THREE.MoveController( 0 ), new THREE.DragController( 0 ), new THREE.SlingshotController( 0 ),/*new THREE.LBowController(0),*/ new THREE.CreateController(0), new THREE.RefreshController(0)];
+			var ctrlr1list = [
+			    new THREE.PaintController( 0 ), 
+			    new THREE.MoveController( 0 ), 
+			    new THREE.DragController( 0 ), 
+			    new THREE.SlingshotController( 0 ),
+			    /*new THREE.LBowController(0),*/ 
+			    new THREE.CreateController(0), 
+			    new THREE.RefreshController(0),
+			    new THREE.BatController(0)
+			 ];
 			var current_controller1 = 0;
 			/**
 			* Toggles 1st ctrlr through various controller objects
@@ -226,7 +235,14 @@
 			}
 
 			var current_controller2 = 0;
-			var ctrlr2list = [new THREE.PaintController( 1 ), new THREE.MoveController( 1 ), new THREE.DragController( 1 ), new THREE.SlingshotController( 1 ), /* new THREE.RBowController(1),*/ new THREE.CreateController(1)];
+			var ctrlr2list = [
+			    new THREE.PaintController( 1 ), 
+    			new THREE.MoveController( 1 ), 
+    			new THREE.DragController( 1 ), 
+    			new THREE.SlingshotController( 1 ), 
+    			/* new THREE.RBowController(1),*/
+    			new THREE.CreateController(1)
+			];
 			/**
 			* Toggles 2nd ctrlr through various controller objects
 			*/
