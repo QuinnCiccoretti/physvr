@@ -15,15 +15,21 @@ THREE.DragController = function ( id ) {
 	line.name = 'line';
 	line.scale.z = 5;
 	this.add( line.clone() );
+	//touchpad ball
+	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
+	var material = new THREE.MeshBasicMaterial({color:"#ff0000"});
+	var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
+	this.ui.add( ball );
 
-	
+	var object;
+
 	function onTriggerDown(){
 		var controller = this;
 		var intersections = getIntersections( controller );
 		if ( intersections.length > 0 ) {
 			var intersection = intersections[ 0 ];
 			tempMatrix.getInverse( controller.matrixWorld );
-			var object = intersection.object;
+			object = intersection.object;
 		
 			object.matrix.premultiply( tempMatrix );
 			object.matrix.decompose( object.position, object.quaternion, object.scale );
@@ -77,6 +83,18 @@ THREE.DragController = function ( id ) {
 			var object = intersected.pop();
 		}
 	}
+	function onAxisChanged( event ) {
+		
+		if ( this.getButtonState( 'trigger' ) === false ) return;
+		// if ( this.getButtonState( 'tou' ) === false ) return;
+
+		var x = event.axes[ 0 ] / 2.0;
+		var y = - event.axes[ 1 ] / 2.0;
+
+		ball.position.set(0, event.axes[ 1 ], 0);
+		object.position.multiplyScalar(y*5);
+	}
+	this.addEventListener( 'axischanged', onAxisChanged );
 	this.addEventListener( 'triggerup', onTriggerUp );
 	this.addEventListener( 'triggerdown', onTriggerDown );
 };
