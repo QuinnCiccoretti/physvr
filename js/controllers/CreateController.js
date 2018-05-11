@@ -8,19 +8,19 @@ THREE.CreateController = function ( id ) {
 	THREE.BasicController.call( this, id, "#0066ff", "Create");
 	//Init geometries
 	var modelabel;
-	//table
+	/**Table*/
 	var table_geometry = new THREE.BoxGeometry( 0.5, 0.8, 0.5 );
 	var table_material = new THREE.MeshBasicMaterial({ color: 0x888888 })
 	var table = new Physijs.BoxMesh( table_geometry, table_material, 0);
 	table.castShadow = true;
 	table.receiveShadow = true;
-	//Sphere
+	/**Sphere*/
 	var sphere = new Physijs.SphereMesh(
 		new THREE.SphereGeometry( .25, 12, 12 ),
 		new THREE.MeshBasicMaterial({ color: 0xff0000 }),
 		0 //mass
 	);
-	//Brick
+	/**Brick*/
 	var brick_material = Physijs.createMaterial(
 		new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
 		.4, // low friction
@@ -33,15 +33,17 @@ THREE.CreateController = function ( id ) {
 			brick_material,
 			5
 	);
-	/**
-	* Creates object
-	*/
-	//dont update physics so it doesn't mess with arrow.
+	
+	/**dont update physics objects so it doesn't mess with arrow.*/
 	this.handle_update = function() {
 		this.update(); //refreshes controller data
 		//this.update_phys_objects();	//Temporary solution
 	}
+	
 	var object;
+	/**
+	* Creates object
+	*/
 	function onTriggerDown(){
 		
 		

@@ -6,7 +6,7 @@
 
 THREE.BatController = function ( id ) {
 	
-	THREE.BasicController.call( this, id );
+	THREE.BasicController.call( this, id, "#888888", "Bat");
 	//bat cylinder
 	var cyl  = new Physijs.CylinderMesh(
     new THREE.CylinderGeometry( .1, .1, 2, 32 ),

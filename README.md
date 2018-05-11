@@ -7,7 +7,7 @@ physvr provides the [BasicController](./js/controllers/BasicController.js) class
 - WebVR compatible browser (tested with [Firefox Nightly](https://www.mozilla.org/en-US/firefox/)). See [WebVR's site](https://webvr.info/) for more info
 
 ### Documentation
-- See [out/](https://physvr.herokuapp.com/out/) directory
+- See [out/](https://physvr.herokuapp.com/out/) directory. Docs created by jsdoc3
 
 ### To run:
 (Try the live demo of master at https://physvr.herokuapp.com)
@@ -25,7 +25,7 @@ physvr provides the [BasicController](./js/controllers/BasicController.js) class
 
 ### Adding your own Controller class:
 1. All controller modes are objects that extend the [BasicController](./js/controllers/BasicController.js) class. (This class in turn extends [ViveController](./js/controllers/ViveController.js), which is a lower level class that stores gamepad data and doesn't include physics support)
-2. To add your own controller mode, create an object that extends the BasicController class (or copy an existing controller and modify the class name)
+2. To add your own controller mode, create an object that extends the BasicController class (or copy an existing controller and modify the class name). I recommend you look at RefreshController (the very simplest controller) to figure out the javascript class syntax, which is a bit odd.
 3. Call:
 	 - `ctrlr1list.append(new MyController(0));`	Adds to controller 0
 	 - `ctrlr2list.append(new MyController(1));`	Adds to controller 1
@@ -34,6 +34,6 @@ physvr provides the [BasicController](./js/controllers/BasicController.js) class
 
 ## TO DO
  - [ ] Fix rotation of arrow on BowControllers
- - [ ] Add multi-axis movement modes on MoveController
- - [ ] Add CreatorController to add objects to the scene
+ - [x] Add multi-axis movement modes on MoveController
+ - [x] Add CreatorController to add objects to the scene
  - [ ] Use VRStageParameters from WebVR api to create walls where they are in Vive Chaperone
