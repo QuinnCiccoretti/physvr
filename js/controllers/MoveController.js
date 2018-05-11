@@ -8,11 +8,11 @@ THREE.MoveController = function ( id ) {
 	THREE.BasicController.call( this, id, "#009933", "Move");
 	
 	var MODES = { FLAT: 0, MULTI: 1 };
-    var mode = MODES.MULTI;
-	
+    var mode = MODES.FLAT;
+	var modelabel;
 	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
 	var material = new THREE.MeshBasicMaterial();
-	material.color = color;
+	// material.color = "#000000";
 	var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
 	this.ui.add( ball );
 
@@ -48,16 +48,22 @@ THREE.MoveController = function ( id ) {
 		user.position.add(final_dir);
 		this.pulse(r/6, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
 	}
+	var modelist = ["flataxis", "multiaxis"];
 	/**
 	* Change mode
 	*/
-	function onGripsDown(){
+	function onGripsDown(event){
+		console.log("gripsdown, mode:"+mode);
 		if(mode === MODES.FLAT){
 		    mode = MODES.MULTI;
 		}
-		if(mode === MODES.MULTI){
+		//will not work without else if
+		else if(mode === MODES.MULTI){
 		    mode = MODES.FLAT;
 		}
+		this.ui.remove(modelabel);
+		modelabel = create_text_mesh(modelist[mode], 2, "#ff0000");
+		this.ui.add(modelabel);
 	}
 	
 	this.addEventListener( 'axischanged', onAxisChanged );
