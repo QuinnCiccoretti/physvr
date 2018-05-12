@@ -58,7 +58,7 @@
 
 			var camera, scene, renderer;
 			var user;
-			var basic_controller_model1, basic_controller_model2;
+			var basic_controller_model1, basic_controller_model2, basic_controller_models = [];
 			var controller1, controller2;
 			var handleController;
 			var controller_offset_z = -0.07;
@@ -152,7 +152,7 @@
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
 				
-
+				//Set up basic controllers while a list of other controllers loads
 				controller1 = new THREE.BasicController( 0 );
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
@@ -186,9 +186,18 @@
 				phys_obj2 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
 				phys_obj1.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
     				controller1.pulse(.25, 25);
+    				//by setting object.userData.ctrlr_nocollide to true, you can make it not collide with the controller
+    				if(typeof other_object.userData.ctrlr_nocollide !== "undefined"){
+    					other_object.setLinearVelocity(0,0,0);
+    				}
+    				
 				});
 				phys_obj2.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
     				controller2.pulse(.25, 25);
+    				//by setting object.userData.ctrlr_nocollide to true, you can make it not collide with the controller
+    				if(typeof other_object.userData.ctrlr_nocollide !== "undefined"){
+    					other_object.setLinearVelocity(0,0,0);
+    				}
 				});
 				scene.add(phys_obj1);
 				scene.add(phys_obj2);
@@ -206,8 +215,8 @@
 			    new THREE.DragController( 0 ), 
 			    new THREE.SlingshotController( 0 ),
 			    /*new THREE.LBowController(0),*/ 
-			    new THREE.CreateController(0), 
-			    new THREE.RefreshController(0),
+			    new THREE.CreateController( 0 ), 
+			    new THREE.RefreshController( 0 ),
 			    // new THREE.BatController(0)
 
 			 ];
@@ -217,9 +226,10 @@
 			* Toggles 1st ctrlr through various controller objects
 			*/
 			function on_menu_up1(){
-				//this removes the model to conserve memory
-				controller1.remove(basic_controller_model1);
-				user.remove(controller1);
+				
+				//The below line is essential. It is located in BasicController
+				// and may be overriden
+				controller1.on_deactivate();
 				
 				current_controller1++;
 				if(current_controller1 == ctrlr1list.length){
@@ -227,12 +237,9 @@
 				}
 				controller1 = ctrlr1list[current_controller1];
 				
-				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
-				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
-				user.add( controller1 );
-
-				controller1.add(basic_controller_model1);
-				controller1.make_nameplate();
+				//The below line is essential. It is located in BasicController
+				// and may be overriden
+				controller1.on_activate();
 				controller1.addEventListener( 'menuup', on_menu_up1 );
 			}
 
@@ -243,15 +250,16 @@
     			new THREE.DragController( 1 ), 
     			new THREE.SlingshotController( 1 ), 
     			/* new THREE.RBowController(1),*/
-    			new THREE.CreateController(1)
+    			new THREE.CreateController( 1 )
 			];
 			/**
 			* Toggles 2nd ctrlr through various controller objects
 			*/
 			function on_menu_up2(){
-				//this removes the model from the object to conserve memory
-				controller2.remove(basic_controller_model2);
-				user.remove(controller2);
+				
+				//The below line is essential. It is located in BasicController
+				// and may be overriden
+				controller2.on_deactivate();
 				
 				current_controller2++;
 				if(current_controller2 == ctrlr2list.length){
@@ -259,14 +267,10 @@
 				}
 				controller2 = ctrlr2list[current_controller2];
 				
-			
-				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
-				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
-				user.add( controller2 );
-				controller2.add(basic_controller_model2);
-				controller2.make_nameplate();
+				//The below line is essential. It is located in BasicController
+				// and may be overriden
+				controller2.on_activate();
 				controller2.addEventListener( 'menuup', on_menu_up2 );
-
 			}
 	
 			
