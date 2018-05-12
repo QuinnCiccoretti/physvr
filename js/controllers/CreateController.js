@@ -35,6 +35,7 @@ THREE.CreateController = function ( id ) {
 	);
 	
 	/**
+	* The following three methods, on_activate, on_deactivate, and handle_update are a rather compicated way to
 	* remove the physics object around the controller so it does not 
 	* collide with created objects.
 	*/
@@ -45,6 +46,7 @@ THREE.CreateController = function ( id ) {
 		//add the model of the controller
 		this.add(basic_controller_models[id]);
 		this.make_nameplate();
+		//remove physobj
 		scene.remove(phys_obj_list[id]);
 	}
 	/**
@@ -54,16 +56,18 @@ THREE.CreateController = function ( id ) {
 		//this removes the model to conserve memory
 		this.remove(basic_controller_models[id]);
 		user.remove(this);
+		//add back physobj
 		scene.add(phys_obj_list[id]);
 	}
-	/**
-	* Updates controller position data based on gamepad pose
-	*/
-	this.handle_update = function() {
-		this.update(); //refreshes controller data
-		//dont update physics
-		//this.update_phys_objects();
-	}
+	// /**
+	// * Updates controller position data based on gamepad pose
+	// */
+	// this.handle_update = function() {
+	// 	this.update(); //refreshes controller data
+	// 	//dont update physics
+	// 	//this.update_phys_objects();
+	// }
+	this.update_phys_objects = function(){}
 	
 	var object;
 	/**
