@@ -86,7 +86,7 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	*/
 	this.update_phys_objects = function(){
 		
-		var this_abs_pos = this.get_absolute_position();
+		var my_pos = this.get_absolute_position();
 		//get the appropriate physics object, object 1 or 2, from a global list
 		var phys_obj = phys_obj_list[id];	
 
@@ -102,18 +102,60 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	    phys_obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 	}
 	/**
+	* called whenever the menu button is pressed to switch to this mode
+	* from another mode
+	*/
+	this.on_activate = function(){
+		this.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
+		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
+		user.add( this );
+		//add the model of the controller
+		this.add(basic_controller_models[id]);
+		this.make_nameplate();
+	}
+	/**
+	* called whenever the menu button is pressed to switch modes from
+	* this mode to another
+	*/
+	this.on_deactivate = function(){
+		//this removes the model to conserve memory
+		this.remove(basic_controller_models[id]);
+		user.remove(this);
+	}
+	
+	// /**
+	// * Places physics objects arbitrarily far away from user.
+	// * This ensures they don't randomly collide when they aren't being updated
+	// */
+	// this.suspend_phys_objects = function(){
+	// 	suspend_object(phys_obj1);
+	// 	suspend_object(phys_obj2);
+
+	// }
+	// *
+	// * Helper method to suspend objects
+	
+	// function suspend_object(object){
+	// 	var zerovec = new THREE.Vector3();
+	// 	object.setLinearFactor(zerovec);
+	// 	object.setAngularFactor(zerovec);
+	// 	object.position.set( 0, 100, 0 );
+ //   		object.__dirtyPosition = true;
+	// }
+
+	/** starts at false */
+	var made_nameplate = false;
+	/**
 	 * Adds a text label to controller and sets .name attribute
 	 */
 	this.make_nameplate = function(){
 		this.name = name;
-		if(typeof uifont !== "undefined"){
-			var nameplate = create_text_mesh(name, 2, uicolor);
-			nameplate.rotation.z = -1.55;	//align w/ controller handle
-			this.ui.add(nameplate);
-			nameplate.position.set(-0.5, -0.8, 0.3); //set relative pos
-		}
-		else{
-			console.log("Font unloaded, no nameplate made");
+		if( !made_nameplate &amp;&amp; (typeof uifont !== "undefined") ){
+			this.nameplate = create_text_mesh(name, 2, uicolor);
+			this.nameplate.rotation.z = -1.55;	//align w/ controller handle
+			this.ui.add(this.nameplate);
+			this.nameplate.position.set(-0.5, -0.8, 0.3); //set relative pos
+			made_nameplate = true;
 		}
 		
 	}
@@ -144,13 +186,13 @@ THREE.BasicController.prototype.constructor = THREE.BasicController;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.LBowController.html">LBowController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.RBowController.html">RBowController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_HUD">create_HUD</a></li><li><a href="global.html#create_lights">create_lights</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#create_text_geometry">create_text_geometry</a></li><li><a href="global.html#create_text_mesh">create_text_mesh</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#init_font_loader">init_font_loader</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.CreateController.html">CreateController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.LBowController.html">LBowController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.RBowController.html">RBowController</a></li><li><a href="THREE.RefreshController.html">RefreshController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_HUD">create_HUD</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#create_text_geometry">create_text_geometry</a></li><li><a href="global.html#create_text_mesh">create_text_mesh</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#init_font_loader">init_font_loader</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 29 2018 10:48:16 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat May 12 2018 17:25:24 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

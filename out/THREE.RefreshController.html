@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: MaterialCreator</title>
+    <title>JSDoc: Class: RefreshController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: MaterialCreator</h1>
+    <h1 class="page-title">Class: RefreshController</h1>
 
     
 
@@ -28,8 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="THREE.html#.MTLLoader">.MTLLoader</a>.</span>MaterialCreator<span class="signature">(baseUrl, options)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>RefreshController<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">RefreshController
+Reloads everything from start</div>
         
     
 </header>
@@ -40,95 +42,23 @@
         
 
     
-
-    
-    <h4 class="name" id="MaterialCreator"><span class="type-signature"></span>new MaterialCreator<span class="signature">(baseUrl, options)</span><span class="type-signature"></span></h4>
+    <h2>Constructor</h2>
     
 
     
-
-
-
-<div class="description">
-    Create a new THREE-MTLLoader.MaterialCreator
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
+    <h4 class="name" id="RefreshController"><span class="type-signature"></span>new RefreshController<span class="signature">()</span><span class="type-signature"></span></h4>
     
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>baseUrl</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Url relative to which textures are loaded</td>
-        </tr>
 
     
 
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
 
-            <td class="type">
-            
-            </td>
 
-            
 
-            
 
-            <td class="description last">Set of options on how to construct the materials
-                 side: Which side to apply the material
-                       THREE.FrontSide (default), THREE.BackSide, THREE.DoubleSide
-                 wrap: What type of wrapping to apply for textures
-                       THREE.RepeatWrapping (default), THREE.ClampToEdgeWrapping, THREE.MirroredRepeatWrapping
-                 normalizeRGB: RGBs need to be normalized to 0-1 from 0-255
-                               Default: false, assumed to be already normalized
-                 ignoreZeroRGBs: Ignore values of RGBs (Ka,Kd,Ks) that are all 0's
-                                 Default: false</td>
-        </tr>
 
-    
-    </tbody>
-</table>
+
+
+
 
 
 
@@ -154,6 +84,13 @@
     
 
     
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>quinnciccoretti</li>
+        </ul>
+    </dd>
+    
 
     
 
@@ -164,7 +101,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="MTLLoader.js.html">MTLLoader.js</a>, <a href="MTLLoader.js.html#line187">line 187</a>
+        <a href="controllers_RefreshController.js.html">controllers/RefreshController.js</a>, <a href="controllers_RefreshController.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -209,6 +146,182 @@
 
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~onGripsDown"><span class="type-signature">(inner) </span>onGripsDown<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Reload the page from the server
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_RefreshController.js.html">controllers/RefreshController.js</a>, <a href="controllers_RefreshController.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~onTriggerDown"><span class="type-signature">(inner) </span>onTriggerDown<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Reload the page from cache
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_RefreshController.js.html">controllers/RefreshController.js</a>, <a href="controllers_RefreshController.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     

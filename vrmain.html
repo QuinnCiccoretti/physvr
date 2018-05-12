@@ -192,6 +192,7 @@
     				}
     				
 				});
+				phys_obj1.material.wireframe = true;
 				phys_obj2.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
     				controller2.pulse(.25, 25);
     				//by setting object.userData.ctrlr_nocollide to true, you can make it not collide with the controller

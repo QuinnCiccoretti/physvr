@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: RBowController</title>
+    <title>JSDoc: Class: CreateController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: RBowController</h1>
+    <h1 class="page-title">Class: CreateController</h1>
 
     
 
@@ -28,10 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>RBowController<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>CreateController<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">RBowController
-the hand that pulls the bowstring. Should be used with other hand as LBowController</div>
+            <div class="class-description">CreateController
+Creates things</div>
         
     
 </header>
@@ -46,7 +46,7 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
     
 
     
-    <h4 class="name" id="RBowController"><span class="type-signature"></span>new RBowController<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CreateController"><span class="type-signature"></span>new CreateController<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -101,7 +101,7 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line7">line 7</a>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -149,13 +149,13 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
 
         
             
-<h4 class="name" id="~last_threshold"><span class="type-signature">(inner) </span>last_threshold<span class="type-signature"></span></h4>
+<h4 class="name" id="~brick_material"><span class="type-signature">(inner) </span>brick_material<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    for vibrating with distance
+    Brick
 </div>
 
 
@@ -193,7 +193,131 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line12">line 12</a>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~sphere"><span class="type-signature">(inner) </span>sphere<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Sphere
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~table_geometry"><span class="type-signature">(inner) </span>table_geometry<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Table
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -221,7 +345,7 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
     
 
     
-    <h4 class="name" id="handle_update"><span class="type-signature"></span>handle_update<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="on_activate"><span class="type-signature"></span>on_activate<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -229,7 +353,9 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
 
 
 <div class="description">
-    positions and points arrow between controllers.
+    The following three methods, on_activate, on_deactivate, and handle_update are a rather compicated way to
+remove the physics object around the controller so it does not 
+collide with created objects.
 </div>
 
 
@@ -273,7 +399,7 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line16">line 16</a>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line42">line 42</a>
     </li></ul></dd>
     
 
@@ -307,7 +433,7 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
     
 
     
-    <h4 class="name" id="~calculate_euler"><span class="type-signature">(inner) </span>calculate_euler<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="on_deactivate"><span class="type-signature"></span>on_deactivate<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -315,9 +441,7 @@ the hand that pulls the bowstring. Should be used with other hand as LBowControl
 
 
 <div class="description">
-    WORK IN PROGRESS -> TODO: Use local coords and add to user, then remove from scene
-calculates a euler that will rotate the arrow parralell to
-the line between both controllers.
+    add back the physics object
 </div>
 
 
@@ -361,7 +485,93 @@ the line between both controllers.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line90">line 90</a>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~onGripsDown"><span class="type-signature">(inner) </span>onGripsDown<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Switch modes
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line117">line 117</a>
     </li></ul></dd>
     
 
@@ -403,7 +613,7 @@ the line between both controllers.
 
 
 <div class="description">
-    instantiates new arrow with physics
+    Creates object
 </div>
 
 
@@ -447,7 +657,7 @@ the line between both controllers.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line72">line 72</a>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -489,7 +699,7 @@ the line between both controllers.
 
 
 <div class="description">
-    launches arrow proportional to draw distance
+    Add object to scene
 </div>
 
 
@@ -533,7 +743,7 @@ the line between both controllers.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_RBowController.js.html">controllers/RBowController.js</a>, <a href="controllers_RBowController.js.html#line58">line 58</a>
+        <a href="controllers_CreateController.js.html">controllers/CreateController.js</a>, <a href="controllers_CreateController.js.html#line104">line 104</a>
     </li></ul></dd>
     
 

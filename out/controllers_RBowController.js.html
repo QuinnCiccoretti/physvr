@@ -49,8 +49,8 @@ THREE.RBowController = function ( id ) {
 
 		if(this.getButtonState("trigger")){	//while trigger held
 			if(typeof arrow !== "undefined"){
-				var handpos = this.get_absolute_position();
-				var bowpos = controller1.get_absolute_position();
+				var handpos = this.position;
+				var bowpos = controller1.position;
 				// var midpoint = handpos.clone().add(bowpos).divideScalar(2);
 				//position arrow
 				arrow.position.set(handpos.x, handpos.y, handpos.z);
@@ -85,7 +85,13 @@ THREE.RBowController = function ( id ) {
 	 */
 	function onTriggerUp(){
 		last_threshold = .1;	//reset threshold for vibrating with distance
-		var diff = this.get_absolute_position().sub(controller1.get_absolute_position());
+		var my_pos = this.get_absolute_position();
+		var diff = my_pos.sub(controller1.get_absolute_position());
+		user.remove(arrow);
+
+		arrow.position.set(my_pos.x, my_pos.y, my_pos.z);
+		arrow.__dirtyPosition = true; //needed for the physics scene to update pos
+		scene.add(arrow);
 		arrow.setLinearVelocity(diff.multiplyScalar(-20));
 	}
 	/**
@@ -102,7 +108,7 @@ THREE.RBowController = function ( id ) {
 		var handpos = this.get_absolute_position();
 		arrow.position.set(handpos.x,handpos.y,handpos.z);
 		arrow.__dirtyPosition = true;
-		scene.add(arrow);
+		user.add(arrow);
 	}
 	/**
 	 * WORK IN PROGRESS -> TODO: Use local coords and add to user, then remove from scene
@@ -112,6 +118,7 @@ THREE.RBowController = function ( id ) {
 	function calculate_euler(a,b){
 		var diff = a.sub(b);
 		var spher = new THREE.Spherical().setFromVector3(diff);
+		spher.makeSafe();
 		var rot = new THREE.Euler( spher.phi, 0, -1*spher.theta);
 		
 		return rot;
@@ -134,13 +141,13 @@ THREE.RBowController.prototype.constructor = THREE.RBowController;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.LBowController.html">LBowController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.RBowController.html">RBowController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_HUD">create_HUD</a></li><li><a href="global.html#create_lights">create_lights</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#create_text_geometry">create_text_geometry</a></li><li><a href="global.html#create_text_mesh">create_text_mesh</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#init_font_loader">init_font_loader</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BatController.html">BatController</a></li><li><a href="THREE.BasicController.html">BasicController</a></li><li><a href="THREE.CreateController.html">CreateController</a></li><li><a href="THREE.DragController.html">DragController</a></li><li><a href="THREE.LBowController.html">LBowController</a></li><li><a href="THREE.MoveController.html">MoveController</a></li><li><a href="THREE.MTLLoader.MaterialCreator.html">MaterialCreator</a></li><li><a href="THREE.PaintController.html">PaintController</a></li><li><a href="THREE.RBowController.html">RBowController</a></li><li><a href="THREE.RefreshController.html">RefreshController</a></li><li><a href="THREE.SlingshotController.html">SlingshotController</a></li></ul><h3>Global</h3><ul><li><a href="global.html#create_boxes">create_boxes</a></li><li><a href="global.html#create_floor">create_floor</a></li><li><a href="global.html#create_HUD">create_HUD</a></li><li><a href="global.html#create_table">create_table</a></li><li><a href="global.html#create_text_geometry">create_text_geometry</a></li><li><a href="global.html#create_text_mesh">create_text_mesh</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#getFocalLength">getFocalLength</a></li><li><a href="global.html#init_font_loader">init_font_loader</a></li><li><a href="global.html#initGeometry">initGeometry</a></li><li><a href="global.html#sanitizeNodeName">sanitizeNodeName</a></li><li><a href="global.html#setFocalLength">setFocalLength</a></li><li><a href="global.html#setViewOffset">setViewOffset</a></li><li><a href="global.html#WEBVR">WEBVR</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 29 2018 10:48:16 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat May 12 2018 17:25:24 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
