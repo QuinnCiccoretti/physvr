@@ -28,13 +28,14 @@ THREE.GravityController = function ( id ) {
 		var r = 2*Math.sqrt(x*x+y*y);
 		var grav;
 		if(mode === MODES.UPDOWN){
-			grav = new THREE.Vector3(0,1,0).muliplyScalar(y*20);
+			grav = new THREE.Vector3(0,1,0).multiplyScalar(y*-20);
 		}
 		if(mode === MODES.MULTI){
 			var dir = new THREE.Vector3(0,0,-1);
 			dir.applyEuler(this.rotation);
-			grav = dir.multiplyScalar(y*20);
+			grav = dir.multiplyScalar(y*-20);
 		}
+		scene.setGravity(grav);
 		this.pulse(r/6, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
 	}
 	var modelist = ["up/down", "multiaxis"];
