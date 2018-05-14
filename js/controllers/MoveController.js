@@ -29,8 +29,7 @@ THREE.MoveController = function ( id ) {
 		var r = 2*Math.sqrt(x*x+y*y);
 		
 
-		var dir = new THREE.Vector3(0,0,1);
-		dir.applyEuler(this.rotation);
+		var dir = this.get_pointing_vector().multiplyScalar(-1);
 		var final_dir;
 		if(mode === MODES.FLAT){
     		final_dir = new THREE.Vector3(dir.x, 0 ,dir.z);

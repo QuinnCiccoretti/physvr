@@ -28,8 +28,7 @@ THREE.SlingshotController = function ( id ) {
 		);
 		var pos = this.position.add(user.position);
 		//make vector that points in direction controller points
-		var dir = new THREE.Vector3(0,0,-1);
-		dir.applyEuler(this.rotation);
+		var dir = this.get_pointing_vector();
 
 		scene.add(sphere);
 		sphere.position.set( pos.x, pos.y, pos.z );

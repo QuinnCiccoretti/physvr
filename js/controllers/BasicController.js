@@ -51,7 +51,15 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	this.get_angular_velocity = function() {
 		return new THREE.Vector3().fromArray(this.getGamepad().pose.angularVelocity);
 	}
-
+	/**
+	* @returns a vector pointing out from the controller,
+	* intended for shooting things alongs
+	*/
+    this.get_pointing_vector = function(){
+        var dir = new THREE.Vector3(0,0,-1);
+		dir.applyEuler(this.rotation);
+		return dir;
+    }
 	/**
 	* Updates invisible boxes (phys_obj1 and phys_obj2)
 	* to follow controllers so they can push things
