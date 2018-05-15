@@ -25,10 +25,10 @@ physvr provides the [BasicController](./js/controllers/BasicController.js) class
 
 ### Adding your own Controller class:
 1. All controller modes are objects that extend the [BasicController](./js/controllers/BasicController.js) class. (This class in turn extends [ViveController](./js/controllers/ViveController.js), which is a lower level class that stores gamepad data and doesn't include physics support)
-2. To add your own controller mode, create an object that extends the BasicController class (or copy an existing controller and modify the class name). I recommend you look at RefreshController (the very simplest controller) to figure out the javascript class syntax, which is a bit odd. Below is a sample:
+2. To add your own controller mode, create an object that extends the BasicController class (or copy an existing controller and modify the class name). I recommend you look at RefreshController (the very simplest controller) to figure out the javascript class syntax, which is a bit odd. Below is an example:
 ```javascript
 THREE.MyController = function ( id ) {
-	
+	//args: this, an id unique to each controller, a hex color string, and a name
 	THREE.BasicController.call( this, id, "#000000", "MyName");
 	
 	/**
