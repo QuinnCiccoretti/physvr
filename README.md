@@ -35,8 +35,7 @@ THREE.MyController = function ( id ) {
 	* Do something when the trigger is pulled
 	*/
 	function onTriggerDown(){
-		location.reload();
-		this.pulse(1,100);
+		console.log("trigger is down");
 	}
 	
 	this.addEventListener( 'triggerdown', onTriggerDown );
