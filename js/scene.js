@@ -74,7 +74,7 @@ function create_boxes(n, x, y, z){
 		var box = new Physijs.BoxMesh(
 			new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
 			box_material,
-			5
+			1
 		);
 		box.position.set(
 			(Math.random() * 5)+x,
