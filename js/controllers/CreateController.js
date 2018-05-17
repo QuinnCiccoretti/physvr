@@ -31,7 +31,7 @@ THREE.CreateController = function ( id ) {
 	var brick = new Physijs.BoxMesh(
 			new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
 			brick_material,
-			5
+			1
 	);
 	
 	/**dont update physics objects so it doesn't mess with arrow.*/
