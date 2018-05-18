@@ -21,7 +21,8 @@ physvr provides the [BasicController](./js/controllers/BasicController.js) class
 	- `python -m SimpleHTTPServer 5000` python2
 3. Navigate to http://localhost:5000 on a [WebVR compatible browser](https://webvr.info/)
 4. Hit "Start VR"
-5. Use the menu button on your controller (above the touchpad on the Vive) to switch controller modes. Most modes perform an action when you press the trigger.
+5. Once on `vrmain.html`, hit the "Enter VR" button in the bottom middle of the window
+6. Use the menu button on your controller (above the touchpad on the Vive) to switch controller modes. Most modes perform an action when you press the trigger.
 
 ### Adding your own Controller class:
 1. All controller modes are objects that extend the [BasicController](./js/controllers/BasicController.js) class. (This class in turn extends [ViveController](./js/controllers/ViveController.js), which is a lower level class that stores gamepad data and doesn't include physics support)
