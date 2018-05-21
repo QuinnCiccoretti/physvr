@@ -25,11 +25,14 @@ THREE.RBowController = function ( id ) {
 				var bowpos = controller1.position;
 				// var midpoint = handpos.clone().add(bowpos).divideScalar(2);
 				//position arrow
+				var diff = bowpos.clone().sub(handpos);
+				diff.normalize();
+				var arrowHelper = THREE.arrowHelper(diff, new THREE.Vector3());
 				arrow.position.set(handpos.x, handpos.y, handpos.z);
 				arrow.__dirtyPosition = true; //needed for the physics scene to update pos
 				 
 				 //quaternion that will align objects between the two controllers
-				var rot_between = calculate_euler(bowpos.clone(), handpos.clone());
+				var rot_between = arrowHelper.rotation;
 			    // console.log(rot_between);
 			    arrow.rotation.set(rot_between.x, rot_between.y, rot_between.z);
 			    // console.log("a");
