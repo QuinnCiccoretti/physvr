@@ -21,13 +21,13 @@ THREE.RBowController = function ( id ) {
 
 		if(this.getButtonState("trigger")){	//while trigger held
 			if(typeof arrow !== "undefined"){
-				var handpos = this.position;
-				var bowpos = controller1.position;
+				var handpos = this.get_absolute_position();
+				var bowpos = controller1.get_absolute_position();
 				// var midpoint = handpos.clone().add(bowpos).divideScalar(2);
-				//position arrow
+				//position arrow 
 				var diff = bowpos.clone().sub(handpos);
 				diff.normalize();
-				var arrowHelper = THREE.arrowHelper(diff, new THREE.Vector3());
+				var arrowHelper = new THREE.ArrowHelper(diff, new THREE.Vector3());
 				arrow.position.set(handpos.x, handpos.y, handpos.z);
 				arrow.__dirtyPosition = true; //needed for the physics scene to update pos
 				 
@@ -61,13 +61,14 @@ THREE.RBowController = function ( id ) {
 	function onTriggerUp(){
 		last_threshold = .1;	//reset threshold for vibrating with distance
 		var my_pos = this.get_absolute_position();
-		var diff = my_pos.sub(controller1.get_absolute_position());
-		user.remove(arrow);
-
 		arrow.position.set(my_pos.x, my_pos.y, my_pos.z);
 		arrow.__dirtyPosition = true; //needed for the physics scene to update pos
-		scene.add(arrow);
-		arrow.setLinearVelocity(diff.multiplyScalar(-20));
+		// scene.add(arrow);
+		var diff = my_pos.sub(controller1.get_absolute_position());
+		// user.remove(arrow);
+
+		
+		arrow.setLinearVelocity(diff.multiplyScalar(-40));
 	}
 	/**
 	 * instantiates new arrow with physics
@@ -83,22 +84,8 @@ THREE.RBowController = function ( id ) {
 		var handpos = this.get_absolute_position();
 		arrow.position.set(handpos.x,handpos.y,handpos.z);
 		arrow.__dirtyPosition = true;
-		user.add(arrow);
-	}
-	/**
-	 * WORK IN PROGRESS -> TODO: Use local coords and add to user, then remove from scene
-	 * calculates a euler that will rotate the arrow parralell to
-	 * the line between both controllers.
-	 */
-	function calculate_euler(a,b){
-		var diff = a.sub(b);
-		var spher = new THREE.Spherical().setFromVector3(diff);
-		spher.makeSafe();
-		var rot = new THREE.Euler( spher.phi, 0, -1*spher.theta);
-		
-		return rot;
-	}
-	
+		scene.add(arrow);
+	}	
 	
 	this.addEventListener( 'triggerdown', onTriggerDown );
 	this.addEventListener( 'triggerup', onTriggerUp );
