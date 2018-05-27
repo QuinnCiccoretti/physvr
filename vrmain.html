@@ -56,7 +56,7 @@
 			Physijs.scripts.ammo = '/js/phys/ammo.js';
 
 			var container;
-
+			var bowmodel;
 			var camera, scene, renderer;
 			var user;
 			var basic_controller_model1, basic_controller_model2;
@@ -139,7 +139,7 @@
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
 				user.add( camera );
 				//add floor, grid, table, etc.
-				create_scene_objects(0,1.0,0);
+				// create_scene_objects(0,1.0,0);
 				scene.add( new THREE.HemisphereLight( 0x888877, 0x777788, .4) );
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -166,8 +166,7 @@
 				controller2.position.set(0,10,0);
 				user.add( controller2 ); //start controller high and away to avoid collisions
 
-				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
-				load_basic_model();
+				
 				//toggle the controller mode
 				controller1.addEventListener( 'menudown', on_menu_up1 );
 				controller2.addEventListener( 'menudown', on_menu_up2 );

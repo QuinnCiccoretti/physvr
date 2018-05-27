@@ -18,11 +18,34 @@ function load_basic_model(){
 			controller1.addEventListener( 'menudown', on_menu_up1 );
 			controller2.addEventListener( 'menudown', on_menu_up2 );
 		} );
-
+		
 
 }
+function load_bowmodel(){
+	var mtlLoader = new THREE.MTLLoader();
+	mtlLoader.setBaseUrl( 'models/' );
+	mtlLoader.setPath( 'models/' );
+	var url = "Bow.mtl";
+	mtlLoader.load( url, function( materials ) {
 
-function create_scene_objects(x = 0, y = 0, z = 0){
+	    materials.preload();
+
+	    var objLoader = new THREE.OBJLoader();
+	    objLoader.setMaterials( materials );
+	    objLoader.setPath( 'models/' );
+	    objLoader.load( 'Bow.obj', function ( object ) {
+
+	        console.log("loaded bow model");
+	        bowmodel = object.children[0];
+	        // bowmodel.position.z = ;
+	        user.add(bowmodel);
+	        // user.lookAt(10,0,0);
+	    });
+
+	});
+}
+
+function create_scene_objects(x = 100, y = 10, z = 110){
 	y = y-.5;
 	create_table(x, y, z);
 	create_floor('img/ground.jpg', x, y, z);
@@ -110,6 +133,10 @@ function create_dir_light(x,y,z){
 function load_materials(){
 	// Loader
 	var loader = new THREE.TextureLoader();
+	//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
+	load_basic_model();
+	//load bow
+	load_bowmodel();
 	// Materials
 	box_material = Physijs.createMaterial(
 		new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
