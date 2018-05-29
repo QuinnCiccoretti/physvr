@@ -81,21 +81,19 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	    phys_obj.setLinearVelocity(new THREE.Vector3(0, 0, 0));
 	    phys_obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 	}
+	var already_named = false;
 	/**
 	 * Adds a text label to controller and sets .name attribute
 	 */
 	this.make_nameplate = function(){
 		this.name = name;
-		if(typeof uifont !== "undefined"){
+		if(!already_named && typeof uifont !== "undefined"){
 			this.nameplate = create_text_mesh(name, 2, uicolor);
 			this.nameplate.rotation.z = -1.55;	//align w/ controller handle
 			this.ui.add(this.nameplate);
 			this.nameplate.position.set(-0.5, -0.8, 0.3); //set relative pos
+			// this.add(basic_controller_model1);
 		}
-		else{
-			console.log("Font unloaded, no nameplate made");
-		}
-		
 	}
 	/**
 	* Vibrates haptics if controller has them
@@ -104,10 +102,23 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	*/
 	this.pulse = function(intensity, duration){
 		var gp = this.getGamepad();
-		if( gp.hapticActuators && gp.hapticActuators[ 0 ]){	//Check if it has haptics
+		if( typeof gp !== "undefined" && gp.hapticActuators && gp.hapticActuators[ 0 ]){	//Check if it has haptics
 		    gp.hapticActuators[ 0 ].pulse( intensity, duration );
 		    //pulse at 0-1 intensity for (duration)ms
 		}
+	}
+
+	this.on_activate = function(){
+		this.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
+		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
+		user.add( this );
+		this.add(basic_controller_model1);
+		this.make_nameplate();
+	}
+
+	this.on_deactivate = function(){
+		this.remove(basic_controller_model1);
+		user.remove(this);
 	}
 
 };

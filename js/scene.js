@@ -23,7 +23,8 @@ function load_basic_model(){
 }
 function load_bowmodel(){
 	var mtlLoader = new THREE.MTLLoader();
-	mtlLoader.setBaseUrl( 'models/' );
+	// mtlLoader.setBaseUrl( 'models/' );
+	mtlLoader.setTexturePath( 'models/' )
 	mtlLoader.setPath( 'models/' );
 	var url = "Bow.mtl";
 	mtlLoader.load( url, function( materials ) {
@@ -38,7 +39,7 @@ function load_bowmodel(){
 	        console.log("loaded bow model");
 	        bowmodel = object.children[0];
 	        // bowmodel.position.z = ;
-	        user.add(bowmodel);
+	        // controller1.add(bowmodel);
 	        // user.lookAt(10,0,0);
 	    });
 

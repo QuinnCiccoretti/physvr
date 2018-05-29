@@ -126,9 +126,9 @@
 				init_stats();				
 				load_materials();
 
-				scene = new Physijs.Scene;
+				// scene = new Physijs.Scene;
+				scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
 				scene.background = new THREE.Color( 0x162354 );
-				// scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
 				scene.setGravity(new THREE.Vector3( 0, -10, 0 ));
 				
 
@@ -139,7 +139,7 @@
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
 				user.add( camera );
 				//add floor, grid, table, etc.
-				// create_scene_objects(0,1.0,0);
+				create_scene_objects(0,1.0,0);
 				scene.add( new THREE.HemisphereLight( 0x888877, 0x777788, .4) );
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -219,8 +219,7 @@
 			*/
 			function on_menu_up1(){
 				//this removes the model to conserve memory
-				controller1.remove(basic_controller_model1);
-				user.remove(controller1);
+				controller1.on_deactivate();
 				
 				current_controller1++;
 				if(current_controller1 == ctrlr1list.length){
@@ -228,12 +227,7 @@
 				}
 				controller1 = ctrlr1list[current_controller1];
 				
-				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
-				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
-				user.add( controller1 );
-
-				controller1.add(basic_controller_model1);
-				controller1.make_nameplate();
+				controller1.on_activate();
 				controller1.addEventListener( 'menuup', on_menu_up1 );
 			}
 
@@ -253,21 +247,14 @@
 			*/
 			function on_menu_up2(){
 				//this removes the model from the object to conserve memory
-				controller2.remove(basic_controller_model2);
-				user.remove(controller2);
+				controller2.on_deactivate();
 				
 				current_controller2++;
 				if(current_controller2 == ctrlr2list.length){
 					current_controller2 = 0;
 				}
 				controller2 = ctrlr2list[current_controller2];
-				
-			
-				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
-				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
-				user.add( controller2 );
-				controller2.add(basic_controller_model2);
-				controller2.make_nameplate();
+				controller2.on_activate();
 				controller2.addEventListener( 'menuup', on_menu_up2 );
 
 			}

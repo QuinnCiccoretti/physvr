@@ -8,12 +8,12 @@ THREE.LBowController = function ( id ) {
 	
 	THREE.BasicController.call( this, id, "#703101", "LBow");
 	//ui - appears on touchpad
-	// var cyl  = new Physijs.CylinderMesh(
- //    new THREE.CylinderGeometry( .01, .01, 1, 32 ),
- //    new THREE.MeshBasicMaterial({ color: 0x703101 })
-	// );
-	// cyl.material.side = THREE.DoubleSide;
-	// this.add(cyl);
+	var cyl  = new Physijs.CylinderMesh(
+    new THREE.CylinderGeometry( .01, .01, 1, 32 ),
+    new THREE.MeshBasicMaterial({ color: 0x703101 })
+	);
+	cyl.material.side = THREE.DoubleSide;
+	this.add(cyl);
 	// this.add(bowmodel);
 	//dont update physics so it doesn't mess with arrow.
 	this.handle_update = function() {
