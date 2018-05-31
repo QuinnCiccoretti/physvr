@@ -6,7 +6,7 @@
 THREE.CreateController = function ( id ) {
 	
 	THREE.BasicController.call( this, id, "#0066ff", "Create");
-	//Init geometries
+	//Initialize all the geometries that will be thrown in a scene
 	var modelabel;
 	/**Table*/
 	var table_geometry = new THREE.BoxGeometry( 0.5, 0.8, 0.5 );
@@ -34,11 +34,40 @@ THREE.CreateController = function ( id ) {
 			1
 	);
 	
-	/**dont update physics objects so it doesn't mess with arrow.*/
-	this.handle_update = function() {
-		this.update(); //refreshes controller data
-		//this.update_phys_objects();	//Temporary solution
+	/**
+	* The following three methods, on_activate, on_deactivate, and handle_update are a rather compicated way to
+	* remove the physics object around the controller so it does not 
+	* collide with created objects.
+	*/
+	this.on_activate = function(){
+		this.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
+		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
+		user.add( this );
+		//add the model of the controller
+		this.add(basic_controller_models[id]);
+		this.make_nameplate();
+		//remove physobj
+		scene.remove(phys_obj_list[id]);
 	}
+	/**
+	* add back the physics object
+	*/
+	this.on_deactivate = function(){
+		//this removes the model to conserve memory
+		this.remove(basic_controller_models[id]);
+		user.remove(this);
+		//add back physobj
+		scene.add(phys_obj_list[id]);
+	}
+	// /**
+	// * Updates controller position data based on gamepad pose
+	// */
+	// this.handle_update = function() {
+	// 	this.update(); //refreshes controller data
+	// 	//dont update physics
+	// 	//this.update_phys_objects();
+	// }
+	this.update_phys_objects = function(){}
 	
 	var object;
 	/**

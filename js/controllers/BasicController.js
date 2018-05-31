@@ -82,18 +82,60 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	    phys_obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 	}
 	/**
+	* called whenever the menu button is pressed to switch to this mode
+	* from another mode
+	*/
+	this.on_activate = function(){
+		this.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
+		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
+		user.add( this );
+		//add the model of the controller
+		this.add(basic_controller_models[id]);
+		this.make_nameplate();
+	}
+	/**
+	* called whenever the menu button is pressed to switch modes from
+	* this mode to another
+	*/
+	this.on_deactivate = function(){
+		//this removes the model to conserve memory
+		this.remove(basic_controller_models[id]);
+		user.remove(this);
+	}
+	
+	// /**
+	// * Places physics objects arbitrarily far away from user.
+	// * This ensures they don't randomly collide when they aren't being updated
+	// */
+	// this.suspend_phys_objects = function(){
+	// 	suspend_object(phys_obj1);
+	// 	suspend_object(phys_obj2);
+
+	// }
+	// *
+	// * Helper method to suspend objects
+	
+	// function suspend_object(object){
+	// 	var zerovec = new THREE.Vector3();
+	// 	object.setLinearFactor(zerovec);
+	// 	object.setAngularFactor(zerovec);
+	// 	object.position.set( 0, 100, 0 );
+ //   		object.__dirtyPosition = true;
+	// }
+
+	/** starts at false */
+	var made_nameplate = false;
+	/**
 	 * Adds a text label to controller and sets .name attribute
 	 */
 	this.make_nameplate = function(){
 		this.name = name;
-		if(typeof uifont !== "undefined"){
+		if( !made_nameplate && (typeof uifont !== "undefined") ){
 			this.nameplate = create_text_mesh(name, 2, uicolor);
 			this.nameplate.rotation.z = -1.55;	//align w/ controller handle
 			this.ui.add(this.nameplate);
 			this.nameplate.position.set(-0.5, -0.8, 0.3); //set relative pos
-		}
-		else{
-			console.log("Font unloaded, no nameplate made");
+			made_nameplate = true;
 		}
 		
 	}
