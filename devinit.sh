@@ -1,5 +1,4 @@
-git pull
 git branch
 subl .
 start sh --login 
-node serve.js
+python -m http.server
