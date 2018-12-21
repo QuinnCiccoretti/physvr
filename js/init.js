@@ -39,7 +39,7 @@ var point4 = new THREE.Vector3();
 var point5 = new THREE.Vector3();
 
 
-window.onload = preload();
+document.body.onload = preload();
 var render_stats, physics_stats;
 /**
 * Create stats element
@@ -68,11 +68,11 @@ function preload(){
 */
 
 function init() {
-	console.log("init....")
-	container = document.createElement( 'div' );
-	document.body.appendChild( container );
+	console.log("init....");
 	init_stats();				
 	load_materials();
+	container = document.createElement( 'div' );
+	document.body.appendChild( container );
 
 	scene = new Physijs.Scene;
 	scene.background = new THREE.Color( 0x162354 );
