@@ -20,17 +20,9 @@ THREE.CreateController = function ( id ) {
 		new THREE.MeshBasicMaterial({ color: 0xff0000 }),
 		0 //mass
 	);
-	/**Brick*/
-	var brick_material = Physijs.createMaterial(
-		new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
-		.4, // low friction
-		.4 // high restitution
-	);
-	brick_material.map.wrapS = THREE.RepeatWrapping;
-	brick_material.map.repeat.set( .25, .25 );
 	var brick = new Physijs.BoxMesh(
 			new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
-			brick_material,
+			brick_material, //loaded with other materials in scene.js
 			1
 	);
 	

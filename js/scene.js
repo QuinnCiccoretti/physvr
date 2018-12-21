@@ -46,7 +46,7 @@ function create_table(x,y,z){
 	// table.receiveShadow = true;
 	scene.add( table );
 }
-/** A textured floor about the size of the vive play area and a grid that extends beyond. **/
+/** A textured floor about the size of the vive play area **/
 function create_floor(texture_path, x, y, z){
 	// Floor made of grass
 				loader = new THREE.TextureLoader();
@@ -65,12 +65,9 @@ function create_floor(texture_path, x, y, z){
 				scene.add( floor );
 				// scene.add( new THREE.GridHelper( 20, 40, 0x111111, 0x111111 ) );
 }
-var box_material;
+
 /**  Adds n random bricks to the scene **/
 function create_boxes(n, x, y, z){
-	
-	// box_material.map.wrapS = THREE.RepeatWrapping;
-	// box_material.map.repeat.set( .25, .25 );
 	for ( var i = 0; i < n; i++ ) {
 		var box = new Physijs.BoxMesh(
 			new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
@@ -88,8 +85,6 @@ function create_boxes(n, x, y, z){
 			Math.random() * Math.PI * 2
 		);
 		box.castShadow = true;
-		// box.setAngularFactor(1,1,1); //POSSIBLY UNNECCESSARY
-		// box.setLinearFactor(1,1,1);  //POSSIBLY UNNECCESSARY
 		scene.add( box );
 		
 	}
@@ -108,6 +103,7 @@ function create_dir_light(x,y,z){
 	light.shadow.mapSize.set( 4096, 4096 );
 	scene.add( light );
 }
+var box_material, brick_material;
 function load_materials(){
 	// Loader
 	var loader = new THREE.TextureLoader();
@@ -117,11 +113,14 @@ function load_materials(){
 		.4, // low friction
 		.4 // high restitution
 	);
+	brick_material.map.wrapS = THREE.RepeatWrapping;
+	brick_material.map.repeat.set( .25, .25 );
 	block_material = Physijs.createMaterial(
 		new THREE.MeshLambertMaterial({ map: loader.load( 'img/wood.jpg' )}),
 		0.1, // low friction
 		.4 // medium restitution
 	);
+
 }
 /** creates a jenga stack of height n **/
 createTower = function(nrows, x=0, y=0, z=0) {

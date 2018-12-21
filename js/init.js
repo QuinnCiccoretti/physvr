@@ -12,6 +12,7 @@ var controller1, controller2;
 var handleController;
 var controller_offset_z = -0.07;
 var controller_offset_y = 0.03;
+// var brick_material;
 
 //for dragcontroller
 var intersected = [];
@@ -39,8 +40,8 @@ var point4 = new THREE.Vector3();
 var point5 = new THREE.Vector3();
 
 
-document.body.onload = preload();
-var render_stats, physics_stats;
+document.onload = init;
+var render_stats;
 /**
 * Create stats element
 */
@@ -50,29 +51,19 @@ function init_stats(){
 	render_stats.domElement.style.top = '1px';
 	render_stats.domElement.style.zIndex = 100;
 	container.appendChild( render_stats.domElement );
-	physics_stats = new Stats();
-	physics_stats.domElement.style.position = 'absolute';
-	physics_stats.domElement.style.top = '50px';
-	physics_stats.domElement.style.zIndex = 100;
-	container.appendChild( physics_stats.domElement );
 }
 
-function preload(){
-	console.log("preloading...")
-	init_font_loader();
-	
-	init();
-}
 /**
 * Main initialization
 */
 
 function init() {
 	console.log("init....");
-	init_stats();				
+	init_font_loader();		
 	load_materials();
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
+	init_stats();
 
 	scene = new Physijs.Scene;
 	scene.background = new THREE.Color( 0x162354 );
@@ -240,6 +231,6 @@ function render() {
 	scene.simulate(); // run physics
 	requestAnimationFrame( render );
 	renderer.render( scene, camera );
-	render_stats.update();	//update stats
-	physics_stats.update();
+	// render_stats.update();	//update stats
+	// physics_stats.update();
 }
