@@ -22,7 +22,7 @@ THREE.CreateController = function ( id ) {
 	);
 	var brick = new Physijs.BoxMesh(
 			new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
-			brick_material, //loaded with other materials in scene.js
+			box_material, //loaded with other materials in scene.js
 			1
 	);
 	

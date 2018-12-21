@@ -103,7 +103,7 @@ function create_dir_light(x,y,z){
 	light.shadow.mapSize.set( 4096, 4096 );
 	scene.add( light );
 }
-var box_material, brick_material;
+var box_material;
 function load_materials(){
 	// Loader
 	var loader = new THREE.TextureLoader();
@@ -113,17 +113,19 @@ function load_materials(){
 		.4, // low friction
 		.4 // high restitution
 	);
-	brick_material.map.wrapS = THREE.RepeatWrapping;
-	brick_material.map.repeat.set( .25, .25 );
+	
 	block_material = Physijs.createMaterial(
 		new THREE.MeshLambertMaterial({ map: loader.load( 'img/wood.jpg' )}),
 		0.1, // low friction
 		.4 // medium restitution
 	);
+	box_material.map.wrapS = THREE.RepeatWrapping;
+	box_material.map.repeat.set( .25, .25 );
 
 }
 /** creates a jenga stack of height n **/
 createTower = function(nrows, x=0, y=0, z=0) {
+	// console.log("HTJKASDLKFJBHDSHFBAJFDHBKj")
 	var worldscale = 1/5;
 	var block_length = 6*worldscale, block_height = 1*worldscale, block_width = 1.5*worldscale, block_offset = 2*worldscale,
 	block_geometry = new THREE.BoxGeometry( block_length, block_height, block_width );

@@ -12,6 +12,7 @@ var controller1, controller2;
 var handleController;
 var controller_offset_z = -0.07;
 var controller_offset_y = 0.03;
+var ms = new MyScene();
 // var brick_material;
 
 //for dragcontroller
@@ -40,7 +41,7 @@ var point4 = new THREE.Vector3();
 var point5 = new THREE.Vector3();
 
 
-document.onload = init;
+document.onload = init();
 var render_stats;
 /**
 * Create stats element
@@ -74,9 +75,11 @@ function init() {
 	user = new THREE.Group();
 	user.position.set( 3, 1.6, 0 );	//a little to the side of the origin
 	scene.add( user );
-
+	
 	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
+	// ms.setCam(camera);
 	user.add( camera );
+
 	//add floor, grid, table, etc.
 	create_scene_objects(0,1.0,0);
 	scene.add( new THREE.HemisphereLight( 0x888877, 0x777788, .4) );
@@ -111,7 +114,7 @@ function init() {
 	controller1.addEventListener( 'menudown', on_menu_up1 );
 	controller2.addEventListener( 'menudown', on_menu_up2 );
 	initGeometry();
-	// createTower(10);
+	createTower(10);
 	/**
 	* If you want the controllers to be able to push things, you need to make an
 	* invisible box that follows them around. You can't use .add becuase the 
@@ -231,6 +234,6 @@ function render() {
 	scene.simulate(); // run physics
 	requestAnimationFrame( render );
 	renderer.render( scene, camera );
-	// render_stats.update();	//update stats
+	render_stats.update();	//update stats
 	// physics_stats.update();
 }
