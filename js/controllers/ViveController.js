@@ -3,52 +3,46 @@
  * @author stewdio / http://stewd.io
  */
 
-THREE.ViveController = function ( id ) {
+class ViveController extends THREE.Object3D{
 
-	THREE.Object3D.call( this );
-
-	var scope = this;
-	var gamepad;
-
-	var axes = [ 0, 0 ];
-	var thumbpadIsPressed = false;
-	var triggerIsPressed = false;
-	var gripsArePressed = false;
-	var menuIsPressed = false;
-
-	function findGamepad( id ) {
-
-		// Iterate across gamepads as Vive Controllers may not be
-		// in position 0 and 1.
-
-		var gamepads = navigator.getGamepads && navigator.getGamepads();
-
-		for ( var i = 0, j = 0; i < gamepads.length; i ++ ) {
-
-			var gamepad = gamepads[ i ];
-
-			if ( gamepad && ( gamepad.id === 'OpenVR Gamepad' || gamepad.id.startsWith( 'Oculus Touch' ) || gamepad.id.startsWith( 'Spatial Controller' ) ) ) {
-
-				if ( j === id ) return gamepad;
-
-				j ++;
-
-			}
-
-		}
-
+	
+	constructor(){
+		super();
+		var scope = this;
+		var gamepad;
+		var axes = [ 0, 0 ];
+		var thumbpadIsPressed = false;
+		var triggerIsPressed = false;
+		var gripsArePressed = false;
+		var menuIsPressed = false;
+		this.matrixAutoUpdate = false;
+		this.standingMatrix = new THREE.Matrix4();
 	}
 
-	this.matrixAutoUpdate = false;
-	this.standingMatrix = new THREE.Matrix4();
+	/**
+	* Iterate across gamepads as Vive Controllers may not be
+	* in position 0 and 1.
+	*/
+	findGamepad( id ) {
+		var gamepads = navigator.getGamepads && navigator.getGamepads();
+		for ( var i = 0, j = 0; i < gamepads.length; i ++ ) {
+			var gamepad = gamepads[ i ];
+			if ( gamepad && ( gamepad.id === 'OpenVR Gamepad' || gamepad.id.startsWith( 'Oculus Touch' ) || gamepad.id.startsWith( 'Spatial Controller' ) ) ) {
+				if ( j === id ) return gamepad;
+				j ++;
+			}
+		}
+	}
 
-	this.getGamepad = function () {
+	
+
+	getGamepad() {
 
 		return gamepad;
 
 	};
 
-	this.getButtonState = function ( button ) {
+	getButtonState ( button ) {
 
 		if ( button === 'thumbpad' ) return thumbpadIsPressed;
 		if ( button === 'trigger' ) return triggerIsPressed;
@@ -57,7 +51,7 @@ THREE.ViveController = function ( id ) {
 
 	};
 
-	this.update = function () {
+	update () {
 
 		gamepad = findGamepad( id );
 
@@ -123,6 +117,3 @@ THREE.ViveController = function ( id ) {
 	};
 
 };
-
-THREE.ViveController.prototype = Object.create( THREE.Object3D.prototype );
-THREE.ViveController.prototype.constructor = THREE.ViveController;

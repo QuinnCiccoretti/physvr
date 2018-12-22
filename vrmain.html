@@ -154,17 +154,12 @@
 
 				
 				//Set up basic controllers while a list of other controllers loads
+				//note that the controller constructor already .adds it to user
 				controller1 = new THREE.BasicController( 0 );
-				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
-				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
-				controller1.position.set(0,10,0); //start controller high and away to avoid collisions
-				user.add( controller1 );
+				controller1.position.set(0,10,0); //start controller high and away
 
 				controller2 = new THREE.BasicController( 1 );
-				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
-				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
-				controller2.position.set(0,10,0);
-				user.add( controller2 ); //start controller high and away to avoid collisions
+				controller2.position.set(0,10,0);  //start controller high and away to avoid collisions
 
 				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
 				load_basic_model();
@@ -225,27 +220,6 @@
 			 ];
 
 			var current_controller1 = 0;
-			/**
-			* Toggles 1st ctrlr through various controller objects
-			*/
-			function on_menu_up1(){
-				
-				//The below line is essential. It is located in BasicController
-				// and may be overriden
-				controller1.on_deactivate();
-				
-				current_controller1++;
-				if(current_controller1 == ctrlr1list.length){
-					current_controller1 = 0;
-				}
-				controller1 = ctrlr1list[current_controller1];
-				
-				//The below line is essential. It is located in BasicController
-				// and may be overriden
-				controller1.on_activate();
-				controller1.addEventListener( 'menuup', on_menu_up1 );
-			}
-
 			var current_controller2 = 0;
 			var ctrlr2list = [
 			    new THREE.PaintController( 1 ), 
@@ -259,27 +233,33 @@
  
 			];
 			/**
-			* Toggles 2nd ctrlr through various controller objects
+			* Toggles 1st ctrlr through various controller objects
 			*/
-			function on_menu_up2(){
-				
-				//The below line is essential. It is located in BasicController
-				// and may be overriden
-				controller2.on_deactivate();
-				
-				current_controller2++;
-				if(current_controller2 == ctrlr2list.length){
-					current_controller2 = 0;
-				}
-				controller2 = ctrlr2list[current_controller2];
-				
-				//The below line is essential. It is located in BasicController
-				// and may be overriden
-				controller2.on_activate();
-				controller2.addEventListener( 'menuup', on_menu_up2 );
+			function on_menu_up1(){
+				on_menu_up(controller1);
 			}
-	
+			function on_menu_up2(){
+				on_menu_up(controller2);
+			}
+			function on_menu_up(controller){
+				
+				//The below line is essential. It is located in BasicController
+				// and may be overriden
+				controller.on_deactivate();
+				
+				current_controller1++;
+				if(current_controller1 == ctrlr1list.length){
+					current_controller1 = 0;
+				}
+				controller = ctrlr1list[current_controller1];
+				
+				//The below line is essential. It is located in BasicController
+				// and may be overriden
+				controller.on_activate();
+				controller.addEventListener( 'menuup', on_menu_up1 );
+			}
 			
+
 			/**
 			* Main loop. Called everytime the physics sim updates. All update code runs from here.
 			*/
