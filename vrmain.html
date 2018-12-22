@@ -102,11 +102,6 @@
 				render_stats.domElement.style.top = '1px';
 				render_stats.domElement.style.zIndex = 100;
 				container.appendChild( render_stats.domElement );
-				physics_stats = new Stats();
-				physics_stats.domElement.style.position = 'absolute';
-				physics_stats.domElement.style.top = '50px';
-				physics_stats.domElement.style.zIndex = 100;
-				container.appendChild( physics_stats.domElement );
 			}
 
 			function preload(){
@@ -185,6 +180,7 @@
 
 				phys_obj1 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
 				phys_obj2 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
+				
 				phys_obj1.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
     				controller1.pulse(.25, 25);
     				//by setting object.userData.ctrlr_nocollide to true, you can make it not collide with the controller
@@ -223,8 +219,19 @@
 			    // new THREE.BatController(0)
 
 			 ];
-
+			var ctrlr2list = [
+			    new PaintController( 1 ), 
+    			new MoveController( 1 ), 
+    			new DragController( 1 ), 
+    			new SlingshotController( 1 ),
+    			new RefreshController(1), 
+    			new RBowController(1),
+    			new GravityController( 1 ),
+    			new CreateController(1)
+ 
+			];
 			var current_controller1 = 0;
+			var current_controller2 = 0;
 			/**
 			* Toggles 1st ctrlr through various controller objects
 			*/
@@ -246,35 +253,17 @@
 				controller1.addEventListener( 'menuup', on_menu_up1 );
 			}
 
-			var current_controller2 = 0;
-			var ctrlr2list = [
-			    new PaintController( 1 ), 
-    			new MoveController( 1 ), 
-    			new DragController( 1 ), 
-    			new SlingshotController( 1 ),
-    			new RefreshController(1), 
-    			new RBowController(1),
-    			new GravityController( 1 ),
-    			new CreateController(1)
- 
-			];
+			
 			/**
 			* Toggles 2nd ctrlr through various controller objects
 			*/
 			function on_menu_up2(){
-				
-				//The below line is essential. It is located in BasicController
-				// and may be overriden
 				controller2.on_deactivate();
-				
 				current_controller2++;
 				if(current_controller2 == ctrlr2list.length){
 					current_controller2 = 0;
 				}
 				controller2 = ctrlr2list[current_controller2];
-				
-				//The below line is essential. It is located in BasicController
-				// and may be overriden
 				controller2.on_activate();
 				controller2.addEventListener( 'menuup', on_menu_up2 );
 			}
@@ -286,14 +275,14 @@
 			function render() {
 				//controllers define their own handle method which calls .update() and updates physics objs
 				count = line.geometry.drawRange.count;
+
 				controller1.handle_update();
 				controller2.handle_update();
 				
 				scene.simulate(); // run physics
 				requestAnimationFrame( render );
 				renderer.render( scene, camera );
-				render_stats.update();	//update stats
-				physics_stats.update();
+				render_stats.update();
 			}
 		</script>
 		<div>
