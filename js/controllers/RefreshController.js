@@ -3,31 +3,27 @@
  * @class RefreshController
  * Reloads everything from start
  */
-THREE.RefreshController = function ( id ) {
-	
-	THREE.BasicController.call( this, id, "#000000", "Refresh");
-	
+class RefreshController extends BasicController {
+	constructor(id){
+		super( id, "#000000", "Refresh");
+		this.addEventListener( 'triggerdown', this.onTriggerDown );
+		this.addEventListener( 'gripsdown', this.onGripsDown );
+	}
+
 	/**
 	* Reload the page from cache
 	*/
-	function onTriggerDown(){
+	onTriggerDown(){
 		location.reload();
 		this.pulse(1,100);
 	}
 	/**
 	* Reload the page from the server
 	*/
-	function onGripsDown(){
+	onGripsDown(){
 	    //true reloads from server
 		location.reload(true);
 		this.pulse(1,100);
 	}
 
-	
-	
-	this.addEventListener( 'triggerdown', onTriggerDown );
-	this.addEventListener( 'gripsdown', onGripsDown );
-};
-
-THREE.RefreshController.prototype = Object.create( THREE.BasicController.prototype );
-THREE.RefreshController.prototype.constructor = THREE.RefreshController;
+}

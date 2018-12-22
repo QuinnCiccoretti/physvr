@@ -3,31 +3,37 @@
  * @class BasicController
  * Defines basic methods for getting sensor data and using haptics
  */
-THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
-
-	THREE.ViveController.call( this, id );
-	console.log("BasicController instantiated with id:"+id);
-	//UI, appears on the touchpad, with uicolor
-	var geometry = new THREE.CircleGeometry( 1, 32 );
-	var material = new THREE.MeshBasicMaterial( { color: uicolor } );
-	this.ui = new THREE.Mesh( geometry, material );
-	this.ui.position.set( 0, 0.005, 0.0495 );
-	this.ui.rotation.x = - 1.45;
-	this.ui.scale.setScalar( 0.02 );
+class BasicController extends ViveController  {
+	constructor( id, uicolor="#ff00ff", name = "Basic"){
+		super(id);
+		console.log("BasicController instantiated with id:"+id);
+		//UI, appears on the touchpad, with uicolor
+		var geometry = new THREE.CircleGeometry( 1, 32 );
+		var material = new THREE.MeshBasicMaterial( { color: uicolor } );
+		this.ui = new THREE.Mesh( geometry, material );
+		this.ui.position.set( 0, 0.005, 0.0495 );
+		this.ui.rotation.x = - 1.45;
+		this.ui.scale.setScalar( 0.02 );
+		this.add( this.ui );
+		/** starts at false */
+		var made_nameplate = false;
+	}
 	
-	this.add( this.ui );
+	
+	
+	
 
 	/**
 	* Returns controller id, 1 or 0
 	*/
-	this.get_id = function() {
-		return id;
+	get_id() {
+		return this.id_;
 	}
 
 	/**
 	* Updates controller position data based on gamepad pose
 	*/
-	this.handle_update = function() {
+	handle_update() {
 		this.update(); //refreshes controller data
 		this.update_phys_objects();
 	}
@@ -35,27 +41,27 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	/**
 	* @returns the position of the controller in the scene, not relative to user
 	*/
-	this.get_absolute_position = function() {
+	get_absolute_position() {
 		var temp = user.position.clone();
 		return temp.add(this.position);
 	}
 	/**
 	* @returns the velocity of the controller from the gamepad
 	*/
-	this.get_velocity = function() {
+	get_velocity() {
 		return new THREE.Vector3().fromArray(this.getGamepad().pose.linearVelocity);
 	}
 	/**
 	* @returns the angular velocity of the controller from the gamepad
 	*/
-	this.get_angular_velocity = function() {
+	get_angular_velocity() {
 		return new THREE.Vector3().fromArray(this.getGamepad().pose.angularVelocity);
 	}
 	/**
 	* @returns a vector pointing out from the controller,
 	* intended for shooting things alongs
 	*/
-    this.get_pointing_vector = function(){
+    get_pointing_vector(){
         var dir = new THREE.Vector3(0,0,-1);
 		dir.applyEuler(this.rotation);
 		return dir;
@@ -64,11 +70,11 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	* Updates invisible boxes (phys_obj1 and phys_obj2)
 	* to follow controllers so they can push things
 	*/
-	this.update_phys_objects = function(){
+	update_phys_objects(){
 		
 		var my_pos = this.get_absolute_position();
 		//get the appropriate physics object, object 1 or 2, from a global list
-		var phys_obj = phys_obj_list[id];	
+		var phys_obj = phys_obj_list[this.id_];	
 
 		var rot = this.rotation;
 		phys_obj.rotation.set(rot.x, rot.y, rot.z);
@@ -85,50 +91,29 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	* called whenever the menu button is pressed to switch to this mode
 	* from another mode
 	*/
-	this.on_activate = function(){
+	on_activate(){
 		this.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 		user.add( this );
 		//add the model of the controller
-		this.add(basic_controller_models[id]);
+		this.add(basic_controller_models[this.id_]);
 		this.make_nameplate();
 	}
 	/**
 	* called whenever the menu button is pressed to switch modes from
 	* this mode to another
 	*/
-	this.on_deactivate = function(){
+	on_deactivate(){
 		//this removes the model to conserve memory
-		this.remove(basic_controller_models[id]);
+		this.remove(basic_controller_models[this.id_]);
 		user.remove(this);
 	}
 	
-	// /**
-	// * Places physics objects arbitrarily far away from user.
-	// * This ensures they don't randomly collide when they aren't being updated
-	// */
-	// this.suspend_phys_objects = function(){
-	// 	suspend_object(phys_obj1);
-	// 	suspend_object(phys_obj2);
-
-	// }
-	// *
-	// * Helper method to suspend objects
 	
-	// function suspend_object(object){
-	// 	var zerovec = new THREE.Vector3();
-	// 	object.setLinearFactor(zerovec);
-	// 	object.setAngularFactor(zerovec);
-	// 	object.position.set( 0, 100, 0 );
- //   		object.__dirtyPosition = true;
-	// }
-
-	/** starts at false */
-	var made_nameplate = false;
 	/**
 	 * Adds a text label to controller and sets .name attribute
 	 */
-	this.make_nameplate = function(){
+	make_nameplate(){
 		this.name = name;
 		if( !made_nameplate && (typeof uifont !== "undefined") ){
 			this.nameplate = create_text_mesh(name, 2, uicolor);
@@ -144,7 +129,7 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 	* @param intensity a 0-1 value, 1 is highest vibration
 	* @param duration duration of a pulse in ms
 	*/
-	this.pulse = function(intensity, duration){
+	pulse(intensity, duration){
 		var gp = this.getGamepad();
 		if( gp.hapticActuators && gp.hapticActuators[ 0 ]){	//Check if it has haptics
 		    gp.hapticActuators[ 0 ].pulse( intensity, duration );
@@ -152,7 +137,4 @@ THREE.BasicController = function ( id, uicolor="#ff00ff", name = "Basic") {
 		}
 	}
 
-};
-
-THREE.BasicController.prototype = Object.create( THREE.ViveController.prototype );
-THREE.BasicController.prototype.constructor = THREE.BasicController;
+}

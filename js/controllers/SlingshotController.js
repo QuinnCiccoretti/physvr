@@ -3,23 +3,22 @@
  * @class SlingshotController
  * Launches a ball from the controller
  */
-THREE.SlingshotController = function ( id ) {
-	
-	THREE.BasicController.call( this, id, "#ff0000", "Slingshot");
-	
-	//rays
-	var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
-	var line = new THREE.Line( geometry, new THREE.MeshBasicMaterial( { color: "#ff0000" } ) );
-	line.name = 'line';
-	line.scale.z = 0.5;
-	this.add( line.clone() );
-
-
+class SlingshotController extends BasicController{
+	constructor(id){
+		super( id, "#ff0000", "Slingshot");
+		//rays
+		var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+		var line = new THREE.Line( geometry, new THREE.MeshBasicMaterial( { color: "#ff0000" } ) );
+		line.name = 'line';
+		line.scale.z = 0.5;
+		this.add( line.clone() );
+		this.addEventListener( 'triggerdown', this.onTriggerDown );
+	}
 	
 	/**
 	* Launches ball.
 	*/
-	function onTriggerDown(){
+	onTriggerDown(){
 		//a sphere to launch
 		var sphere = new Physijs.SphereMesh(
 			new THREE.SphereGeometry( 0.1, 12, 12 ),
@@ -39,8 +38,5 @@ THREE.SlingshotController = function ( id ) {
 
 	
 	
-	this.addEventListener( 'triggerdown', onTriggerDown );
-};
-
-THREE.SlingshotController.prototype = Object.create( THREE.BasicController.prototype );
-THREE.SlingshotController.prototype.constructor = THREE.SlingshotController;
+	
+}

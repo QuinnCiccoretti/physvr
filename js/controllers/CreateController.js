@@ -3,43 +3,52 @@
  * @class CreateController
  * Creates things
  */
-THREE.CreateController = function ( id ) {
+class CreateController extends BasicController {
+	constructor(id){
+		super( id, "#0066ff", "Create");
+		//Initialize all the geometries that will be thrown in a scene
+		var modelabel;
+		/**Table*/
+		var table_geometry = new THREE.BoxGeometry( 0.5, 0.8, 0.5 );
+		var table_material = new THREE.MeshBasicMaterial({ color: 0x888888 })
+		var table = new Physijs.BoxMesh( table_geometry, table_material, 0);
+		table.castShadow = true;
+		table.receiveShadow = true;
+		/**Sphere*/
+		var sphere = new Physijs.SphereMesh(
+			new THREE.SphereGeometry( .25, 12, 12 ),
+			new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+			0 //mass
+		);
+		/**Brick*/
+		var brick_material = Physijs.createMaterial(
+			new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
+			.4, // low friction
+			.4 // high restitution
+		);
+		brick_material.map.wrapS = THREE.RepeatWrapping;
+		brick_material.map.repeat.set( .25, .25 );
+		var brick = new Physijs.BoxMesh(
+				new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
+				brick_material,
+				1
+		);
+		var object;
+		var modelist = ["table", "sphere","scene", "brick"];
+		var mode = 0;
+		this.addEventListener( 'gripsdown', this.onGripsDown );
+		this.addEventListener( 'triggerdown', this.onTriggerDown );
+		this.addEventListener( 'triggerup', this.onTriggerUp );
+	}
 	
-	THREE.BasicController.call( this, id, "#0066ff", "Create");
-	//Initialize all the geometries that will be thrown in a scene
-	var modelabel;
-	/**Table*/
-	var table_geometry = new THREE.BoxGeometry( 0.5, 0.8, 0.5 );
-	var table_material = new THREE.MeshBasicMaterial({ color: 0x888888 })
-	var table = new Physijs.BoxMesh( table_geometry, table_material, 0);
-	table.castShadow = true;
-	table.receiveShadow = true;
-	/**Sphere*/
-	var sphere = new Physijs.SphereMesh(
-		new THREE.SphereGeometry( .25, 12, 12 ),
-		new THREE.MeshBasicMaterial({ color: 0xff0000 }),
-		0 //mass
-	);
-	/**Brick*/
-	var brick_material = Physijs.createMaterial(
-		new THREE.MeshLambertMaterial({ map: loader.load( 'img/brick.jpg' ) }),
-		.4, // low friction
-		.4 // high restitution
-	);
-	brick_material.map.wrapS = THREE.RepeatWrapping;
-	brick_material.map.repeat.set( .25, .25 );
-	var brick = new Physijs.BoxMesh(
-			new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
-			brick_material,
-			1
-	);
+	
 	
 	/**
 	* The following three methods, on_activate, on_deactivate, and handle_update are a rather compicated way to
 	* remove the physics object around the controller so it does not 
 	* collide with created objects.
 	*/
-	this.on_activate = function(){
+	on_activate (){
 		this.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 		user.add( this );
@@ -52,7 +61,7 @@ THREE.CreateController = function ( id ) {
 	/**
 	* add back the physics object
 	*/
-	this.on_deactivate = function(){
+	on_deactivate (){
 		//this removes the model to conserve memory
 		this.remove(basic_controller_models[id]);
 		user.remove(this);
@@ -62,18 +71,18 @@ THREE.CreateController = function ( id ) {
 	// /**
 	// * Updates controller position data based on gamepad pose
 	// */
-	// this.handle_update = function() {
+	// handle_update () {
 	// 	this.update(); //refreshes controller data
 	// 	//dont update physics
 	// 	//this.update_phys_objects();
 	// }
-	this.update_phys_objects = function(){}
+	update_phys_objects (){}
 	
-	var object;
+	
 	/**
 	* Creates object
 	*/
-	function onTriggerDown(){
+	onTriggerDown(){
 		
 		
 		//a sphere to launch
@@ -101,7 +110,7 @@ THREE.CreateController = function ( id ) {
 		this.add(object);
 	}
 	/** Add object to scene */
-	function onTriggerUp(){
+	onTriggerUp(){
 		object.matrix.premultiply( this.matrixWorld );
 		object.matrix.decompose( object.position, object.quaternion, object.scale );
 		var pos = this.get_absolute_position();
@@ -111,10 +120,9 @@ THREE.CreateController = function ( id ) {
 		object.setLinearVelocity(this.get_velocity().multiplyScalar(4));
 		this.pulse(.5,25);
 	}
-	var modelist = ["table", "sphere","scene", "brick"];
-	var mode = 0;
+	
 	/** Switch modes */
-	function onGripsDown( event ) {
+	onGripsDown( event ) {
 		this.ui.remove(modelabel);
 		mode +=1;
 		if(mode == modelist.length){
@@ -124,10 +132,5 @@ THREE.CreateController = function ( id ) {
 		this.ui.add(modelabel);
 	}
 	
-	this.addEventListener( 'gripsdown', onGripsDown );
-	this.addEventListener( 'triggerdown', onTriggerDown );
-	this.addEventListener( 'triggerup', onTriggerUp );
-};
-
-THREE.CreateController.prototype = Object.create( THREE.BasicController.prototype );
-THREE.CreateController.prototype.constructor = THREE.CreateController;
+	
+}
