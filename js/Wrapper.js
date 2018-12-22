@@ -25,7 +25,7 @@ class Wrapper {
 			}
 		);
 		this.phys_obj.material.wireframe = true;
-		scene.add(this.phys_obj);
+		scene.add(phys_obj);
 		var ctrlrlist = [
 		    new PaintController( 0 ), 
 		    new MoveController( 0 ), 
