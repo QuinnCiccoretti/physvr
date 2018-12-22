@@ -12,7 +12,6 @@ var controller1, controller2;
 var handleController;
 var controller_offset_z = -0.07;
 var controller_offset_y = 0.03;
-var ms = new MyScene();
 // var brick_material;
 
 //for dragcontroller
@@ -128,7 +127,7 @@ function init() {
 	phys_obj1 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
 	phys_obj2 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
 	phys_obj1.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-		controller1.pulse(.25, 25);
+		// controller1.pulse(.25, 25);
 		//by setting object.userData.ctrlr_nocollide to true, you can make it not collide with the controller
 		if(typeof other_object.userData.ctrlr_nocollide !== "undefined"){
 			other_object.setLinearVelocity(0,0,0);
@@ -137,7 +136,7 @@ function init() {
 	});
 	phys_obj1.material.wireframe = true;
 	phys_obj2.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-		controller2.pulse(.25, 25);
+		// controller2.pulse(.25, 25);
 		//by setting object.userData.ctrlr_nocollide to true, you can make it not collide with the controller
 		if(typeof other_object.userData.ctrlr_nocollide !== "undefined"){
 			other_object.setLinearVelocity(0,0,0);
