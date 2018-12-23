@@ -4,21 +4,75 @@
  * @class PaintController
  * Draws in 3d
  */
-THREE.PaintController = function ( id ) {
+class PaintController extends BasicController{
+	constructor(id){
+		super(id, "#ffffff", "Paint");
+		this.PI2 = Math.PI * 2;
+		this.MODES = { COLOR: 0, SIZE: 1 };
+		this.mode = this.MODES.COLOR;
+		this.color = new THREE.Color( 1, 1, 1 );
+		this.size = 1 ;
+		//Little ball on the top of "paintbrush"
+		var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
+		pivot.name = 'pivot';
+		pivot.position.y = -0.016;
+		pivot.position.z = -0.043;
+		pivot.rotation.x = Math.PI / 5.5;
+		this.add( pivot );
 
-	THREE.BasicController.call( this, id, "#ffffff", "Paint");
+		// this.color UI - not using default
+		var geometry = new THREE.CircleBufferGeometry( 1, 32 );
+		var material = new THREE.MeshBasicMaterial( { map: this.generateHueTexture() } );
+		var colorUI = new THREE.Mesh( geometry, material );
+		colorUI.position.set( 0, 0.005, 0.0495 );
+		colorUI.rotation.x = - 1.45;
+		colorUI.scale.setScalar( 0.02 );
+		this.add( colorUI );
 
-	var PI2 = Math.PI * 2;
+		var geometry = new THREE.IcosahedronBufferGeometry( 0.1, 2 );
+		var material = new THREE.MeshBasicMaterial();
+		material.color = this.color;
+		var ball = new THREE.Mesh( geometry, material );
+		colorUI.add( ball );
 
-	var MODES = { COLOR: 0, SIZE: 1 };
-	var mode = MODES.COLOR;
 
-	var color = new THREE.Color( 1, 1, 1 );
-	var size = 1 
+		// this.size UI
+		var sizeUI = new THREE.Group();
+		sizeUI.position.set( 0, 0.005, 0.0495 );
+		sizeUI.rotation.x = - 1.45;
+		sizeUI.scale.setScalar( 0.02 );
+		this.add( sizeUI );
+
+		var triangleShape = new THREE.Shape();
+		triangleShape.moveTo( 0, -1 );
+		triangleShape.lineTo( 1, 1 );
+		triangleShape.lineTo( -1, 1 );
+
+		var geometry = new THREE.ShapeBufferGeometry( triangleShape );
+		var material = new THREE.MeshBasicMaterial( { color: 0x222222, wireframe:true } );
+		var sizeUIOutline = new THREE.Mesh( geometry, material ) ;
+		sizeUIOutline.position.z = 0.001;
+		this.resizeTriangleGeometry(sizeUIOutline.geometry, 1.0);
+		sizeUI.add( sizeUIOutline );
+
+		var material = new THREE.MeshBasicMaterial( {side: THREE.DoubleSide } );
+		material.color = this.color;
+		var sizeUIFill = new THREE.Mesh( geometry, material ) ;
+		sizeUIFill.position.z = 0.0011;
+		this.resizeTriangleGeometry(sizeUIFill.geometry, 0.5);
+		sizeUI.add( sizeUIFill );
+
+		sizeUI.visible = false;
+		this.addEventListener( 'axischanged', this.onAxisChanged );
+		this.addEventListener( 'gripsdown', this.onGripsDown );
+	}
+	
+
+	
 	
 
 
-	this.handle_update = function() {
+	handle_update () {
 		var count = line.geometry.drawRange.count;
 				
 		count = line.geometry.drawRange.count;
@@ -29,8 +83,8 @@ THREE.PaintController = function ( id ) {
 
 		if ( pivot ) {
 
-			pivot.material.color.copy( this.getColor() );
-			pivot.scale.setScalar(this.getSize());
+			pivot.material.this.color.copy( this.getthis.color() );
+			pivot.scale.setScalar(this.getthis.size());
 
 			var matrix = pivot.matrixWorld;
 			var point1 = this.userData.points[ 0 ];
@@ -52,7 +106,7 @@ THREE.PaintController = function ( id ) {
 		updateGeometry( count, line.geometry.drawRange.count );
 
 	}
-	function generateHueTexture() {
+	generateHueTexture() {
 
 		var canvas = document.createElement( 'canvas' );
 		canvas.width = 256;
@@ -61,18 +115,18 @@ THREE.PaintController = function ( id ) {
 		var context = canvas.getContext( '2d' );
 		var imageData = context.getImageData( 0, 0, 256, 256 );
 		var data = imageData.data;
-		var swatchColor = new THREE.Color();
+		var swatchcolor = new THREE.Color();
 
 		for ( var i = 0, j = 0; i < data.length; i += 4, j ++ ) {
 
 			var x = ( ( j % 256 ) / 256 ) - 0.5;
 			var y = ( Math.floor( j / 256 ) / 256 ) - 0.5;
 
-			swatchColor.setHSL( Math.atan2( y, x ) / PI2, 1,( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
+			swatchcolor.setHSL( Math.atan2( y, x ) / this.PI2, 1,( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
 
-			data[ i + 0 ] = swatchColor.r * 256;
-			data[ i + 1 ] = swatchColor.g * 256;
-			data[ i + 2 ] = swatchColor.b * 256;
+			data[ i + 0 ] = swatchcolor.r * 256;
+			data[ i + 1 ] = swatchcolor.g * 256;
+			data[ i + 2 ] = swatchcolor.b * 256;
 			data[ i + 3 ] = 256;
 
 		}
@@ -82,86 +136,32 @@ THREE.PaintController = function ( id ) {
 		return new THREE.CanvasTexture( canvas );
 
 	}
-	//Little ball on the top of "paintbrush"
+	
 
-	var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
-	pivot.name = 'pivot';
-	pivot.position.y = -0.016;
-	pivot.position.z = -0.043;
-	pivot.rotation.x = Math.PI / 5.5;
-	this.add( pivot );
-
-	// COLOR UI - not using default
-	var geometry = new THREE.CircleGeometry( 1, 32 );
-	var material = new THREE.MeshBasicMaterial( { map: generateHueTexture() } );
-	var colorUI = new THREE.Mesh( geometry, material );
-	colorUI.position.set( 0, 0.005, 0.0495 );
-	colorUI.rotation.x = - 1.45;
-	colorUI.scale.setScalar( 0.02 );
-	this.add( colorUI );
-
-	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
-	var material = new THREE.MeshBasicMaterial();
-	material.color = color;
-	var ball = new THREE.Mesh( geometry, material );
-	colorUI.add( ball );
-
-
-	// SIZE UI
-	var sizeUI = new THREE.Group();
-	sizeUI.position.set( 0, 0.005, 0.0495 );
-	sizeUI.rotation.x = - 1.45;
-	sizeUI.scale.setScalar( 0.02 );
-	this.add( sizeUI );
-
-	var triangleShape = new THREE.Shape();
-	triangleShape.moveTo( 0, -1 );
-	triangleShape.lineTo( 1, 1 );
-	triangleShape.lineTo( -1, 1 );
-
-	var geometry = new THREE.ShapeGeometry( triangleShape );
-	var material = new THREE.MeshBasicMaterial( { color: 0x222222, wireframe:true } );
-	var sizeUIOutline = new THREE.Mesh( geometry, material ) ;
-	sizeUIOutline.position.z = 0.001;
-	resizeTriangleGeometry(sizeUIOutline.geometry, 1.0);
-	sizeUI.add( sizeUIOutline );
-
-	var geometry = new THREE.ShapeGeometry( triangleShape );
-	var material = new THREE.MeshBasicMaterial( {side: THREE.DoubleSide } );
-	material.color = color;
-	var sizeUIFill = new THREE.Mesh( geometry, material ) ;
-	sizeUIFill.position.z = 0.0011;
-	resizeTriangleGeometry(sizeUIFill.geometry, 0.5);
-	sizeUI.add( sizeUIFill );
-
-	sizeUI.visible = false;
-
-
-
-	function onAxisChanged( event ) {
+	onAxisChanged( event ) {
 		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
 
 		var x = event.axes[ 0 ] / 2.0;
 		var y = - event.axes[ 1 ] / 2.0;
 
-		if ( mode === MODES.COLOR ) {
-			color.setHSL( Math.atan2( y, x ) / PI2, 1, ( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
-			this.nameplate.material.color.setHSL( Math.atan2( y, x ) / PI2, 1, ( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
+		if ( this.mode === this.this.modeS.this.color ) {
+			this.color.setHSL( Math.atan2( y, x ) / this.PI2, 1, ( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
+			this.nameplate.material.this.color.setHSL( Math.atan2( y, x ) / this.PI2, 1, ( 0.5 - Math.sqrt( x * x + y * y ) ) * 2.0 );
 			//or try
-			// this.nameplate.material.color = color;
+			// this.nameplate.material.this.color = this.color;
 		}
 
-		if ( mode === MODES.SIZE ) {
+		if ( this.mode === this.this.modeS.this.size ) {
 			var ratio = (0.5 - y);
-			size = ratio * ratio * 10;
+			this.size = ratio * ratio * 10;
 
-			resizeTriangleGeometry(sizeUIFill.geometry, ratio);
+			rethis.sizeTriangleGeometry(this.sizeUIFill.geometry, ratio);
 		}
 
 	}
 
-	function resizeTriangleGeometry(geometry, ratio) {
+	resizeTriangleGeometry(geometry, ratio) {
 
 		var x = 0, y = 0;
 		var fullWidth = 0.75, fullHeight = 1.5;
@@ -171,43 +171,39 @@ THREE.PaintController = function ( id ) {
 		var height = fullHeight * ratio;
 		var width = ( Math.tan( angle ) * height ) * 2;
 
-		geometry.vertices[ 0 ].set( x, bottomY, 0 );
-		geometry.vertices[ 1 ].set( x + width / 2, bottomY + height, 0 );
-		geometry.vertices[ 2 ].set( x - width / 2, bottomY + height, 0 );
-
-		geometry.verticesNeedUpdate = true;
+		var position = geometry.attributes.position;
+		position.setXYZ( 0, x, bottomY, 0 );
+		position.setXYZ( 1, x + width / 2, bottomY + height, 0 );
+		position.setXYZ( 2, x - width / 2, bottomY + height, 0 );
+		position.needsUpdate = true;
 
 	}
 
-	function onGripsDown( event ) {
+	onGripsDown( ) {
 
-		if ( mode === MODES.COLOR ) {
-			mode = MODES.SIZE;
-			colorUI.visible = false;
-			sizeUI.visible = true;
+		if ( this.mode === this.MODES.COLOR) {
+			this.mode = this.MODES.SIZE;
+			this.colorUI.visible = false;
+			this.sizeUI.visible = true;
 			return;
 		}
 
-		if ( mode === MODES.SIZE ) {
-			mode = MODES.COLOR;
-			colorUI.visible = true;
-			sizeUI.visible = false;
+		if ( this.mode === this.MODES.this.size ) {
+			this.mode = this.MODES.this.color;
+			this.colorUI.visible = true;
+			this.sizeUI.visible = false;
 			return;
 		}
 
 	}
 	
 
-	this.getColor = function () { return color; };
-	this.getSize = function () { return size; };
+	getcolor () { return this.color; };
+	getsize () { return this.size; };
 
-	this.addEventListener( 'axischanged', onAxisChanged );
-	this.addEventListener( 'gripsdown', onGripsDown );
+	
 
 };
-
-THREE.PaintController.prototype = Object.create( THREE.BasicController.prototype );
-THREE.PaintController.prototype.constructor = THREE.PaintController;
 
 
 
@@ -243,7 +239,7 @@ function initGeometry() {
 		roughness: 0.9,
 		metalness: 0.0,
 		// envMap: reflectionCube,
-		vertexColors: THREE.VertexColors,
+		vertexcolors: THREE.Vertexcolors,
 		side: THREE.DoubleSide
 	} );
 
@@ -276,9 +272,9 @@ function getTubeShapes(size) {
 
 function stroke( controller, point1, point2, matrix1, matrix2 ) {
 
-	var color = controller.getColor();
+	var color = controller.getcolor();
 
-	var shapes = getTubeShapes( controller.getSize() );
+	var shapes = getTubeShapes( controller.getsize() );
 
 	var geometry = line.geometry;
 	var attributes = geometry.attributes;
@@ -370,7 +366,7 @@ function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setsize( window.innerWidth, window.innerHeight );
 
 }
 

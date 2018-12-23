@@ -1,25 +1,34 @@
 /**
  * @author quinnciccoretti
  * @class GravityController
- * Control gravity with toucpad
+ * Control gravity with touchpad
  */
-THREE.GravityController = function ( id ) {
+class GravityController extends BasicController{
+	constructor(id){
+		super( id, "#555666", "Gravity");
+		//this little ball shows where the user's thumb is on the trackpad
+		var MODES = { UPDOWN: 0, MULTI: 1 };
+		var mode = MODES.UPDOWN;
+		var modelabel;
+		var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
+		var material = new THREE.MeshBasicMaterial({color:"#ff0000"});
+		var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
+		this.ui.add( ball );
 
-	THREE.BasicController.call( this, id, "#555666", "Gravity");
-	//this little ball shows where the user's thumb is on the trackpad
-	var MODES = { UPDOWN: 0, MULTI: 1 };
-    var mode = MODES.UPDOWN;
-	var modelabel;
-	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
-	var material = new THREE.MeshBasicMaterial({color:"#ff0000"});
-	var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
-	this.ui.add( ball );
+		var modelist = ["up/down", "multiaxis"];
+
+		this.addEventListener( 'axischanged', this.onAxisChanged );
+		this.addEventListener( 'gripsdown', this.onGripsDown );	
+
+	}
+	
+	
 
 	
 	/**
 	* Moves user around the scene based on thumbpad
 	*/
-	function onAxisChanged( event ) {
+	onAxisChanged( event ) {
 		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		//only execute the rest if pressing down on thumbpad
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
@@ -38,11 +47,11 @@ THREE.GravityController = function ( id ) {
 		scene.setGravity(grav);
 		this.pulse(r/6, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
 	}
-	var modelist = ["up/down", "multiaxis"];
+	
 	/**
 	* Change mode
 	*/
-	function onGripsDown(event){
+	onGripsDown(event){
 		console.log("gripsdown, mode:"+mode);
 		if(mode === MODES.UPDOWN){
 		    mode = MODES.MULTI;
@@ -56,9 +65,4 @@ THREE.GravityController = function ( id ) {
 		this.ui.add(modelabel);
 	}
 	
-	this.addEventListener( 'axischanged', onAxisChanged );
-	this.addEventListener( 'gripsdown', onGripsDown );	//Refresh the page when you press the grips of the MoveCtrlr
-};
-
-THREE.GravityController.prototype = Object.create( THREE.BasicController.prototype );
-THREE.GravityController.prototype.constructor = THREE.GravityController;
+}

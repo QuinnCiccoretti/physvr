@@ -14,10 +14,8 @@ function load_basic_model(){
 			basic_controller_model1 = controller.clone();
 			basic_controller_model2 = controller.clone();
 			basic_controller_models = [basic_controller_model1,basic_controller_model2];
-			controller1.add(basic_controller_model1);
-			controller2.add(basic_controller_model2);
-			controller1.addEventListener( 'menudown', on_menu_up1 );
-			controller2.addEventListener( 'menudown', on_menu_up2 );
+			wrap1.ctrlr.add(basic_controller_model1);
+			wrap2.ctrlr.add(basic_controller_model2);
 		} );
 
 

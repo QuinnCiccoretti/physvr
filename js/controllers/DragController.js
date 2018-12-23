@@ -5,25 +5,31 @@
  * Grabs and throws objects
  */
 
-THREE.DragController = function ( id ) {
-	
-	THREE.BasicController.call( this, id, "#bb6600", "Drag");
-	
-	//rays
-	var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
-	var line = new THREE.Line( geometry );
-	line.name = 'line';
-	line.scale.z = 5;
-	this.add( line.clone() );
-	//touchpad ball
-	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
-	var material = new THREE.MeshBasicMaterial({color:"#ff0000"});
-	var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
-	this.ui.add( ball );
+class DragController extends BasicController {
+	constructor(id){
+		super( id, "#bb6600", "Drag");
+		//rays
+		var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+		var line = new THREE.Line( geometry );
+		line.name = 'line';
+		line.scale.z = 5;
+		this.add( line.clone() );
+		//touchpad ball
+		var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
+		var material = new THREE.MeshBasicMaterial({color:"#ff0000"});
+		//this shows where the user's thumb is on the trackpad
+		var ball = new THREE.Mesh( geometry, material );	
+		this.ui.add( ball );
 
-	var object;
+		var object;
+		this.addEventListener( 'axischanged', this.onAxisChanged );
+		this.addEventListener( 'triggerup', this.onTriggerUp );
+		this.addEventListener( 'triggerdown', this.onTriggerDown );
+	}
+	
+	
 
-	function onTriggerDown(){
+	onTriggerDown(){
 		var controller = this;
 		var intersections = getIntersections( controller );
 		if ( intersections.length > 0 ) {
@@ -38,7 +44,7 @@ THREE.DragController = function ( id ) {
 			controller.userData.selected = object;
 		}
 	}
-	function onTriggerUp(){
+	onTriggerUp(){
 		var controller = this;
 		if ( controller.userData.selected !== undefined ) {
 			var object = controller.userData.selected;
@@ -58,13 +64,13 @@ THREE.DragController = function ( id ) {
 			controller.userData.selected = undefined;
 		}
 	}
-	function getIntersections( controller ) {
+	getIntersections( controller ) {
 				tempMatrix.identity().extractRotation( controller.matrixWorld );
 				raycaster.ray.origin.setFromMatrixPosition( controller.matrixWorld );
 				raycaster.ray.direction.set( 0, 0, -1 ).applyMatrix4( tempMatrix );
 				return raycaster.intersectObjects( scene.children );
 			}
-	function intersectObjects( controller ) {
+	intersectObjects( controller ) {
 		// Do not highlight when already selected
 		if ( controller.userData.selected !== undefined ) return;
 		var line = controller.getObjectByName( 'line' );
@@ -78,12 +84,12 @@ THREE.DragController = function ( id ) {
 			line.scale.z = 5;
 		}
 	}
-	function cleanIntersected() {
+	cleanIntersected() {
 		while ( intersected.length ) {
 			var object = intersected.pop();
 		}
 	}
-	function onAxisChanged( event ) {
+	onAxisChanged( event ) {
 		
 		if ( this.getButtonState( 'trigger' ) === false ) return;
 		// if ( this.getButtonState( 'tou' ) === false ) return;
@@ -94,10 +100,5 @@ THREE.DragController = function ( id ) {
 		ball.position.set(0, event.axes[ 1 ], 0);
 		object.position.multiplyScalar(y*5);
 	}
-	this.addEventListener( 'axischanged', onAxisChanged );
-	this.addEventListener( 'triggerup', onTriggerUp );
-	this.addEventListener( 'triggerdown', onTriggerDown );
-};
-
-THREE.DragController.prototype = Object.create( THREE.BasicController.prototype );
-THREE.DragController.prototype.constructor = THREE.DragController;
+	
+}

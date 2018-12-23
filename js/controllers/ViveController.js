@@ -5,6 +5,7 @@
 
 class ViveController extends THREE.Object3D{
 
+
 	
 	constructor(){
 		super();
@@ -18,7 +19,6 @@ class ViveController extends THREE.Object3D{
 		this.matrixAutoUpdate = false;
 		this.standingMatrix = new THREE.Matrix4();
 	}
-
 	/**
 	* Iterate across gamepads as Vive Controllers may not be
 	* in position 0 and 1.
@@ -28,7 +28,9 @@ class ViveController extends THREE.Object3D{
 		for ( var i = 0, j = 0; i < gamepads.length; i ++ ) {
 			var gamepad = gamepads[ i ];
 			if ( gamepad && ( gamepad.id === 'OpenVR Gamepad' || gamepad.id.startsWith( 'Oculus Touch' ) || gamepad.id.startsWith( 'Spatial Controller' ) ) ) {
-				if ( j === id ) return gamepad;
+
+				if ( j === this.id_) return gamepad;
+
 				j ++;
 			}
 		}
@@ -36,13 +38,17 @@ class ViveController extends THREE.Object3D{
 
 	
 
-	getGamepad() {
+
+	getGamepad (){
+
 
 		return gamepad;
 
 	};
 
-	getButtonState ( button ) {
+
+	getButtonState( button ) {
+
 
 		if ( button === 'thumbpad' ) return thumbpadIsPressed;
 		if ( button === 'trigger' ) return triggerIsPressed;
@@ -51,9 +57,12 @@ class ViveController extends THREE.Object3D{
 
 	};
 
-	update () {
 
-		gamepad = findGamepad( id );
+	update (){
+		var gamepad = this.gamepad;
+		var scope = this.scope;
+		gamepad = this.findGamepad( this.id_ );
+
 
 		if ( gamepad !== undefined && gamepad.pose !== undefined ) {
 
@@ -116,4 +125,6 @@ class ViveController extends THREE.Object3D{
 
 	};
 
-};
+
+}
+

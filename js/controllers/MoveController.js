@@ -3,24 +3,30 @@
  * @class MoveController
  * Moves user around scene
  */
-THREE.MoveController = function ( id ) {
-
-	THREE.BasicController.call( this, id, "#009933", "Move");
+class MoveController extends BasicController {
+	constructor(id){
+		super(id, "#009933", "Move");
+		var MODES = { FLAT: 0, MULTI: 1 };
+	    var mode = MODES.FLAT;
+		var modelabel;
+		var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
+		var material = new THREE.MeshBasicMaterial();
+		var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
+		this.ui.add( ball );
+		var modelist = ["flataxis", "multiaxis"];
+		this.addEventListener( 'axischanged', this.onAxisChanged );
+		//Refresh the page when you press the grips of the MoveCtrlr
+		this.addEventListener( 'gripsdown', this.onGripsDown );	
+	}
 	
-	var MODES = { FLAT: 0, MULTI: 1 };
-    var mode = MODES.FLAT;
-	var modelabel;
-	var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
-	var material = new THREE.MeshBasicMaterial();
-	// material.color = "#000000";
-	var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
-	this.ui.add( ball );
+	
+	
 
 	
 	/**
 	* Moves user around the scene based on thumbpad
 	*/
-	function onAxisChanged( event ) {
+	onAxisChanged( event ) {
 		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
 
@@ -47,11 +53,11 @@ THREE.MoveController = function ( id ) {
 		user.position.add(final_dir);
 		this.pulse(r/6, 5);	//pulse at intensity proportional to movement speed, for very short duration, 5ms.
 	}
-	var modelist = ["flataxis", "multiaxis"];
+	
 	/**
 	* Change mode
 	*/
-	function onGripsDown(event){
+	onGripsDown(event){
 		console.log("gripsdown, mode:"+mode);
 		if(mode === MODES.FLAT){
 		    mode = MODES.MULTI;
@@ -65,9 +71,6 @@ THREE.MoveController = function ( id ) {
 		this.ui.add(modelabel);
 	}
 	
-	this.addEventListener( 'axischanged', onAxisChanged );
-	this.addEventListener( 'gripsdown', onGripsDown );	//Refresh the page when you press the grips of the MoveCtrlr
-};
+}
 
-THREE.MoveController.prototype = Object.create( THREE.BasicController.prototype );
-THREE.MoveController.prototype.constructor = THREE.MoveController;
+

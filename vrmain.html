@@ -22,10 +22,10 @@
 		</style>
 		<!-- For threejs, physics, and webvr -->
 		<script src="./js/three.js"></script>
-		<script type="text/javascript" src="js/stats.js"></script>
-		<script type="text/javascript" src="js/scene.js"></script>
-		<script src = "./js/ui.js"></script>
-		<script type="text/javascript" src="./js/phys/physi.js"></script>
+		<script src="js/stats.js"></script>
+		<script src="js/scene.js"></script>
+		<script src="./js/ui.js"></script>
+		<script src="./js/phys/physi.js"></script>
 		<script src="./js/WebVR.js"></script>
 		<!-- Lower level controller classes -->
 		<script src="./js/controllers/ViveController.js"></script>
@@ -45,8 +45,8 @@
 		<!-- model loaders -->
 		<script src="./js/OBJLoader.js"></script>
 		<script src="./js/MTLLoader.js"></script>
-
-		
+		<!-- Wrapper class to cycle controllers -->
+		<script src="./js/Wrapper.js"></script>
 	</head>
 	<body>
 		<script>
@@ -56,7 +56,7 @@
 			Physijs.scripts.ammo = '/js/phys/ammo.js';
 
 			var container;
-
+			var wrap1, wrap2;
 			var camera, scene, renderer;
 			var user;
 			var basic_controller_model1, basic_controller_model2, basic_controller_models = [];
@@ -102,11 +102,6 @@
 				render_stats.domElement.style.top = '1px';
 				render_stats.domElement.style.zIndex = 100;
 				container.appendChild( render_stats.domElement );
-				physics_stats = new Stats();
-				physics_stats.domElement.style.position = 'absolute';
-				physics_stats.domElement.style.top = '50px';
-				physics_stats.domElement.style.zIndex = 100;
-				container.appendChild( physics_stats.domElement );
 			}
 
 			function preload(){
@@ -152,128 +147,33 @@
 
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
-				
-				//Set up basic controllers while a list of other controllers loads
-				//note that the controller constructor already .adds it to user
-				controller1 = new THREE.BasicController( 0 );
-				controller1.position.set(0,10,0); //start controller high and away
-
-				controller2 = new THREE.BasicController( 1 );
-				controller2.position.set(0,10,0);  //start controller high and away to avoid collisions
+				wrap1 = new Wrapper();
+				wrap2 = new Wrapper();
 
 				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
 				load_basic_model();
-				//toggle the controller mode
-				controller1.addEventListener( 'menudown', on_menu_up1 );
-				controller2.addEventListener( 'menudown', on_menu_up2 );
-				initGeometry();
-				// createTower(10);
-				/**
-				* If you want the controllers to be able to push things, you need to make an
-				* invisible box that follows them around. You can't use .add becuase the 
-				* physics engine wants its own coords. So you just update the position
-				* of two boxes so they follow the controls, and make them invisible
-				*/
-				var physGeom = new THREE.CubeGeometry(0.12, 0.1, 0.22); 
-				var physMaterial = new Physijs.createMaterial(new THREE.MeshBasicMaterial({}), 0.5, 0.5);
-				physMaterial.visible = false;	//Make them invisible
-
-				phys_obj1 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
-				phys_obj2 = new Physijs.BoxMesh(physGeom, physMaterial, 100);
-				phys_obj1.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-    				controller1.pulse(.25, 25);
-    				//by setting object.userData.ctrlr_nocollide to true, you can make it not collide with the controller
-    				if(typeof other_object.userData.ctrlr_nocollide !== "undefined"){
-    					other_object.setLinearVelocity(0,0,0);
-    				}
-    				
-				});
-				phys_obj1.material.wireframe = true;
-				phys_obj2.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-    				controller2.pulse(.25, 25);
-    				//by setting object.userData.ctrlr_nocollide to true, you can make it not collide with the controller
-    				if(typeof other_object.userData.ctrlr_nocollide !== "undefined"){
-    					other_object.setLinearVelocity(0,0,0);
-    				}
-				});
-				scene.add(phys_obj1);
-				scene.add(phys_obj2);
+				
 				//helps updated phys objs in basiccontroller
-				phys_obj_list = [phys_obj1,phys_obj2];
+				phys_obj_list = [wrap1.get_phys_obj(),wrap2.get_phys_obj()];
 
 				// Start simulation
 				requestAnimationFrame( render );
 				scene.simulate();
 			}	
-			
-			var ctrlr1list = [
-			    new THREE.PaintController( 0 ), 
-			    new THREE.MoveController( 0 ), 
-			    new THREE.DragController( 0 ), 
-			    new THREE.SlingshotController( 0 ),
-			    new THREE.LBowController(0),
-			    new THREE.CreateController(0), 
-			    new THREE.RefreshController(0),
-			    new THREE.GravityController( 0 )
-			    // new THREE.BatController(0)
 
-			 ];
-
-			var current_controller1 = 0;
-			var current_controller2 = 0;
-			var ctrlr2list = [
-			    new THREE.PaintController( 1 ), 
-    			new THREE.MoveController( 1 ), 
-    			new THREE.DragController( 1 ), 
-    			new THREE.SlingshotController( 1 ),
-    			new THREE.RefreshController(1), 
-    			new THREE.RBowController(1),
-    			new THREE.GravityController( 1 ),
-    			new THREE.CreateController(1)
- 
-			];
-			/**
-			* Toggles 1st ctrlr through various controller objects
-			*/
-			function on_menu_up1(){
-				on_menu_up(controller1);
-			}
-			function on_menu_up2(){
-				on_menu_up(controller2);
-			}
-			function on_menu_up(controller){
-				
-				//The below line is essential. It is located in BasicController
-				// and may be overriden
-				controller.on_deactivate();
-				
-				current_controller1++;
-				if(current_controller1 == ctrlr1list.length){
-					current_controller1 = 0;
-				}
-				controller = ctrlr1list[current_controller1];
-				
-				//The below line is essential. It is located in BasicController
-				// and may be overriden
-				controller.on_activate();
-				controller.addEventListener( 'menuup', on_menu_up1 );
-			}
-			
 
 			/**
 			* Main loop. Called everytime the physics sim updates. All update code runs from here.
 			*/
 			function render() {
 				//controllers define their own handle method which calls .update() and updates physics objs
-				count = line.geometry.drawRange.count;
-				controller1.handle_update();
-				controller2.handle_update();
+				wrap1.handle_update();
+				wrap2.handle_update();
 				
 				scene.simulate(); // run physics
 				requestAnimationFrame( render );
 				renderer.render( scene, camera );
-				render_stats.update();	//update stats
-				physics_stats.update();
+				render_stats.update();
 			}
 		</script>
 		<div>
