@@ -52,7 +52,8 @@ THREE.MyController.prototype.constructor = THREE.MyController;
 	 - if you want a Controller Class to be available to only one controller, only append to one list.
 
 ## TO DO
- - [ ] Fix rotation of arrow on BowControllers
- - [x] Add multi-axis movement modes on MoveController
- - [x] Add CreatorController to add objects to the scene
+ - [ ] Test object-oriented version (physvr++)
+ - [ ] Encapsulate large amount of global vars in their respective classes
+ - [ ] Create User class
+ - [ ] Setup PeerServer and implement peerjs to create multiplayer
  - [ ] Use VRStageParameters from WebVR api to create walls where they are in Vive Chaperone
