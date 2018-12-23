@@ -1,6 +1,7 @@
 class Wrapper {
-	constructor(){
-		//Set up basic controllers while a list of other controllers loads
+	constructor(id){
+		//Set up basic controllers while a list of other controllers loads'
+		this.wrap_id = id;
 		this.ctrlr = new BasicController( 0 );
 		var ctrlr = this.ctrlr; //may brick
 		// ctrlr.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
@@ -26,18 +27,18 @@ class Wrapper {
 		);
 		this.phys_obj.material.wireframe = true;
 		scene.add(this.phys_obj);
-		var ctrlrlist = [
-		    new PaintController( 0 ), 
-		    new MoveController( 0 ), 
-		    new DragController( 0 ), 
-		    new SlingshotController( 0 ),
-		    new LBowController(0),
-		    new CreateController(0), 
-		    new RefreshController(0),
-		    new GravityController( 0 )
+		this.ctrlrlist = [
+		    new PaintController( id ), 
+		    new MoveController( id ), 
+		    new DragController( id ), 
+		    new SlingshotController( id ),
+		    new LBowController(id),
+		    new CreateController(id), 
+		    new RefreshController(id),
+		    new GravityController( id )
 		    // new THREE.BatController(0)
 		 ];
-		var current_controller = 0;
+		this.current_controller = 0;
 		
 		
 	}
@@ -54,17 +55,18 @@ class Wrapper {
 	/**
 	* Toggles 1st ctrlr through various controller objects
 	*/
+
 	on_menu_up(){
 		
 		//The below line is essential. It is located in BasicController
 		// and may be overriden
 		this.ctrlr.on_deactivate();
 		
-		current_controller++;
-		if(current_controller == ctrlr1list.length){
-			current_controller = 0;
+		this.current_controller++;
+		if(this.current_controller == this.ctrlrlist.length){
+			this.current_controller = 0;
 		}
-		this.ctrlr = ctrlrlist[current_controller];
+		this.ctrlr = this.ctrlrlist[this.current_controller];
 		
 		//The below line is essential. It is located in BasicController
 		// and may be overriden

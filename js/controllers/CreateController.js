@@ -47,6 +47,7 @@ class CreateController extends BasicController {
 	* The following three methods, on_activate, on_deactivate, and handle_update are a rather compicated way to
 	* remove the physics object around the controller so it does not 
 	* collide with created objects.
+	* !!!!! WIP !!!!!!!!!
 	*/
 	on_activate (){
 		this.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
@@ -57,8 +58,10 @@ class CreateController extends BasicController {
 		this.make_nameplate();
 		
 	}
+
 	/**
-	* add back the physics object
+	* add back the physics objects
+	* !!!!! WIP !!!!!!!!!
 	*/
 	on_deactivate (){
 		//this removes the model to conserve memory

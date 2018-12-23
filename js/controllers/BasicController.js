@@ -5,9 +5,12 @@
  */
 class BasicController extends ViveController  {
 	constructor( id, uicolor="#ff00ff", name = "Basic"){
-		super(id);
+		super();
+		this.id_ = id;
 		console.log("BasicController instantiated with id:"+id);
 		//UI, appears on the touchpad, with uicolor
+		this.uicolor = uicolor;
+		this.name = name;
 		var geometry = new THREE.CircleGeometry( 1, 32 );
 		var material = new THREE.MeshBasicMaterial( { color: uicolor } );
 		this.ui = new THREE.Mesh( geometry, material );
@@ -15,8 +18,8 @@ class BasicController extends ViveController  {
 		this.ui.rotation.x = - 1.45;
 		this.ui.scale.setScalar( 0.02 );
 		this.add( this.ui );
-		/** starts at false */
-		var made_nameplate = false;
+		/** starts at false - this saves costly font loading*/
+		this.made_nameplate = false;
 	}
 	
 	
@@ -93,7 +96,9 @@ class BasicController extends ViveController  {
 		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 		user.add( this );
 		//add the model of the controller
+		console.log("My id bro: "+ this.id_);
 		this.add(basic_controller_models[this.id_]);
+
 		this.make_nameplate();
 	}
 	/**
@@ -112,12 +117,12 @@ class BasicController extends ViveController  {
 	 */
 	make_nameplate(){
 		this.name = name;
-		if( !made_nameplate && (typeof uifont !== "undefined") ){
-			this.nameplate = create_text_mesh(name, 2, uicolor);
+		if( !this.made_nameplate && (typeof uifont !== "undefined") ){
+			this.nameplate = create_text_mesh(this.name, 2, this.uicolor);
 			this.nameplate.rotation.z = -1.55;	//align w/ controller handle
 			this.ui.add(this.nameplate);
 			this.nameplate.position.set(-0.5, -0.8, 0.3); //set relative pos
-			made_nameplate = true;
+			this.made_nameplate = true;
 		}
 		
 	}

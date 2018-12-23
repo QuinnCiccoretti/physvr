@@ -60,34 +60,27 @@
 			var camera, scene, renderer;
 			var user;
 			var basic_controller_model1, basic_controller_model2, basic_controller_models = [];
-			var controller1, controller2;
-			var handleController;
+			//for shadowing with phys_objs
 			var controller_offset_z = -0.07;
 			var controller_offset_y = 0.03;
 			
 			//for dragcontroller
-			var intersected = [];
-			var raycaster = new THREE.Raycaster();
-			var tempMatrix = new THREE.Matrix4();
+			// var intersected = [];
+			// var raycaster = new THREE.Raycaster();
+			// var tempMatrix = new THREE.Matrix4();
 			//for paintcontroller
 			var count;
 
 			var block_material, block_geometry;
 			
 			
-			var load_model;
-			var line;
-			var shapes = {};
+			
+			
 			var createTower;
 			
-			var up = new THREE.Vector3( 0, 1, 0 );
-			var vector = new THREE.Vector3();
-			var vector1 = new THREE.Vector3();
-			var vector2 = new THREE.Vector3();
-			var vector3 = new THREE.Vector3();
-			var vector4 = new THREE.Vector3();
-			var point4 = new THREE.Vector3();
-			var point5 = new THREE.Vector3();
+			// var up = new THREE.Vector3( 0, 1, 0 );
+			// var vector = new THREE.Vector3();
+			
 			
 
 			window.onload = init();
@@ -137,16 +130,16 @@
 				renderer.shadowMap.enabled = true;
 				renderer.vr.enabled = true;	//VR REQUIRED
 				container.appendChild( renderer.domElement );
-
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
 
-				wrap1 = new Wrapper();
-				wrap2 = new Wrapper();
+				wrap1 = new Wrapper(0);
+				wrap2 = new Wrapper(1);
 
-				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
+				//gets the model for the vive controller. 
+				//needs to be done beforehand as it is slow and asyncy
 				load_basic_model();
 
-				// Start simulation
+				// Start everything
 				requestAnimationFrame( render );
 				scene.simulate();
 			}	

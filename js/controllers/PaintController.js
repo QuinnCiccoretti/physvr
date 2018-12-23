@@ -4,6 +4,14 @@
  * @class PaintController
  * Draws in 3d
  */
+var vector1 = new THREE.Vector3();
+var vector2 = new THREE.Vector3();
+var vector3 = new THREE.Vector3();
+var vector4 = new THREE.Vector3();
+var point4 = new THREE.Vector3();
+var point5 = new THREE.Vector3();
+var line;
+var shapes = {};
 class PaintController extends BasicController{
 	constructor(id){
 		super(id, "#ffffff", "Paint");
