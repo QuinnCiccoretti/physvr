@@ -146,8 +146,10 @@
 				container.appendChild( renderer.domElement );
 
 				document.body.appendChild( WEBVR.createButton( renderer ) ); //VR REQUIRED
+
 				wrap1 = new Wrapper();
 				wrap2 = new Wrapper();
+
 				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
 				load_basic_model();
 				
@@ -158,6 +160,8 @@
 				requestAnimationFrame( render );
 				scene.simulate();
 			}	
+
+
 			/**
 			* Main loop. Called everytime the physics sim updates. All update code runs from here.
 			*/
