@@ -35,7 +35,6 @@ class BasicController extends ViveController  {
 	*/
 	handle_update() {
 		this.update(); //refreshes controller data
-		this.update_phys_objects();
 	}
 
 	/**
@@ -70,22 +69,22 @@ class BasicController extends ViveController  {
 	* Updates invisible boxes (phys_obj1 and phys_obj2)
 	* to follow controllers so they can push things
 	*/
-	update_phys_objects(){
+	update_phys_obj(my_phys_obj){
 		
 		var my_pos = this.get_absolute_position();
 		//get the appropriate physics object, object 1 or 2, from a global list
-		var phys_obj = phys_obj_list[this.id_];	
+		// var my_phys_obj = phys_obj_list[this.id_];	
 
 		var rot = this.rotation;
-		phys_obj.rotation.set(rot.x, rot.y, rot.z);
-		phys_obj.__dirtyRotation = true;
+		my_phys_obj.rotation.set(rot.x, rot.y, rot.z);
+		my_phys_obj.__dirtyRotation = true;
 
-		phys_obj.position.set( my_pos.x, my_pos.y + controller_offset_y, my_pos.z  );
-		phys_obj.__dirtyPosition = true;
+		my_phys_obj.position.set( my_pos.x, my_pos.y + controller_offset_y, my_pos.z  );
+		my_phys_obj.__dirtyPosition = true;
 
 	    //cancel the object's velocity
-	    phys_obj.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-	    phys_obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
+	    my_phys_obj.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+	    my_phys_obj.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 	}
 	/**
 	* called whenever the menu button is pressed to switch to this mode

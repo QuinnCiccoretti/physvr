@@ -119,7 +119,7 @@ class ViveController extends THREE.Object3D{
 
 		} else {
 
-			scope.visible = false;
+			// scope.visible = false;
 
 		}
 

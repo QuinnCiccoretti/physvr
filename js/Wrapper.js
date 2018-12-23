@@ -25,7 +25,7 @@ class Wrapper {
 			}
 		);
 		this.phys_obj.material.wireframe = true;
-		scene.add(phys_obj);
+		scene.add(this.phys_obj);
 		var ctrlrlist = [
 		    new PaintController( 0 ), 
 		    new MoveController( 0 ), 
@@ -49,6 +49,7 @@ class Wrapper {
 	}
 	handle_update(){
 		this.ctrlr.handle_update();
+		this.ctrlr.update_phys_obj(this.phys_obj);
 	}
 	/**
 	* Toggles 1st ctrlr through various controller objects
