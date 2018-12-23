@@ -239,7 +239,7 @@ function initGeometry() {
 		roughness: 0.9,
 		metalness: 0.0,
 		// envMap: reflectionCube,
-		vertexcolors: THREE.Vertexcolors,
+		// vertexcolors: THREE.Vertexcolors,
 		side: THREE.DoubleSide
 	} );
 
