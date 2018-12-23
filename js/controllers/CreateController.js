@@ -55,8 +55,7 @@ class CreateController extends BasicController {
 		//add the model of the controller
 		this.add(basic_controller_models[id]);
 		this.make_nameplate();
-		//remove physobj
-		scene.remove(phys_obj_list[id]);
+		
 	}
 	/**
 	* add back the physics object
@@ -65,8 +64,7 @@ class CreateController extends BasicController {
 		//this removes the model to conserve memory
 		this.remove(basic_controller_models[id]);
 		user.remove(this);
-		//add back physobj
-		scene.add(phys_obj_list[id]);
+		
 	}
 	// /**
 	// * Updates controller position data based on gamepad pose

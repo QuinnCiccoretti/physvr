@@ -73,8 +73,7 @@
 			var count;
 
 			var block_material, block_geometry;
-			var phys_obj1, phys_obj2;
-			var phys_obj_list = [];
+			
 			
 			var load_model;
 			var line;
@@ -91,7 +90,7 @@
 			var point5 = new THREE.Vector3();
 			
 
-			window.onload = preload();
+			window.onload = init();
 			var render_stats, physics_stats;
 			/**
 			* Create stats element
@@ -103,19 +102,13 @@
 				render_stats.domElement.style.zIndex = 100;
 				container.appendChild( render_stats.domElement );
 			}
-
-			function preload(){
-				console.log("preloading...")
-				init_font_loader();
-				
-				init();
-			}
 			/**
 			* Main initialization
 			*/
 
 			function init() {
 				console.log("init....")
+				init_font_loader();
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 				init_stats();				
@@ -152,9 +145,6 @@
 
 				//gets the model for the vive controller. This needs to be done beforehand as it is slow and asyncy
 				load_basic_model();
-				
-				//helps updated phys objs in basiccontroller
-				phys_obj_list = [wrap1.get_phys_obj(),wrap2.get_phys_obj()];
 
 				// Start simulation
 				requestAnimationFrame( render );

@@ -68,13 +68,11 @@ class BasicController extends ViveController  {
 	/**
 	* Updates invisible boxes (phys_obj1 and phys_obj2)
 	* to follow controllers so they can push things
+	* @param my_phys_obj the wrapper classes' physic object
 	*/
 	update_phys_obj(my_phys_obj){
 		
 		var my_pos = this.get_absolute_position();
-		//get the appropriate physics object, object 1 or 2, from a global list
-		// var my_phys_obj = phys_obj_list[this.id_];	
-
 		var rot = this.rotation;
 		my_phys_obj.rotation.set(rot.x, rot.y, rot.z);
 		my_phys_obj.__dirtyRotation = true;
