@@ -19,6 +19,7 @@ class SlingshotController extends BasicController{
 	* Launches ball.
 	*/
 	onTriggerDown(){
+		console.log("yacht");
 		//a sphere to launch
 		var sphere = new Physijs.SphereMesh(
 			new THREE.SphereGeometry( 0.1, 12, 12 ),

@@ -42,7 +42,7 @@ class ViveController extends THREE.Object3D{
 	getGamepad (){
 
 
-		return gamepad;
+		return this.gamepad;
 
 	};
 

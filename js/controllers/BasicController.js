@@ -131,10 +131,12 @@ class BasicController extends ViveController  {
 	*/
 	pulse(intensity, duration){
 		var gp = this.getGamepad();
+		if(typeof gp !== 'undefined'){
 		if( gp.hapticActuators && gp.hapticActuators[ 0 ]){	//Check if it has haptics
 		    gp.hapticActuators[ 0 ].pulse( intensity, duration );
 		    //pulse at 0-1 intensity for (duration)ms
 		}
+	}
 	}
 
 }

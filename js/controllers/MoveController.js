@@ -6,14 +6,14 @@
 class MoveController extends BasicController {
 	constructor(id){
 		super(id, "#009933", "Move");
-		var MODES = { FLAT: 0, MULTI: 1 };
-	    var mode = MODES.FLAT;
-		var modelabel;
+		this.MODES = { FLAT: 0, MULTI: 1 };
+	    this.mode = this.MODES.FLAT;
+		this.modelabel;
 		var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
 		var material = new THREE.MeshBasicMaterial();
-		var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
-		this.ui.add( ball );
-		var modelist = ["flataxis", "multiaxis"];
+		this.ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
+		this.ui.add( this.ball );
+		this.modelist = ["flataxis", "multiaxis"];
 		this.addEventListener( 'axischanged', this.onAxisChanged );
 		//Refresh the page when you press the grips of the MoveCtrlr
 		this.addEventListener( 'gripsdown', this.onGripsDown );	
@@ -27,7 +27,7 @@ class MoveController extends BasicController {
 	* Moves user around the scene based on thumbpad
 	*/
 	onAxisChanged( event ) {
-		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
+		this.ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
 
 		var x = event.axes[ 0 ] / 2.0;
@@ -37,10 +37,10 @@ class MoveController extends BasicController {
 
 		var dir = this.get_pointing_vector().multiplyScalar(-1);
 		var final_dir;
-		if(mode === MODES.FLAT){
+		if(this.mode === this.MODES.FLAT){
     		final_dir = new THREE.Vector3(dir.x, 0 ,dir.z);
 		}
-		if(mode === MODES.MULTI){
+		if(this.mode === this.MODES.MULTI){
 		    final_dir = dir;
 		}
 		final_dir.divideScalar(final_dir.length());	//convert to unit vec as we are only interested in direction
@@ -58,6 +58,8 @@ class MoveController extends BasicController {
 	* Change mode
 	*/
 	onGripsDown(event){
+		var mode = this.mode;
+		var MODES = this.MODES;
 		console.log("gripsdown, mode:"+mode);
 		if(mode === MODES.FLAT){
 		    mode = MODES.MULTI;
@@ -66,8 +68,8 @@ class MoveController extends BasicController {
 		else if(mode === MODES.MULTI){
 		    mode = MODES.FLAT;
 		}
-		this.ui.remove(modelabel);
-		modelabel = create_text_mesh(modelist[mode], 2, "#ff0000");
+		this.ui.remove(this.modelabel);
+		this.modelabel = create_text_mesh(this.modelist[mode], 2, "#ff0000");
 		this.ui.add(modelabel);
 	}
 	
