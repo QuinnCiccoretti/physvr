@@ -54,7 +54,7 @@ class CreateController extends BasicController {
 		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 		user.add( this );
 		//add the model of the controller
-		this.add(basic_controller_models[id]);
+		this.add(basic_controller_models[this.id_]);
 		this.make_nameplate();
 		
 	}
@@ -65,7 +65,7 @@ class CreateController extends BasicController {
 	*/
 	on_deactivate (){
 		//this removes the model to conserve memory
-		this.remove(basic_controller_models[id]);
+		this.remove(basic_controller_models[this.id_]);
 		user.remove(this);
 		
 	}

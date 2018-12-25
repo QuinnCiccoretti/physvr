@@ -12,10 +12,10 @@ class ViveController extends THREE.Object3D{
 		var scope = this;
 		var gamepad;
 		var axes = [ 0, 0 ];
-		var thumbpadIsPressed = false;
-		var triggerIsPressed = false;
-		var gripsArePressed = false;
-		var menuIsPressed = false;
+		this.thumbpadIsPressed = false;
+		this.triggerIsPressed = false;
+		this.gripsArePressed = false;
+		this.menuIsPressed = false;
 		this.matrixAutoUpdate = false;
 		this.standingMatrix = new THREE.Matrix4();
 	}
@@ -50,10 +50,10 @@ class ViveController extends THREE.Object3D{
 	getButtonState( button ) {
 
 
-		if ( button === 'thumbpad' ) return thumbpadIsPressed;
-		if ( button === 'trigger' ) return triggerIsPressed;
-		if ( button === 'grips' ) return gripsArePressed;
-		if ( button === 'menu' ) return menuIsPressed;
+		if ( button === 'thumbpad' ) return this.thumbpadIsPressed;
+		if ( button === 'trigger' ) return this.triggerIsPressed;
+		if ( button === 'grips' ) return this.gripsArePressed;
+		if ( button === 'menu' ) return this.menuIsPressed;
 
 	};
 

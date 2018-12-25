@@ -2,7 +2,7 @@ class Wrapper {
 	constructor(id){
 		//Set up basic controllers while a list of other controllers loads'
 		this.wrap_id = id;
-		this.ctrlr = new BasicController( 0 );
+		this.ctrlr = new BasicController( id );
 		var ctrlr = this.ctrlr; //may brick
 		ctrlr.position.set(0,10,0); //start controller high and away to avoid collisions
 		user.add( ctrlr );
@@ -35,7 +35,7 @@ class Wrapper {
 		    new GravityController( id )
 		    // new THREE.BatController(0)
 		 ];
-		this.current_controller = 0;
+		this.current_controller = -1;
 		// since 'menuup' event is dispatched in the controller
 		// we must add it to all controllers
 		for(var i = 0; i<this.ctrlrlist.length; i++){

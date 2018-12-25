@@ -7,7 +7,6 @@ class BasicController extends ViveController  {
 	constructor( id, uicolor="#ff00ff", name = "Basic"){
 		super();
 		this.id_ = id;
-		console.log("BasicController instantiated with id:"+id);
 		//UI, appears on the touchpad, with uicolor
 		this.uicolor = uicolor;
 		this.name = name;
@@ -96,7 +95,6 @@ class BasicController extends ViveController  {
 		this.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 		user.add( this );
 		//add the model of the controller
-		console.log("My id bro: "+ this.id_);
 		this.add(basic_controller_models[this.id_]);
 
 		this.make_nameplate();

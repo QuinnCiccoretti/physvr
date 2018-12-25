@@ -15,18 +15,18 @@ var shapes = {};
 class PaintController extends BasicController{
 	constructor(id){
 		super(id, "#ffffff", "Paint");
+		initGeometry();
 		this.PI2 = Math.PI * 2;
 		this.MODES = { COLOR: 0, SIZE: 1 };
 		this.mode = this.MODES.COLOR;
 		this.color = new THREE.Color( 1, 1, 1 );
 		this.size = 1 ;
 		//Little ball on the top of "paintbrush"
-		var pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
-		pivot.name = 'pivot';
-		pivot.position.y = -0.016;
-		pivot.position.z = -0.043;
-		pivot.rotation.x = Math.PI / 5.5;
-		this.add( pivot );
+		this.pivot = new THREE.Mesh( new THREE.IcosahedronGeometry( 0.01, 2 ) );
+		this.pivot.position.y = -0.016;
+		this.pivot.position.z = -0.043;
+		this.pivot.rotation.x = Math.PI / 5.5;
+		this.add( this.pivot );
 
 		// this.color UI - not using default
 		var geometry = new THREE.CircleBufferGeometry( 1, 32 );
@@ -85,23 +85,22 @@ class PaintController extends BasicController{
 				
 		count = line.geometry.drawRange.count;
 		this.update();
-		this.update_phys_objects();
+		
 		// updateGeometry( count, line.geometry.drawRange.count );
-		var pivot = this.getObjectByName( 'pivot' );
+		
 
-		if ( pivot ) {
+		if ( this.pivot ) {
+			this.pivot.material.color.copy( this.getcolor() );
+			this.pivot.scale.setScalar(this.getsize());
 
-			pivot.material.this.color.copy( this.getthis.color() );
-			pivot.scale.setScalar(this.getthis.size());
-
-			var matrix = pivot.matrixWorld;
+			var matrix = this.pivot.matrixWorld;
 			var point1 = this.userData.points[ 0 ];
 			var point2 = this.userData.points[ 1 ];
 			var matrix1 = this.userData.matrices[ 0 ];
 			var matrix2 = this.userData.matrices[ 1 ];
 
 			point1.setFromMatrixPosition( matrix );
-			matrix1.lookAt( point2, point1, up );
+			matrix1.lookAt( point2, point1, new THREE.Vector3( 0, 1, 0 ) );
 
 			if ( this.getButtonState( 'trigger' ) ) {
 				stroke( this, point1, point2, matrix1, matrix2 );
@@ -208,9 +207,6 @@ class PaintController extends BasicController{
 
 	getcolor () { return this.color; };
 	getsize () { return this.size; };
-
-	
-
 };
 
 
@@ -247,7 +243,7 @@ function initGeometry() {
 		roughness: 0.9,
 		metalness: 0.0,
 		// envMap: reflectionCube,
-		vertexcolors: THREE.Vertexcolors,
+		// vertexcolors: THREE.Vertexcolors,
 		side: THREE.DoubleSide
 	} );
 
