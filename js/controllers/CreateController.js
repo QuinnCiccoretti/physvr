@@ -7,15 +7,15 @@ class CreateController extends BasicController {
 	constructor(id){
 		super( id, "#0066ff", "Create");
 		//Initialize all the geometries that will be thrown in a scene
-		var modelabel;
+		this.modelabel;
 		/**Table*/
 		var table_geometry = new THREE.BoxGeometry( 0.5, 0.8, 0.5 );
 		var table_material = new THREE.MeshBasicMaterial({ color: 0x888888 })
-		var table = new Physijs.BoxMesh( table_geometry, table_material, 0);
-		table.castShadow = true;
-		table.receiveShadow = true;
+		this.table = new Physijs.BoxMesh( table_geometry, table_material, 0);
+		this.table.castShadow = true;
+		this.table.receiveShadow = true;
 		/**Sphere*/
-		var sphere = new Physijs.SphereMesh(
+		this.sphere = new Physijs.SphereMesh(
 			new THREE.SphereGeometry( .25, 12, 12 ),
 			new THREE.MeshBasicMaterial({ color: 0xff0000 }),
 			0 //mass
@@ -28,14 +28,14 @@ class CreateController extends BasicController {
 		);
 		brick_material.map.wrapS = THREE.RepeatWrapping;
 		brick_material.map.repeat.set( .25, .25 );
-		var brick = new Physijs.BoxMesh(
+		this.brick = new Physijs.BoxMesh(
 				new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
 				brick_material,
 				1
 		);
-		var object;
-		var modelist = ["table", "sphere","scene", "brick"];
-		var mode = 0;
+		this.obj;
+		this.modelist = ["table", "sphere","scene", "brick"];
+		this.mode = 0;
 		this.addEventListener( 'gripsdown', this.onGripsDown );
 		this.addEventListener( 'triggerdown', this.onTriggerDown );
 		this.addEventListener( 'triggerup', this.onTriggerUp );
@@ -84,52 +84,56 @@ class CreateController extends BasicController {
 	* Creates object
 	*/
 	onTriggerDown(){
-		
-		
+		var obj = this.obj;
+		var mode = this.mode;
 		//a sphere to launch
 		if ( mode == 0 ) {
-			object = table.clone();
+			obj = this.table.clone();
 		}
 
 		if ( mode == 1 ) {
-			object = sphere.clone();
+			obj = this.sphere.clone();
 		}
 
 		if (mode == 2){
 			var my_pos = this.get_absolute_position();
 			create_scene_objects(my_pos.x, my_pos.y, my_pos.z);
-			object = brick.clone();
+			obj = this.brick.clone();
 		}
 		
 		if (mode == 3){
-			object = brick.clone();
+			obj = this.brick.clone();
 		}
 		//sets it a little higher than the halo
 		//relative to controller
-		object.position.y = -0.016;
-		object.position.z = -0.043;
-		this.add(object);
+		obj.position.y = -0.016;
+		obj.position.z = -0.043;
+		this.add(obj);
 	}
 	/** Add object to scene */
 	onTriggerUp(){
-		object.matrix.premultiply( this.matrixWorld );
-		object.matrix.decompose( object.position, object.quaternion, object.scale );
+		var obj = this.obj;
+		obj.matrix.premultiply( this.matrixWorld );
+		obj.matrix.decompose( obj.position, obj.quaternion, obj.scale );
 		var pos = this.get_absolute_position();
-		object.position.set(pos.x, pos.y, pos.z);
-		this.remove(object);
-		scene.add(object);
-		object.setLinearVelocity(this.get_velocity().multiplyScalar(4));
+		obj.position.set(pos.x, pos.y, pos.z);
+		this.remove(obj);
+		scene.add(obj);
+		obj.setLinearVelocity(this.get_velocity().multiplyScalar(4));
 		this.pulse(.5,25);
 	}
 	
 	/** Switch modes */
 	onGripsDown( event ) {
+		var modelabel = this.modelabel;
+		var mode = this.mode;
 		this.ui.remove(modelabel);
+		
 		mode +=1;
-		if(mode == modelist.length){
+		if(mode == this.modelist.length){
 			mode = 0;
 		}
-		modelabel = create_text_mesh(modelist[mode], 2, "#ff0000");
+		modelabel = create_text_mesh(this.modelist[mode], 2, "#ff0000");
 		this.ui.add(modelabel);
 	}
 	

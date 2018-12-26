@@ -7,15 +7,15 @@ class GravityController extends BasicController{
 	constructor(id){
 		super( id, "#555666", "Gravity");
 		//this little ball shows where the user's thumb is on the trackpad
-		var MODES = { UPDOWN: 0, MULTI: 1 };
-		var mode = MODES.UPDOWN;
-		var modelabel;
+		this.MODES = { UPDOWN: 0, MULTI: 1 };
+		this.mode = this.MODES.UPDOWN;
+		this.modelabel;
 		var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
 		var material = new THREE.MeshBasicMaterial({color:"#ff0000"});
-		var ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
-		this.ui.add( ball );
+		this.ball = new THREE.Mesh( geometry, material );	//this shows where the user's thumb is on the trackpad
+		this.ui.add( this.ball );
 
-		var modelist = ["up/down", "multiaxis"];
+		this.modelist = ["up/down", "multiaxis"];
 
 		this.addEventListener( 'axischanged', this.onAxisChanged );
 		this.addEventListener( 'gripsdown', this.onGripsDown );	
@@ -29,7 +29,9 @@ class GravityController extends BasicController{
 	* Moves user around the scene based on thumbpad
 	*/
 	onAxisChanged( event ) {
-		ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
+		var mode = this.mode;
+		var MODES = this.MODES;
+		this.ball.position.set(event.axes[ 0 ], event.axes[ 1 ], 0);
 		//only execute the rest if pressing down on thumbpad
 		if ( this.getButtonState( 'thumbpad' ) === false ) return;
 		var x = event.axes[ 0 ] / 2.0;
@@ -52,6 +54,8 @@ class GravityController extends BasicController{
 	* Change mode
 	*/
 	onGripsDown(event){
+		var mode = this.mode;
+		var MODES = this.MODES;
 		console.log("gripsdown, mode:"+mode);
 		if(mode === MODES.UPDOWN){
 		    mode = MODES.MULTI;
@@ -60,8 +64,9 @@ class GravityController extends BasicController{
 		else if(mode === MODES.MULTI){
 		    mode = MODES.UPDOWN;
 		}
+		var modelabel = this.modelabel;
 		this.ui.remove(modelabel); 
-		modelabel = create_text_mesh(modelist[mode], 2, "#ff0000");
+		modelabel = create_text_mesh(this.modelist[mode], 2, "#ff0000");
 		this.ui.add(modelabel);
 	}
 	

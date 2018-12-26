@@ -8,7 +8,12 @@ class Wrapper {
 		user.add( ctrlr );
 		
 		//toggle ctrlr mode by switching to a new ctrlr class
-		ctrlr.addEventListener( 'menudown', this.on_menu_up );
+		//bit of a workaround but necessary
+		var w = this;
+		var f = this.on_menu_up;
+		ctrlr.addEventListener( 'menuup', function(){
+			f(w);		
+		});
 		var physGeom = new THREE.CubeGeometry(0.12, 0.1, 0.22); 
 		var physMaterial = new Physijs.createMaterial(new THREE.MeshBasicMaterial({}), 0.5, 0.5);
 		physMaterial.visible = false;	//Make them invisible
@@ -39,7 +44,9 @@ class Wrapper {
 		// since 'menuup' event is dispatched in the controller
 		// we must add it to all controllers
 		for(var i = 0; i<this.ctrlrlist.length; i++){
-			this.ctrlrlist[i].addEventListener( 'menuup', this.on_menu_up );
+			this.ctrlrlist[i].addEventListener( 'menuup', function(){
+			f(w);		
+		});
 		}
 		
 	}
@@ -57,19 +64,21 @@ class Wrapper {
 	* Toggles through various controller objects,
 	* effectively switching the function of the buttons
 	*/
-	on_menu_up(){
+	on_menu_up(w){
 		//The below line is essential. It is located in BasicController
 		// and may be overriden
-		this.ctrlr.on_deactivate();
+		console.log("This is what you came for");
+		console.log(w);
+		w.ctrlr.on_deactivate();
 		
-		this.current_controller++;
-		if(this.current_controller == this.ctrlrlist.length){
-			this.current_controller = 0;
+		w.current_controller++;
+		if(w.current_controller == w.ctrlrlist.length){
+			w.current_controller = 0;
 		}
-		this.ctrlr = this.ctrlrlist[this.current_controller];
+		w.ctrlr = w.ctrlrlist[w.current_controller];
 		
 		//Also essential & can be overridden
-		this.ctrlr.on_activate();
+		w.ctrlr.on_activate();
 		
 	}
 }

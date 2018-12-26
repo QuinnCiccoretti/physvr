@@ -14,16 +14,18 @@ class RefreshController extends BasicController {
 	* Reload the page from cache
 	*/
 	onTriggerDown(){
-		location.reload();
 		this.pulse(1,100);
+		location.reload();
+		
 	}
 	/**
 	* Reload the page from the server
 	*/
 	onGripsDown(){
 	    //true reloads from server
+	    this.pulse(1,100);
 		location.reload(true);
-		this.pulse(1,100);
+		
 	}
 
 }
