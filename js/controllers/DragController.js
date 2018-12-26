@@ -14,13 +14,14 @@ class DragController extends BasicController {
 		line.name = 'line';
 		line.scale.z = 5;
 		this.add( line.clone() );
+		
 		//touchpad ball
 		var geometry = new THREE.IcosahedronGeometry( 0.1, 2 );
 		var material = new THREE.MeshBasicMaterial({color:"#ff0000"});
 		//this shows where the user's thumb is on the trackpad
 		var ball = new THREE.Mesh( geometry, material );	
 		this.ui.add( ball );
-
+		this.intersected = [];
 		var object;
 		this.addEventListener( 'axischanged', this.onAxisChanged );
 		this.addEventListener( 'triggerup', this.onTriggerUp );
@@ -31,12 +32,13 @@ class DragController extends BasicController {
 
 	onTriggerDown(){
 		var controller = this;
-		var intersections = getIntersections( controller );
+		var tempMatrix = new THREE.Matrix4();
+		var intersections = this.getIntersections( tempMatrix );
 		if ( intersections.length > 0 ) {
 			var intersection = intersections[ 0 ];
 			tempMatrix.getInverse( controller.matrixWorld );
 			object = intersection.object;
-		
+			console.log(tempMatrix);
 			object.matrix.premultiply( tempMatrix );
 			object.matrix.decompose( object.position, object.quaternion, object.scale );
 			
@@ -64,29 +66,30 @@ class DragController extends BasicController {
 			controller.userData.selected = undefined;
 		}
 	}
-	getIntersections( controller ) {
-				tempMatrix.identity().extractRotation( controller.matrixWorld );
-				raycaster.ray.origin.setFromMatrixPosition( controller.matrixWorld );
+	getIntersections(tempMatrix) {
+				
+				tempMatrix.identity().extractRotation( this.matrixWorld );
+				raycaster.ray.origin.setFromMatrixPosition( this.matrixWorld );
 				raycaster.ray.direction.set( 0, 0, -1 ).applyMatrix4( tempMatrix );
 				return raycaster.intersectObjects( scene.children );
 			}
-	intersectObjects( controller ) {
+	intersectObjects(  ) {
 		// Do not highlight when already selected
-		if ( controller.userData.selected !== undefined ) return;
-		var line = controller.getObjectByName( 'line' );
-		var intersections = getIntersections( controller );
+		if ( this.userData.selected !== undefined ) return;
+		var line = this.getObjectByName( 'line' );
+		var intersections = getIntersections();
 		if ( intersections.length > 0 ) {
 			var intersection = intersections[ 0 ];
 			var object = intersection.object;
-			intersected.push( object );
+			this.intersected.push( object );
 			line.scale.z = intersection.distance;
 		} else {
 			line.scale.z = 5;
 		}
 	}
 	cleanIntersected() {
-		while ( intersected.length ) {
-			var object = intersected.pop();
+		while ( this.intersected.length ) {
+			var object = this.intersected.pop();
 		}
 	}
 	onAxisChanged( event ) {
